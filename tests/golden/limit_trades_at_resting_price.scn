@@ -1,0 +1,11 @@
+# An aggressive buy at 105 against an ask at 100 executes at 100.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> new 2 buy gtc 2 @105
+< ack 2 buy qty=2 px=105 leaves=2
+< fill 1 sell qty=2 px=100 contra=2 leaves=0
+< fill 2 buy qty=2 px=100 contra=1 leaves=0 aggr
+< trade 2 buy qty=2 px=100 contra=1 leaves=0
+< level sell px=100 qty=0 removed
+= hash 0xd0a4c09918a4d2fc

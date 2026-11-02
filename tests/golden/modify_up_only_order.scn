@@ -1,0 +1,8 @@
+# Priority-lost is flagged even when the order is alone on its level.
+> new 1 buy gtc 1 @100
+< ack 1 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> modify 1 qty=2 px=100
+< modified 1 buy qty=2 px=100 leaves=2 lost
+< level buy px=100 qty=2
+= hash 0x0f4aff425bdd7caf

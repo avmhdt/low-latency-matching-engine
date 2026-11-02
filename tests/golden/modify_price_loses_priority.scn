@@ -1,0 +1,18 @@
+# A price change moves the order to the tail of the new level and updates both levels.
+> new 1 buy gtc 2 @100
+< ack 1 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> new 2 buy gtc 2 @99
+< ack 2 buy qty=2 px=99 leaves=2
+< level buy px=99 qty=2
+> modify 1 qty=2 px=99
+< modified 1 buy qty=2 px=99 leaves=2 lost
+< level buy px=100 qty=0 removed
+< level buy px=99 qty=4
+> new 3 sell ioc 1 @99
+< ack 3 sell qty=1 px=99 leaves=1
+< fill 2 buy qty=1 px=99 contra=3 leaves=1
+< fill 3 sell qty=1 px=99 contra=2 leaves=0 aggr
+< trade 3 sell qty=1 px=99 contra=2 leaves=0
+< level buy px=99 qty=3
+= hash 0xc8205b5cea568a23

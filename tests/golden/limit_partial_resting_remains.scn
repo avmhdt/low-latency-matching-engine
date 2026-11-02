@@ -1,0 +1,13 @@
+# A small aggressor leaves the resting order on the book with reduced leaves.
+> new 1 buy gtc 10 @100
+< ack 1 buy qty=10 px=100 leaves=10
+< level buy px=100 qty=10
+> new 2 sell gtc 4 @100
+< ack 2 sell qty=4 px=100 leaves=4
+< fill 1 buy qty=4 px=100 contra=2 leaves=6
+< fill 2 sell qty=4 px=100 contra=1 leaves=0 aggr
+< trade 2 sell qty=4 px=100 contra=1 leaves=0
+< level buy px=100 qty=6
+= depth buy px=100 qty=6 orders=1
+= live 1
+= hash 0xc3496d65894e8581

@@ -1,0 +1,14 @@
+# The remainder of a GTC aggressor rests at its own price, after the contra level update.
+> new 1 sell gtc 3 @100
+< ack 1 sell qty=3 px=100 leaves=3
+< level sell px=100 qty=3
+> new 2 buy gtc 10 @100
+< ack 2 buy qty=10 px=100 leaves=10
+< fill 1 sell qty=3 px=100 contra=2 leaves=0
+< fill 2 buy qty=3 px=100 contra=1 leaves=7 aggr
+< trade 2 buy qty=3 px=100 contra=1 leaves=7
+< level sell px=100 qty=0 removed
+< level buy px=100 qty=7
+= depth buy px=100 qty=7 orders=1
+= live 1
+= hash 0xc39f393bbf7020a5

@@ -1,0 +1,10 @@
+# A live ID cannot be reused, on either side or for any order type.
+> new 1 buy gtc 1 @100
+< ack 1 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> new 1 sell gtc 1 @200
+< reject 1 side=1 reason=DUPLICATE_ID
+> new 1 sell ioc 1 @100
+< reject 1 side=1 reason=DUPLICATE_ID
+= live 1
+= hash 0xe1c4cd626a9b0c42

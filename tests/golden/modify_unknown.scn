@@ -1,0 +1,4 @@
+# Unknown ID: MODIFY_REJECT.
+> modify 9 qty=1 px=100
+< modify_reject 9 reason=UNKNOWN_ID
+= hash 0x8686bb27f63422db

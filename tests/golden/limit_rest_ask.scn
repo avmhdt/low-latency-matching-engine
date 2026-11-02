@@ -1,0 +1,7 @@
+# A sell with nothing to match rests and publishes its level.
+> new 1 sell gtc 7 @200
+< ack 1 sell qty=7 px=200 leaves=7
+< level sell px=200 qty=7
+= depth sell px=200 qty=7 orders=1
+= live 1
+= hash 0x167eff687d20eb70

@@ -1,0 +1,10 @@
+# A canceled order cannot be modified.
+> new 1 buy gtc 2 @100
+< ack 1 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> cancel 1
+< canceled 1 buy qty=2 px=100 reason=USER
+< level buy px=100 qty=0 removed
+> modify 1 qty=1 px=100
+< modify_reject 1 reason=UNKNOWN_ID
+= hash 0x9623f0c4d736f22b

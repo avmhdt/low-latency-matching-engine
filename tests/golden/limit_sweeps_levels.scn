@@ -1,0 +1,25 @@
+# A sell sweeps bids best price first, with partial fills across three levels, and rests.
+> new 1 buy gtc 2 @102
+< ack 1 buy qty=2 px=102 leaves=2
+< level buy px=102 qty=2
+> new 2 buy gtc 3 @101
+< ack 2 buy qty=3 px=101 leaves=3
+< level buy px=101 qty=3
+> new 3 buy gtc 4 @99
+< ack 3 buy qty=4 px=99 leaves=4
+< level buy px=99 qty=4
+> new 4 sell gtc 8 @100
+< ack 4 sell qty=8 px=100 leaves=8
+< fill 1 buy qty=2 px=102 contra=4 leaves=0
+< fill 4 sell qty=2 px=102 contra=1 leaves=6 aggr
+< trade 4 sell qty=2 px=102 contra=1 leaves=6
+< level buy px=102 qty=0 removed
+< fill 2 buy qty=3 px=101 contra=4 leaves=0
+< fill 4 sell qty=3 px=101 contra=2 leaves=3 aggr
+< trade 4 sell qty=3 px=101 contra=2 leaves=3
+< level buy px=101 qty=0 removed
+< level sell px=100 qty=3
+= depth buy px=99 qty=4 orders=1
+= depth sell px=100 qty=3 orders=1
+= live 2
+= hash 0xb489fd86027a411a

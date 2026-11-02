@@ -1,0 +1,9 @@
+# An IOC that cannot trade is IOC_REMAINDER, not NO_LIQUIDITY.
+> new 1 sell gtc 2 @101
+< ack 1 sell qty=2 px=101 leaves=2
+< level sell px=101 qty=2
+> new 2 buy ioc 5 @100
+< ack 2 buy qty=5 px=100 leaves=5
+< canceled 2 buy qty=5 px=100 reason=IOC_REMAINDER
+= live 1
+= hash 0x4483e8dfc354b577

@@ -1,0 +1,16 @@
+# An IOC trades through levels only up to its limit.
+> new 1 sell gtc 1 @100
+< ack 1 sell qty=1 px=100 leaves=1
+< level sell px=100 qty=1
+> new 2 sell gtc 1 @102
+< ack 2 sell qty=1 px=102 leaves=1
+< level sell px=102 qty=1
+> new 3 buy ioc 5 @101
+< ack 3 buy qty=5 px=101 leaves=5
+< fill 1 sell qty=1 px=100 contra=3 leaves=0
+< fill 3 buy qty=1 px=100 contra=1 leaves=4 aggr
+< trade 3 buy qty=1 px=100 contra=1 leaves=4
+< level sell px=100 qty=0 removed
+< canceled 3 buy qty=4 px=101 reason=IOC_REMAINDER
+= depth sell px=102 qty=1 orders=1
+= hash 0xcd2b24738d51fd05

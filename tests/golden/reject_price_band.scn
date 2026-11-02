@@ -1,0 +1,13 @@
+# Limit prices just outside the band are rejected; the edges are accepted.
+> new 1 buy gtc 1 @-1
+< reject 1 side=0 reason=PRICE_OUT_OF_BAND
+> new 2 sell gtc 1 @1001
+< reject 2 side=1 reason=PRICE_OUT_OF_BAND
+> new 3 buy gtc 1 @0
+< ack 3 buy qty=1 px=0 leaves=1
+< level buy px=0 qty=1
+> new 4 sell gtc 1 @1000
+< ack 4 sell qty=1 px=1000 leaves=1
+< level sell px=1000 qty=1
+= live 2
+= hash 0xf60d9df80129700b

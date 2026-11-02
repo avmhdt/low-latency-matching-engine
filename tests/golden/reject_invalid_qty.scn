@@ -1,0 +1,5 @@
+# qty 0 on NEW.
+> new 1 buy gtc 0 @100
+< reject 1 side=0 reason=INVALID_QTY
+= live 0
+= hash 0xe06e59a669a7cf9f

@@ -1,0 +1,25 @@
+# A full pool rejects GTC before matching, even if it would have filled; IOC needs no slot.
+@config max_orders=2
+> new 1 buy gtc 1 @100
+< ack 1 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> new 2 buy gtc 1 @99
+< ack 2 buy qty=1 px=99 leaves=1
+< level buy px=99 qty=1
+> new 3 sell gtc 1 @100
+< reject 3 side=1 reason=POOL_FULL
+> new 4 sell ioc 1 @100
+< ack 4 sell qty=1 px=100 leaves=1
+< fill 1 buy qty=1 px=100 contra=4 leaves=0
+< fill 4 sell qty=1 px=100 contra=1 leaves=0 aggr
+< trade 4 sell qty=1 px=100 contra=1 leaves=0
+< level buy px=100 qty=0 removed
+> new 5 buy gtc 1 @98
+< ack 5 buy qty=1 px=98 leaves=1
+< level buy px=98 qty=1
+> modify 5 qty=2 px=97
+< modified 5 buy qty=2 px=97 leaves=2 lost
+< level buy px=98 qty=0 removed
+< level buy px=97 qty=2
+= live 2
+= hash 0xb7fb409cd1dd473e

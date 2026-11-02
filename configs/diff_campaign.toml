@@ -1,0 +1,10 @@
+# Total 180M ops; each engine is compared against "ref". M2 sanity run: ref against itself.
+engines = ["ref"]
+run = [
+  { profile = "configs/workloads/balanced.toml",     ops = 100_000_000, seed = 1 },
+  { profile = "configs/workloads/cancel_heavy.toml", ops = 20_000_000,  seed = 2 },
+  { profile = "configs/workloads/aggressive.toml",   ops = 20_000_000,  seed = 3 },
+  { profile = "configs/workloads/deep_book.toml",    ops = 20_000_000,  seed = 4 },
+  # adversarial: tiny price range, qty 1-3, many FOK and modify
+  { profile = "configs/workloads/adversarial.toml",  ops = 20_000_000,  seed = 5 },
+]

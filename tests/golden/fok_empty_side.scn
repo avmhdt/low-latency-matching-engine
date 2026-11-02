@@ -1,0 +1,5 @@
+# A FOK against an empty side is FOK_UNFILLABLE, not NO_LIQUIDITY.
+> new 1 sell fok 1 @100
+< ack 1 sell qty=1 px=100 leaves=1
+< canceled 1 sell qty=1 px=100 reason=FOK_UNFILLABLE
+= hash 0x5398afb12645d581

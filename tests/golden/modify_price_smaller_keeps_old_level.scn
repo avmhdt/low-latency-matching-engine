@@ -1,0 +1,14 @@
+# A price change with a smaller size still loses priority, and the old level survives.
+> new 1 sell gtc 4 @100
+< ack 1 sell qty=4 px=100 leaves=4
+< level sell px=100 qty=4
+> new 2 sell gtc 1 @100
+< ack 2 sell qty=1 px=100 leaves=1
+< level sell px=100 qty=5
+> modify 1 qty=3 px=101
+< modified 1 sell qty=3 px=101 leaves=3 lost
+< level sell px=100 qty=1
+< level sell px=101 qty=3
+= depth sell px=100 qty=1 orders=1
+= depth sell px=101 qty=3 orders=1
+= hash 0x09add575d4a62a7a

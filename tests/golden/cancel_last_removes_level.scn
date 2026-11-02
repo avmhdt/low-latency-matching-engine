@@ -1,0 +1,9 @@
+# Canceling the last order removes the level.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> cancel 1
+< canceled 1 sell qty=2 px=100 reason=USER
+< level sell px=100 qty=0 removed
+= live 0
+= hash 0xcbba9b4c448084e3

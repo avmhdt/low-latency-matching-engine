@@ -1,0 +1,12 @@
+# A terminal ID can be used again.
+> new 1 buy gtc 1 @100
+< ack 1 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> cancel 1
+< canceled 1 buy qty=1 px=100 reason=USER
+< level buy px=100 qty=0 removed
+> new 1 sell gtc 2 @200
+< ack 1 sell qty=2 px=200 leaves=2
+< level sell px=200 qty=2
+= live 1
+= hash 0xde14cbda65c370ab

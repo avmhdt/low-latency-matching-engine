@@ -45,6 +45,29 @@ Local builds, fuzzing and campaigns on this PC run at no more than 8 threads und
 | nlohmann/json | v3.11.3 |
 | tl::expected | v1.1.0 |
 
+## Semantics choices (M2)
+
+Rule 9 of §16: where the spec is ambiguous, take the simplest consistent option and record it. `docs/design.md` is the full statement; these are the choices it had to make.
+
+- **D-07 market protection:** unbounded sweep, as the default says.
+- **`POOL_FULL` applies only to GTC limit orders, and is checked before matching.** IOC, FOK and market orders never take a slot. A GTC that would have filled completely is still rejected on a full pool, because FR-08 makes this a validation with no state change.
+- **Validation order:** type, side, `ord_type` and `tif`, qty, price, duplicate, pool. Bad `ord_type` or `tif` bytes use `INVALID_TYPE`, the closest reason code in §7(b).
+- **`tif` on a market order** is range-checked but has no other effect ("MARKET implies IOC behaviour").
+- **Modify order of checks:** unknown ID, then qty 0 (a cancel, so the price is not looked at), then the price band. An out-of-band modify gets `MODIFY_REJECT` with `PRICE_OUT_OF_BAND`.
+- **A no-op modify** (same price and qty) answers `MODIFIED` with no `LEVEL_UPDATE`, because FR-10 ties that record to a change in the aggregate.
+- **`LEVEL_UPDATE.qty` saturates at 2³²−1.** The field is u32 and aggregates are u64 (NFR-05). The `removed` flag says when a level is gone.
+- **Unlisted output fields.** ACK carries the order qty and limit price, REJECT echoes the raw `side` byte, CANCELED carries the canceled qty. The table in `docs/design.md` is complete.
+- **ID 0 is a valid order ID.** The spec does not reject it, so no structure may use it as a sentinel.
+
+## Generator choices (M2)
+
+- **A `ReferenceEngine` shadow book drives the generator.** Without it, cancels would often hit orders that had already filled, about a quarter of them at the balanced mix, and "offset from touch" would be a guess. It also keeps the book stationary. A defect in a fast engine cannot change the input, because the stream depends only on the reference.
+- **`target_live` regulator.** The `[mix]` shares alone make the book grow without limit, because adds outnumber cancels and fills, and a 100M run would sit at `POOL_FULL`. Once the shadow book reaches `target_live`, a NEW becomes a cancel, so realised shares shift slightly in steady state.
+- **Added profile keys, all optional:** `generator.target_live`, `generator.half_spread`, `generator.traders`, `price.alpha`, `price.max_offset`, `price.floor`, `price.ceil`, `size.min`, `size.max`, `mix.invalid`, the `[modify]` table and an `[engine]` override.
+- **Poisson arrivals are expressed as a `[rates]` table** normalised to shares. Independent Poisson streams merge into a multinomial choice of the next type, and an `.mlog` stores order but no timestamps, so the two forms are equivalent.
+- **Power-law exponents are rounded to 1/16** and evaluated with `sqrt` and products, because `pow` is not guaranteed identical across C libraries. `-ffp-contract=off` keeps FMA from changing a result under `-march=native`.
+- **`--check-invariants` on the reference** does nothing yet; the checker belongs to the fast engine (M3).
+
 ## Build choices
 
 - **`tl::expected`, not `std::expected`.** The code base compiles as C++20 and libstdc++ gates `std::expected` on C++23. The spec names this fallback.

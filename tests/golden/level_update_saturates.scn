@@ -1,0 +1,9 @@
+# LEVEL_UPDATE.qty saturates at 2^32-1 while depth stays exact.
+> new 1 buy gtc 4294967295 @100
+< ack 1 buy qty=4294967295 px=100 leaves=4294967295
+< level buy px=100 qty=4294967295
+> new 2 buy gtc 2 @100
+< ack 2 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=4294967295
+= depth buy px=100 qty=4294967297 orders=2
+= hash 0x91151ae8d1f3771e

@@ -1,0 +1,10 @@
+# Not enough quantity: no fills and the book does not change.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> new 2 buy fok 3 @100
+< ack 2 buy qty=3 px=100 leaves=3
+< canceled 2 buy qty=3 px=100 reason=FOK_UNFILLABLE
+= depth sell px=100 qty=2 orders=1
+= live 1
+= hash 0x71aaaa88203e7e68

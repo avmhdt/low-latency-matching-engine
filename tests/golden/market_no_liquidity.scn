@@ -1,0 +1,6 @@
+# A market order against an empty side cancels with NO_LIQUIDITY (D-07).
+> new 1 buy market 5
+< ack 1 buy qty=5 px=0 leaves=5
+< canceled 1 buy qty=5 px=0 reason=NO_LIQUIDITY
+= live 0
+= hash 0x41f91fcef5a9706c

@@ -1,0 +1,13 @@
+# Quantity beyond the limit does not count.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> new 2 sell gtc 9 @102
+< ack 2 sell qty=9 px=102 leaves=9
+< level sell px=102 qty=9
+> new 3 buy fok 3 @101
+< ack 3 buy qty=3 px=101 leaves=3
+< canceled 3 buy qty=3 px=101 reason=FOK_UNFILLABLE
+= depth sell px=100 qty=2 orders=1
+= depth sell px=102 qty=9 orders=1
+= hash 0xa096db1835c8a029

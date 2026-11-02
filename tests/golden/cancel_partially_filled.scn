@@ -1,0 +1,14 @@
+# A partly filled order cancels its leaves only.
+> new 1 buy gtc 5 @100
+< ack 1 buy qty=5 px=100 leaves=5
+< level buy px=100 qty=5
+> new 2 sell ioc 2 @100
+< ack 2 sell qty=2 px=100 leaves=2
+< fill 1 buy qty=2 px=100 contra=2 leaves=3
+< fill 2 sell qty=2 px=100 contra=1 leaves=0 aggr
+< trade 2 sell qty=2 px=100 contra=1 leaves=0
+< level buy px=100 qty=3
+> cancel 1
+< canceled 1 buy qty=3 px=100 reason=USER
+< level buy px=100 qty=0 removed
+= hash 0x186d6deec1d85492

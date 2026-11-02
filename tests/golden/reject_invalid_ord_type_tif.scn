@@ -1,0 +1,9 @@
+# Bad ord_type or tif bytes are INVALID_TYPE, on market orders too.
+> raw type=1 side=0 ord=2 tif=0 qty=1 id=1 px=100
+< reject 1 side=0 reason=INVALID_TYPE
+> raw type=1 side=1 ord=0 tif=3 qty=1 id=2 px=100
+< reject 2 side=1 reason=INVALID_TYPE
+> raw type=1 side=0 ord=1 tif=3 qty=1 id=3 px=100
+< reject 3 side=0 reason=INVALID_TYPE
+= live 0
+= hash 0xe99c93168dfca3e8

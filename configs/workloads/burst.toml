@@ -1,0 +1,25 @@
+# balanced with periodic cancel bursts: N consecutive cancels every M messages.
+[generator]
+mid_start       = 500000
+mid_walk_sigma  = 1.0
+target_live     = 100000
+[mix]
+new_limit = 0.48
+cancel    = 0.38
+modify    = 0.08
+ioc       = 0.03
+fok       = 0.01
+market    = 0.02
+[price]
+dist      = "geometric"
+p         = 0.25
+cross_prob = 0.05
+[size]
+dist      = "geometric"
+mean_lots = 5
+[cancel]
+target    = "uniform"
+[burst]
+enabled   = true
+length    = 10000
+every     = 1000000
