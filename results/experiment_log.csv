@@ -1,1 +1,2 @@
 run_id,timestamp_utc,git_sha,git_dirty,tool,args,design,workload,input_hash,output_hash,n_msgs,compiler,flags,host,cpu_model,bench_core,governor,turbo,smt,wsl2,headline_metric,headline_value,result_path
+llme-diff_20261102T022906Z_378105,2026-11-02T02:29:06Z,e161f81d558e51a3db1cd921fc175f6cb040aec5,true,llme-diff,--campaign configs/diff_campaign_invariants.toml,campaign,all,,,50000000,gcc-13,,ASTOGIRO,Intel(R) Core(TM) i9-14900K,,,,,true,mismatches,0,results/diff/invariants_2026-11-02.json

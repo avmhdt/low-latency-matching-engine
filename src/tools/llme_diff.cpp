@@ -28,6 +28,9 @@ namespace {
 using nlohmann::json;
 using std::chrono::steady_clock;
 
+// With --check-invariants, how often the O(book + band) sweep runs (docs/decisions.md).
+constexpr std::uint64_t kFullCheckEvery = 4096;
+
 struct Options {
   std::string campaign;
   std::string in;
@@ -84,10 +87,11 @@ void handle_failure(const std::vector<llme::InMsg>& prefix, const llme::EngineCo
                     const std::string& tag) {
   const auto a = factory(name_a, cfg);
   const auto b = factory(name_b, cfg);
+  const std::uint64_t every = options.check_invariants ? kFullCheckEvery : 0;
   const auto minimal = llme::shrink(
       prefix,
       [&](const std::vector<llme::InMsg>& candidate) {
-        return llme::first_mismatch(candidate, a, b).has_value();
+        return llme::first_mismatch(candidate, a, b, every).has_value();
       },
       std::chrono::seconds(options.shrink_seconds));
   save_regression(minimal, cfg, options, tag);
@@ -101,6 +105,8 @@ json summarize(const llme::DiffStats& stats, const std::string& workload, std::u
           {"fills", stats.fills},
           {"rejects", stats.rejects},
           {"mismatches", stats.mismatches},
+          {"invariant_failures", stats.invariant_failures},
+          {"full_checks", stats.full_checks},
           {"first_mismatch_index",
            stats.first_mismatch_index ? json(*stats.first_mismatch_index) : json(nullptr)},
           {"first_mismatch", stats.first_mismatch},
@@ -114,6 +120,7 @@ json run_generated(const RunSpec& spec, const std::string& engine, const Options
   llme::workload::Generator generator(profile, spec.seed);
   llme::DiffRunner runner(llme::make_adapter(engine, profile.engine),
                           llme::make_adapter("ref", profile.engine));
+  runner.enable_invariants(options.check_invariants ? kFullCheckEvery : 0);
 
   const auto start = steady_clock::now();
   bool clean = true;
@@ -126,7 +133,7 @@ json run_generated(const RunSpec& spec, const std::string& engine, const Options
   const std::chrono::duration<double> elapsed = steady_clock::now() - start;
   const auto& stats = runner.stats();
 
-  if (stats.mismatches != 0) {
+  if (stats.first_mismatch_index) {
     std::cerr << "MISMATCH " << profile.name << " seed " << spec.seed << ": "
               << stats.first_mismatch << '\n';
     if (options.shrink_failures) {
@@ -207,6 +214,7 @@ int run_campaign(const Options& options) {
       }
       json result = run_generated(spec, engine, options);
       mismatches += result["mismatches"].get<std::uint64_t>();
+      mismatches += result["invariant_failures"].get<std::uint64_t>();
       total_ops += spec.ops;
       std::cerr << result.dump() << '\n';
       report["runs"].push_back(std::move(result));
@@ -243,6 +251,7 @@ int run_file(const Options& options) {
   const std::string name_a = options.engines.at(0);
   const std::string name_b = options.engines.at(1);
   llme::DiffRunner runner(llme::make_adapter(name_a, config), llme::make_adapter(name_b, config));
+  runner.enable_invariants(options.check_invariants ? kFullCheckEvery : 0);
   const auto start = steady_clock::now();
   bool clean = true;
   std::uint64_t index = 0;
@@ -258,7 +267,7 @@ int run_file(const Options& options) {
   }
   const std::chrono::duration<double> elapsed = steady_clock::now() - start;
   const auto& stats = runner.stats();
-  if (stats.mismatches != 0) {
+  if (stats.first_mismatch_index) {
     std::cerr << "MISMATCH: " << stats.first_mismatch << '\n';
     if (options.shrink_failures) {
       const auto records = reader->records();
@@ -272,7 +281,7 @@ int run_file(const Options& options) {
       summarize(stats, std::filesystem::path(options.in).stem().string(), 0,
                 reader->header().record_count, name_a + "," + name_b, elapsed.count());
   std::cout << summary.dump() << '\n';
-  return stats.mismatches == 0 ? 0 : 1;
+  return stats.first_mismatch_index ? 1 : 0;
 }
 
 int run_profile(const Options& options) {
@@ -281,7 +290,7 @@ int run_profile(const Options& options) {
   const json summary =
       run_generated({profile, options.ops, options.seed}, options.engines.at(0), options);
   std::cout << summary.dump() << '\n';
-  return summary["mismatches"].get<std::uint64_t>() == 0 ? 0 : 1;
+  return summary["first_mismatch_index"].is_null() ? 0 : 1;
 }
 
 int run(int argc, char** argv) {

@@ -66,7 +66,14 @@ Rule 9 of §16: where the spec is ambiguous, take the simplest consistent option
 - **Added profile keys, all optional:** `generator.target_live`, `generator.half_spread`, `generator.traders`, `price.alpha`, `price.max_offset`, `price.floor`, `price.ceil`, `size.min`, `size.max`, `mix.invalid`, the `[modify]` table and an `[engine]` override.
 - **Poisson arrivals are expressed as a `[rates]` table** normalised to shares. Independent Poisson streams merge into a multinomial choice of the next type, and an `.mlog` stores order but no timestamps, so the two forms are equivalent.
 - **Power-law exponents are rounded to 1/16** and evaluated with `sqrt` and products, because `pow` is not guaranteed identical across C libraries. `-ffp-contract=off` keeps FMA from changing a result under `-march=native`.
-- **`--check-invariants` on the reference** does nothing yet; the checker belongs to the fast engine (M3).
+- **`--check-invariants` on the reference** does nothing; the checker belongs to the fast engines.
+
+## Fast core choices (M3)
+
+- **`--check-invariants` is incremental.** A complete FR-19 check is O(book + band), about 40 ms on `deep_book`, so doing it after each of 10M messages would take days. After every message the harness instead checks that the book is not crossed and the ID map size equals live orders, and walks every level named by that message's `LEVEL_UPDATE` records, which FR-10 makes the full set of changed levels. The complete sweep runs every 4,096 messages and at the end. A defect that skipped a `LEVEL_UPDATE` would be caught by the record comparison against the reference. Property tests and `fuzz_engine_diff` still run the complete check after every message, on small books.
+- **`LevelStore` concept extended.** The spec's three members are kept, and `next_after`, `find` and `check_consistency` are added, because the FOK scan, `depth_at`, snapshots and the invariant checker need them.
+- **The alloc tests do not run under sanitizers.** The hook replaces `malloc`, which ASan and TSan also claim. They run in `gcc-release`, `clang-release` and `coverage`.
+- **Order size is 48 bytes**, including the `arrival` stamp that exists only for the invariant checker. Footprint at the default config is checked against NFR-12 by a test.
 
 ## Build choices
 
