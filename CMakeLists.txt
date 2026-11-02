@@ -36,6 +36,13 @@ add_library(llme_reference STATIC src/reference/reference_engine.cpp)
 target_link_libraries(llme_reference PUBLIC llme_headers)
 llme_target_defaults(llme_reference)
 
+add_library(llme_pipeline STATIC
+  src/pipeline/pipeline.cpp src/pipeline/gateway.cpp src/pipeline/publisher.cpp)
+target_link_libraries(llme_pipeline PUBLIC llme_io llme_core)
+find_package(Threads REQUIRED)
+target_link_libraries(llme_pipeline PUBLIC Threads::Threads)
+llme_target_defaults(llme_pipeline)
+
 add_library(llme_testing STATIC src/testing/engine_adapters.cpp src/testing/diff.cpp)
 target_include_directories(llme_testing PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/testing")
 target_link_libraries(llme_testing PUBLIC llme_headers PRIVATE llme_core llme_reference)

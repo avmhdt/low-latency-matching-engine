@@ -1,0 +1,38 @@
+# Input and output hashes per fixture, the same on every compiler, build type and engine.
+# Regenerate only for a deliberate format or semantics change.
+
+[adversarial]
+seed = 1001
+ops = 10000
+input = "0xd74040a6c7d01a2b"
+output = "0x5e4b1b8a5de32cc8"
+
+[aggressive]
+seed = 1002
+ops = 10000
+input = "0x05fdb42fe7b55569"
+output = "0x55caa72b6485e954"
+
+[balanced]
+seed = 1003
+ops = 10000
+input = "0x30754d753bf636d8"
+output = "0xa45a4b96ec8a9384"
+
+[burst]
+seed = 1004
+ops = 10000
+input = "0x0b4e819b00400bc0"
+output = "0xc14c2191b8a2feac"
+
+[cancel_heavy]
+seed = 1005
+ops = 10000
+input = "0xce156b33917ca628"
+output = "0x5417093ac14164c3"
+
+[deep_book]
+seed = 1006
+ops = 10000
+input = "0xd056aacd5d6a3cf5"
+output = "0x73831d75507cc75d"
