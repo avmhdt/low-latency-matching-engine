@@ -100,5 +100,66 @@ TEST(LobsterTopTest, ReadsDummyPricesAndRefusesShortLines) {
   EXPECT_FALSE(parse_lobster_top("", top));
 }
 
+TEST(LobsterRowTest, ReadsEveryColumnAndRefusesPartialLevels) {
+  std::vector<std::int64_t> row;
+  ASSERT_TRUE(parse_lobster_row("11,1,9,2,12,3,8,4\r", row));
+  EXPECT_EQ(row, (std::vector<std::int64_t>{11, 1, 9, 2, 12, 3, 8, 4}));
+  EXPECT_FALSE(parse_lobster_row("11,1,9", row));
+  EXPECT_FALSE(parse_lobster_row("", row));
+  EXPECT_FALSE(parse_lobster_row("a,1,9,2", row));
+}
+
+class OneStepTest : public testing::Test {
+ protected:
+  // A row is: ask price, ask size, bid price, bid size, then the second level.
+  const std::vector<std::int64_t> before_{10200, 5, 10000, 7, 10300, 2, 9900, 3};
+  OneStepChecker checker_{2000};
+
+  void expect(const LobsterEvent& event, const std::vector<std::int64_t>& after, bool agrees) {
+    checker_.check(before_, &event, after);
+    EXPECT_EQ(checker_.result().agree, agrees ? 1U : 0U);
+    EXPECT_EQ(checker_.result().compared, 1U);
+  }
+};
+
+TEST_F(OneStepTest, AddThatImprovesTheBid) {
+  expect({1, 9, 4, 10100, 1}, {10200, 5, 10100, 4, 10300, 2, 10000, 7}, true);
+}
+
+TEST_F(OneStepTest, ExecutionTakesFromTheTouch) {
+  expect({4, 9, 3, 10000, 1}, {10200, 5, 10000, 4, 10300, 2, 9900, 3}, true);
+}
+
+TEST_F(OneStepTest, ExecutionThatEmptiesTheTouchUncoversTheNextLevel) {
+  expect({4, 9, 5, 10200, -1}, {10300, 2, 10000, 7, 0, 0, 9900, 3}, true);
+}
+
+TEST_F(OneStepTest, CancelAndDeleteReduceTheLevel) {
+  expect({2, 9, 2, 10200, -1}, {10200, 3, 10000, 7, 10300, 2, 9900, 3}, true);
+}
+
+TEST_F(OneStepTest, DeleteOfTheWholeLevelUncoversTheNext) {
+  expect({3, 9, 7, 10000, 1}, {10200, 5, 9900, 3, 10300, 2, 0, 0}, true);
+}
+
+TEST_F(OneStepTest, HiddenExecutionChangesNothing) {
+  expect({5, 9, 1, 10100, -1}, before_, true);
+}
+
+TEST_F(OneStepTest, EventOutsideTheVisibleLevelsIsCounted) {
+  expect({3, 9, 1, 9000, 1}, before_, true);
+  EXPECT_EQ(checker_.result().events_outside_window, 1U);
+}
+
+TEST_F(OneStepTest, AWrongOutcomeIsNoticed) {
+  expect({1, 9, 4, 10100, 1}, before_, false);
+}
+
+TEST_F(OneStepTest, ReusesTheBookFromLineToLine) {
+  checker_.check(before_, nullptr, before_);
+  checker_.check(before_, nullptr, before_);
+  EXPECT_EQ(checker_.result().agree, 2U);
+}
+
 }  // namespace
 }  // namespace llme::workload

@@ -42,7 +42,9 @@ struct Comparison {
   std::uint64_t skipped_dropped = 0;
 };
 
-// Replays the log and compares the first level with the orderbook file, line by line.
+// Replays the whole log and compares the first level with the orderbook file, line by line.
+// A sample reports only events inside its visible levels, so this drifts for reasons that have
+// nothing to do with matching; docs/decisions.md has the numbers.
 Comparison compare_top_of_book(const std::vector<llme::InMsg>& msgs,
                                const std::vector<LineMark>& marks, const llme::EngineConfig& config,
                                const std::string& orderbook) {
@@ -89,6 +91,51 @@ Comparison compare_top_of_book(const std::vector<llme::InMsg>& msgs,
     result.full_agree += ask && bid ? 1U : 0U;
   }
   return result;
+}
+
+// One event at a time from the book the file itself shows: see OneStepChecker.
+json one_step_check(const std::string& messages, const std::string& orderbook) {
+  std::vector<std::vector<std::int64_t>> rows;
+  {
+    std::ifstream book(orderbook);
+    std::string line;
+    std::vector<std::int64_t> row;
+    while (std::getline(book, line)) {
+      if (!llme::workload::parse_lobster_row(line, row)) {
+        throw std::runtime_error("bad orderbook line: " + line);
+      }
+      rows.push_back(row);
+    }
+  }
+  std::int64_t max_raw = 0;
+  for (const auto& row : rows) {
+    for (std::size_t i = 0; i + 1 < row.size(); i += 2) {
+      if (row[i + 1] > 0) {
+        max_raw = std::max(max_raw, row[i]);
+      }
+    }
+  }
+
+  llme::workload::OneStepChecker checker(max_raw / llme::workload::kRawPerTick * 2 + 1);
+  std::ifstream input(messages);
+  std::string line;
+  std::size_t index = 0;
+  while (std::getline(input, line) && index < rows.size()) {
+    llme::workload::LobsterEvent event;
+    const bool parsed = llme::workload::parse_lobster_message(line, event);
+    if (index > 0) {
+      checker.check(rows[index - 1], parsed ? &event : nullptr, rows[index]);
+    }
+    ++index;
+  }
+  const auto& result = checker.result();
+  return {{"compared", result.compared},
+          {"agree", result.agree},
+          {"events_outside_window", result.events_outside_window},
+          {"agreement_rate", result.compared == 0
+                                 ? 0.0
+                                 : static_cast<double>(result.agree) /
+                                       static_cast<double>(result.compared)}};
 }
 
 int execute(const Options& options) {
@@ -146,6 +193,7 @@ int execute(const Options& options) {
                               {"full_agree", top.full_agree},
                               {"price_agreement_rate", rate(top.price_agree)},
                               {"full_agreement_rate", rate(top.full_agree)}};
+    sidecar["one_step_top_of_book"] = one_step_check(options.messages, options.orderbook);
   }
   llme::tools::write_sidecar(options.out, sidecar);
 

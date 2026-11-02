@@ -12,7 +12,7 @@ import json
 import struct
 import subprocess
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Annotated, Any, BinaryIO
 from zoneinfo import ZoneInfo
@@ -90,7 +90,10 @@ class ReplayBuilder:
         if qty <= 0 or qty > MAX_QTY:
             s.dropped_qty += 1
             return
-        if raw_price % RAW_PER_TICK != 0 or order_id & SYNTHETIC_ID_BIT:
+        if order_id & SYNTHETIC_ID_BIT:
+            s.dropped_unknown_id += 1
+            return
+        if raw_price % RAW_PER_TICK != 0:
             s.dropped_price += 1
             return
         price = raw_price // RAW_PER_TICK
@@ -328,4 +331,4 @@ def main(
     )
     meta["replay"] = json.loads(report.stdout)
     meta_path.write_text(json.dumps(meta, indent=2) + "\n")
-    typer.echo(f"{len(builder.records)} messages, {timedelta(0)} skew, {out}")
+    typer.echo(f"{len(builder.records)} messages written to {out}")

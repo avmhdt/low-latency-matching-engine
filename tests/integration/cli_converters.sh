@@ -29,6 +29,7 @@ grep -q '"hidden":1' "$out/lobster.json" || fail "hidden execution not counted"
 grep -q '"halt":1' "$out/lobster.json" || fail "halt not counted"
 grep -q '"exec_contra_match_rate":1.0' "$out/lobster.json" || fail "contra rate wrong"
 grep -q '"full_agreement_rate":1.0' "$out/lobster.json" || fail "top of book disagrees"
+grep -q '"agreement_rate":1.0' "$out/lobster.json" || fail "one-step check disagrees"
 [ -f "$out/lobster.meta.json" ] || fail "no sidecar"
 "$lobster" --messages tests/fixtures/lobster_synthetic_message.csv --symbol ZZZT \
   --out "$out/plain.mlog" >/dev/null
@@ -47,7 +48,7 @@ grep -q '"symbol":"ZZZT"' "$out/itch.json" || fail "top symbol wrong"
 meta="$out/itch_ZZZT_2019-01-30.meta.json"
 grep -q '"session": 1' "$meta" || fail "pre-open add not skipped"
 grep -q '"price": 1' "$meta" || fail "inexact price not dropped"
-grep -q '"unknown_id": 2' "$meta" || fail "unknown IDs not dropped"
+grep -q '"unknown_id": 1' "$meta" || fail "unknown ID not dropped"
 grep -q '"crossed_add": 1' "$meta" || fail "crossed add not counted"
 grep -q '"exec_contra_match_rate": 1.0' "$meta" || fail "ITCH contra rate wrong"
 

@@ -31,7 +31,11 @@ void ReplayBuilder::add(OrderId id, Side side, std::int64_t raw_price, std::int6
     ++stats_.dropped_qty;
     return;
   }
-  if (raw_price % kRawPerTick != 0 || (id & kSyntheticIdBit) != 0) {
+  if ((id & kSyntheticIdBit) != 0) {
+    ++stats_.dropped_unknown_id;
+    return;
+  }
+  if (raw_price % kRawPerTick != 0) {
     ++stats_.dropped_price;
     return;
   }
