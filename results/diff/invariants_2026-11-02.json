@@ -1,0 +1,77 @@
+{
+  "campaign": "configs/diff_campaign_invariants.toml",
+  "check_invariants": true,
+  "git_sha": "e161f81d558e51a3db1cd921fc175f6cb040aec5",
+  "runs": [
+    {
+      "elapsed_s": 38.374105204,
+      "engines": "d2,ref",
+      "fills": 2675648,
+      "first_mismatch": "",
+      "first_mismatch_index": null,
+      "full_checks": 2443,
+      "invariant_failures": 0,
+      "mismatches": 0,
+      "ops": 10000000,
+      "profile": "balanced",
+      "rejects": 0,
+      "seed": 11
+    },
+    {
+      "elapsed_s": 37.835686817,
+      "engines": "d2,ref",
+      "fills": 497188,
+      "first_mismatch": "",
+      "first_mismatch_index": null,
+      "full_checks": 2443,
+      "invariant_failures": 0,
+      "mismatches": 0,
+      "ops": 10000000,
+      "profile": "cancel_heavy",
+      "rejects": 0,
+      "seed": 12
+    },
+    {
+      "elapsed_s": 39.390967862,
+      "engines": "d2,ref",
+      "fills": 10157000,
+      "first_mismatch": "",
+      "first_mismatch_index": null,
+      "full_checks": 2443,
+      "invariant_failures": 0,
+      "mismatches": 0,
+      "ops": 10000000,
+      "profile": "aggressive",
+      "rejects": 0,
+      "seed": 13
+    },
+    {
+      "elapsed_s": 373.287808329,
+      "engines": "d2,ref",
+      "fills": 1435956,
+      "first_mismatch": "",
+      "first_mismatch_index": null,
+      "full_checks": 2443,
+      "invariant_failures": 0,
+      "mismatches": 0,
+      "ops": 10000000,
+      "profile": "deep_book",
+      "rejects": 0,
+      "seed": 14
+    },
+    {
+      "elapsed_s": 2.431376133,
+      "engines": "d2,ref",
+      "fills": 6732912,
+      "first_mismatch": "",
+      "first_mismatch_index": null,
+      "full_checks": 2443,
+      "invariant_failures": 0,
+      "mismatches": 0,
+      "ops": 10000000,
+      "profile": "adversarial",
+      "rejects": 1602338,
+      "seed": 15
+    }
+  ]
+}
