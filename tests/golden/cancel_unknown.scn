@@ -1,0 +1,4 @@
+# Unknown ID: CANCEL_REJECT and nothing else.
+> cancel 9
+< cancel_reject 9 reason=UNKNOWN_ID
+= hash 0x97b85c3227318df4

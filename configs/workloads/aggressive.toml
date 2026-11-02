@@ -1,0 +1,21 @@
+# Heavy taker flow: many market, IOC and FOK orders walking a thin book.
+[generator]
+mid_start       = 500000
+mid_walk_sigma  = 5.0
+target_live     = 5000
+[mix]
+new_limit = 0.50
+cancel    = 0.14
+modify    = 0.06
+ioc       = 0.12
+fok       = 0.06
+market    = 0.12
+[price]
+dist      = "geometric"
+p         = 0.4
+cross_prob = 0.25
+[size]
+dist      = "geometric"
+mean_lots = 8
+[cancel]
+target    = "oldest"

@@ -1,0 +1,18 @@
+# A repriced order that fills completely is terminal.
+> new 1 sell gtc 2 @101
+< ack 1 sell qty=2 px=101 leaves=2
+< level sell px=101 qty=2
+> new 2 buy gtc 2 @100
+< ack 2 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> modify 2 qty=2 px=105
+< modified 2 buy qty=2 px=105 leaves=2 lost
+< level buy px=100 qty=0 removed
+< fill 1 sell qty=2 px=101 contra=2 leaves=0
+< fill 2 buy qty=2 px=101 contra=1 leaves=0 aggr
+< trade 2 buy qty=2 px=101 contra=1 leaves=0
+< level sell px=101 qty=0 removed
+> cancel 2
+< cancel_reject 2 reason=UNKNOWN_ID
+= live 0
+= hash 0xcafb08e5eac76bbc

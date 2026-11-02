@@ -1,0 +1,25 @@
+[generator]
+seed            = 42
+mid_start       = 500000       # ticks
+mid_walk_sigma  = 1.0          # ticks per 1000 msgs
+target_live     = 100000       # live orders the book is regulated to
+[mix]                          # shares of messages, must sum to 1.0
+new_limit = 0.48
+cancel    = 0.38
+modify    = 0.08
+ioc       = 0.03
+fok       = 0.01
+market    = 0.02
+[price]
+dist      = "geometric"        # geometric | power_law | uniform
+p         = 0.25               # geometric parameter (offset in ticks from touch)
+cross_prob = 0.05              # probability a new limit is marketable
+[size]
+dist      = "geometric"
+mean_lots = 5
+[cancel]
+target    = "uniform"          # uniform | oldest | newest | near_touch
+[burst]
+enabled   = false
+length    = 10000              # consecutive cancels
+every     = 1000000            # messages between bursts

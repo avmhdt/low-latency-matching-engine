@@ -1,0 +1,19 @@
+# A market order fills across two levels and has price 0 in its ack.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> new 2 sell gtc 2 @101
+< ack 2 sell qty=2 px=101 leaves=2
+< level sell px=101 qty=2
+> new 3 buy market 3
+< ack 3 buy qty=3 px=0 leaves=3
+< fill 1 sell qty=2 px=100 contra=3 leaves=0
+< fill 3 buy qty=2 px=100 contra=1 leaves=1 aggr
+< trade 3 buy qty=2 px=100 contra=1 leaves=1
+< level sell px=100 qty=0 removed
+< fill 2 sell qty=1 px=101 contra=3 leaves=1
+< fill 3 buy qty=1 px=101 contra=2 leaves=0 aggr
+< trade 3 buy qty=1 px=101 contra=2 leaves=0
+< level sell px=101 qty=1
+= live 1
+= hash 0x621ed03f5a5ebc0c

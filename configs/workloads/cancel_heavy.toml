@@ -1,0 +1,22 @@
+# Most orders are canceled before they trade, as in real order flow, with near-touch churn.
+[generator]
+mid_start       = 500000
+mid_walk_sigma  = 2.0
+target_live     = 50000
+[mix]
+new_limit = 0.47
+cancel    = 0.48
+modify    = 0.03
+ioc       = 0.01
+fok       = 0.005
+market    = 0.005
+[price]
+dist      = "power_law"
+alpha     = 1.5
+max_offset = 512
+cross_prob = 0.01
+[size]
+dist      = "geometric"
+mean_lots = 3
+[cancel]
+target    = "near_touch"

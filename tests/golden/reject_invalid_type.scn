@@ -1,0 +1,9 @@
+# Unknown message type, on any value including 0.
+> raw type=0 side=0 ord=0 tif=0 qty=1 id=1 px=100
+< reject 1 side=0 reason=INVALID_TYPE
+> raw type=4 side=7 ord=0 tif=0 qty=1 id=2 px=100
+< reject 2 side=7 reason=INVALID_TYPE
+> raw type=255 side=1 ord=0 tif=0 qty=1 id=3 px=100
+< reject 3 side=1 reason=INVALID_TYPE
+= live 0
+= hash 0xada776845d2859c0

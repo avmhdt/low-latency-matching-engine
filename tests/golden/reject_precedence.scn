@@ -1,0 +1,13 @@
+# With several faults the first failed check of docs/design.md decides the reason.
+> raw type=1 side=2 ord=9 tif=9 qty=0 id=1 px=-5
+< reject 1 side=2 reason=INVALID_SIDE
+> raw type=1 side=0 ord=9 tif=0 qty=0 id=2 px=-5
+< reject 2 side=0 reason=INVALID_TYPE
+> raw type=1 side=0 ord=0 tif=0 qty=0 id=3 px=-5
+< reject 3 side=0 reason=INVALID_QTY
+> new 4 buy gtc 1 @100
+< ack 4 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> raw type=1 side=0 ord=0 tif=0 qty=1 id=4 px=-5
+< reject 4 side=0 reason=PRICE_OUT_OF_BAND
+= hash 0xbc10d300bfb5bce0

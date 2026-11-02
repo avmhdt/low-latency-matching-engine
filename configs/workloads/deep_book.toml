@@ -1,0 +1,21 @@
+# A very deep, wide book close to pool capacity, with uniform prices over many levels.
+[generator]
+mid_start       = 500000
+mid_walk_sigma  = 1.0
+target_live     = 900000
+[mix]
+new_limit = 0.56
+cancel    = 0.30
+modify    = 0.10
+ioc       = 0.02
+fok       = 0.01
+market    = 0.01
+[price]
+dist      = "uniform"
+max_offset = 20000
+cross_prob = 0.01
+[size]
+dist      = "geometric"
+mean_lots = 10
+[cancel]
+target    = "newest"

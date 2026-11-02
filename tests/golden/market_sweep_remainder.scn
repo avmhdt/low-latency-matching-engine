@@ -1,0 +1,13 @@
+# A market order empties the side and cancels what is left with IOC_REMAINDER.
+> new 1 buy gtc 2 @100
+< ack 1 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> new 2 sell market 5
+< ack 2 sell qty=5 px=0 leaves=5
+< fill 1 buy qty=2 px=100 contra=2 leaves=0
+< fill 2 sell qty=2 px=100 contra=1 leaves=3 aggr
+< trade 2 sell qty=2 px=100 contra=1 leaves=3
+< level buy px=100 qty=0 removed
+< canceled 2 sell qty=3 px=0 reason=IOC_REMAINDER
+= live 0
+= hash 0xbb25272a3876a1fd

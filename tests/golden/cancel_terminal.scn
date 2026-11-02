@@ -1,0 +1,21 @@
+# A filled order is terminal; so is an order canceled twice.
+> new 1 sell gtc 1 @100
+< ack 1 sell qty=1 px=100 leaves=1
+< level sell px=100 qty=1
+> new 2 buy gtc 1 @100
+< ack 2 buy qty=1 px=100 leaves=1
+< fill 1 sell qty=1 px=100 contra=2 leaves=0
+< fill 2 buy qty=1 px=100 contra=1 leaves=0 aggr
+< trade 2 buy qty=1 px=100 contra=1 leaves=0
+< level sell px=100 qty=0 removed
+> cancel 1
+< cancel_reject 1 reason=UNKNOWN_ID
+> new 3 buy gtc 1 @100
+< ack 3 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> cancel 3
+< canceled 3 buy qty=1 px=100 reason=USER
+< level buy px=100 qty=0 removed
+> cancel 3
+< cancel_reject 3 reason=UNKNOWN_ID
+= hash 0x87c2c281cb9bd398

@@ -130,7 +130,11 @@ jobs:
       - *cache
       - run: cmake --preset gcc-release
       - run: cmake --build --preset gcc-release --target llme-diff
-      - run: ~/build/low-latency-matching-engine/gcc-release/src/tools/llme-diff --help
+      - name: 1M balanced + 1M adversarial
+        run: |
+          diff=~/build/low-latency-matching-engine/gcc-release/src/tools/llme-diff
+          $diff --profile configs/workloads/balanced.toml --ops 1000000 --seed 1 --engines ref,ref
+          $diff --profile configs/workloads/adversarial.toml --ops 1000000 --seed 2 --engines ref,ref
 
   bench-smoke:
     runs-on: ubuntu-24.04

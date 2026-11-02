@@ -1,0 +1,7 @@
+# A buy with nothing to match rests and publishes its level.
+> new 1 buy gtc 10 @100
+< ack 1 buy qty=10 px=100 leaves=10
+< level buy px=100 qty=10
+= depth buy px=100 qty=10 orders=1
+= live 1
+= hash 0x9cc0e3d729ee0b25

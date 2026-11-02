@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 namespace llme {
 
@@ -66,6 +67,30 @@ struct EngineConfig {
   std::uint32_t max_orders = 1048576;
   double id_map_load = 0.5;
   StpMode stp = StpMode::Off;
+};
+
+struct SnapshotOrder {
+  OrderId id = 0;
+  Qty leaves = 0;
+  std::uint32_t trader_id = 0;
+
+  friend bool operator==(const SnapshotOrder&, const SnapshotOrder&) = default;
+};
+
+struct SnapshotLevel {
+  Price price = 0;
+  std::uint64_t qty = 0;
+  std::vector<SnapshotOrder> orders;  // queue order, oldest first
+
+  friend bool operator==(const SnapshotLevel&, const SnapshotLevel&) = default;
+};
+
+// Full book state for tests and the differential harness; each side is best price first.
+struct BookSnapshot {
+  std::vector<SnapshotLevel> bids;
+  std::vector<SnapshotLevel> asks;
+
+  friend bool operator==(const BookSnapshot&, const BookSnapshot&) = default;
 };
 
 }  // namespace llme

@@ -1,0 +1,13 @@
+# Canceling one order keeps the level with the other.
+> new 1 buy gtc 2 @100
+< ack 1 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> new 2 buy gtc 3 @100
+< ack 2 buy qty=3 px=100 leaves=3
+< level buy px=100 qty=5
+> cancel 1
+< canceled 1 buy qty=2 px=100 reason=USER
+< level buy px=100 qty=3
+= depth buy px=100 qty=3 orders=1
+= live 1
+= hash 0x5ff60de16c8d2068

@@ -1,0 +1,10 @@
+# A duplicate live ID on a full pool is DUPLICATE_ID, because that check runs first.
+@config max_orders=1
+> new 1 buy gtc 1 @100
+< ack 1 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> new 1 buy gtc 1 @99
+< reject 1 side=0 reason=DUPLICATE_ID
+> new 2 buy gtc 1 @99
+< reject 2 side=0 reason=POOL_FULL
+= hash 0x617e16c1f769a06e

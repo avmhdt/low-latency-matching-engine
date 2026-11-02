@@ -1,0 +1,13 @@
+# Side must be 0 or 1 on NEW; CANCEL and MODIFY ignore it.
+> raw type=1 side=2 ord=0 tif=0 qty=1 id=1 px=100
+< reject 1 side=2 reason=INVALID_SIDE
+> new 2 buy gtc 2 @100
+< ack 2 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> raw type=3 side=9 ord=0 tif=0 qty=1 id=2 px=100
+< modified 2 buy qty=1 px=100 leaves=1
+< level buy px=100 qty=1
+> raw type=2 side=9 ord=0 tif=0 qty=0 id=2 px=0
+< canceled 2 buy qty=1 px=100 reason=USER
+< level buy px=100 qty=0 removed
+= hash 0x5095568cdbb98371

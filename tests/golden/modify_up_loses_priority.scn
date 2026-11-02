@@ -1,0 +1,17 @@
+# A size increase moves the order behind its level.
+> new 1 sell gtc 2 @100
+< ack 1 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=2
+> new 2 sell gtc 2 @100
+< ack 2 sell qty=2 px=100 leaves=2
+< level sell px=100 qty=4
+> modify 1 qty=3 px=100
+< modified 1 sell qty=3 px=100 leaves=3 lost
+< level sell px=100 qty=5
+> new 3 buy ioc 1 @100
+< ack 3 buy qty=1 px=100 leaves=1
+< fill 2 sell qty=1 px=100 contra=3 leaves=1
+< fill 3 buy qty=1 px=100 contra=2 leaves=0 aggr
+< trade 3 buy qty=1 px=100 contra=2 leaves=0
+< level sell px=100 qty=4
+= hash 0x8a5f5b773b9e8128

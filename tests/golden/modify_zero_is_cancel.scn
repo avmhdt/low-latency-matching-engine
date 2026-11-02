@@ -1,0 +1,9 @@
+# New qty 0 is a cancel, even with an out-of-band price.
+> new 1 buy gtc 2 @100
+< ack 1 buy qty=2 px=100 leaves=2
+< level buy px=100 qty=2
+> modify 1 qty=0 px=999999
+< canceled 1 buy qty=2 px=100 reason=USER
+< level buy px=100 qty=0 removed
+= live 0
+= hash 0x787a824cd1d2ec58
