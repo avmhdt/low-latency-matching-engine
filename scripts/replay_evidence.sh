@@ -33,8 +33,13 @@ for messages in "$lobster"/*_message_*.csv; do
     --out "$mlog/lobster_$symbol.mlog"
 done
 
+# One decode covers the D-05 top 50 and every book_l3 symbol, because each decode reads the
+# whole day twice.
 if [ "${1:-}" != "--skip-decode" ]; then
-  "$tools/llme-itch-decode" --in "$itch_file" --top 50 --out-dir "$mlog" --date "$date"
+  watchlist=$(find "$book_l3"/venue=XNAS -mindepth 2 -maxdepth 2 -type d -name "date=$date" |
+    sed 's|.*/symbol=\([^/]*\)/.*|\1|' | sort | paste -sd, -)
+  "$tools/llme-itch-decode" --in "$itch_file" --top 50 --symbols "$watchlist" --out-dir "$mlog" \
+    --date "$date"
 fi
 
 # D-04: both routes must give the same records. The 64-byte headers differ only in `source`.
@@ -49,10 +54,8 @@ for partition in "$book_l3"/venue=XNAS/symbol=*/date="$date"; do
     --date "$date" --out "$log" --llme-run "$tools/llme-run" >/dev/null
   decoded="$mlog/itch_${symbol}_$date.mlog"
   if [ ! -f "$decoded" ]; then
-    "$tools/llme-itch-decode" --in "$itch_file" --symbols "$symbol" --out-dir "$mlog" --date "$date" \
-      >/dev/null
-  fi
-  if cmp -s -i 64 "$log" "$decoded"; then
+    missing=$((missing + 1))
+  elif cmp -s -i 64 "$log" "$decoded"; then
     agree=$((agree + 1))
   else
     differ=$((differ + 1))

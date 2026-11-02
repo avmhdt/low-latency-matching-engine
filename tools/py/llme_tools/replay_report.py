@@ -69,6 +69,8 @@ def main(
         groups[kind].append(summarize(meta, diff))
 
     itch = sorted(groups["itch"], key=lambda r: -r.get("order_messages", 0))
+    for rank, row in enumerate(itch, start=1):
+        row["rank"] = rank
     for row in itch + groups["lobster"]:
         row["dropped_fraction"] = dropped_fraction(row)
     logs = groups["itch"] + groups["book_l3"] + groups["lobster"]
