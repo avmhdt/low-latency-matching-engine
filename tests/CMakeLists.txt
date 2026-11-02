@@ -4,7 +4,7 @@ include(GoogleTest)
 function(llme_add_test name label)
   add_executable(${name} ${ARGN})
   target_link_libraries(${name} PRIVATE llme_io llme_core llme_pipeline llme_reference
-                                        llme_testing llme_workload GTest::gtest_main)
+                                        llme_replay llme_testing llme_workload GTest::gtest_main)
   llme_target_defaults(${name})
   gtest_discover_tests(${name} DISCOVERY_MODE PRE_TEST PROPERTIES LABELS ${label}
                        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}" TEST_LIST ${name}_cases)
@@ -21,7 +21,10 @@ llme_add_test(llme_unit_tests unit
   unit/id_map_test.cpp
   unit/price_ladder_test.cpp
   unit/engine_test.cpp
-  unit/spsc_ring_test.cpp)
+  unit/spsc_ring_test.cpp
+  unit/replay_test.cpp
+  unit/itch_decoder_test.cpp
+  unit/lobster_adapter_test.cpp)
 
 llme_add_test(llme_golden_tests golden
   golden/golden_test.cpp
@@ -59,5 +62,21 @@ if(LLME_BUILD_TOOLS)
                    $<TARGET_FILE:llme-gen> $<TARGET_FILE:llme-run> $<TARGET_FILE:llme-diff>
                    "${CMAKE_CURRENT_BINARY_DIR}")
   set_tests_properties(Cli.GenRunRoundTrip PROPERTIES LABELS integration
+                       WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+
+  add_test(NAME Cli.Converters
+           COMMAND sh "${CMAKE_CURRENT_SOURCE_DIR}/integration/cli_converters.sh"
+                   $<TARGET_FILE:llme-convert-lobster> $<TARGET_FILE:llme-itch-decode>
+                   $<TARGET_FILE:llme-run> $<TARGET_FILE:llme-diff>
+                   "${CMAKE_CURRENT_BINARY_DIR}")
+  set_tests_properties(Cli.Converters PROPERTIES LABELS integration
+                       WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+
+  # Real data, so it never runs in CI: AC-W-10 on this machine.
+  add_test(NAME LocalData.RealFlow
+           COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/integration/local_data.sh"
+                   $<TARGET_FILE:llme-convert-lobster> $<TARGET_FILE:llme-run>
+                   $<TARGET_FILE:llme-diff> "${CMAKE_CURRENT_BINARY_DIR}")
+  set_tests_properties(LocalData.RealFlow PROPERTIES LABELS local-data
                        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
 endif()

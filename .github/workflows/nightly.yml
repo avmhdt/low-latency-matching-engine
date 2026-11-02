@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  LLME_APT: ninja-build g++-13 clang-18 llvm-18 libclang-rt-18-dev
+  LLME_APT: ninja-build g++-13 clang-18 llvm-18 libclang-rt-18-dev zlib1g-dev
 
 jobs:
   differential:
@@ -53,6 +53,8 @@ jobs:
       - run: cmake --build --preset fuzz
       - run: scripts/fuzz.sh fuzz_mlog_reader --seconds 600
       - run: scripts/fuzz.sh fuzz_engine_diff --seconds 600
+      - run: scripts/fuzz.sh fuzz_lobster_parser --seconds 600
+      - run: scripts/fuzz.sh fuzz_itch_decoder --seconds 600
       - uses: actions/upload-artifact@v4
         if: always()
         with:

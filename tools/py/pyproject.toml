@@ -18,6 +18,7 @@ llme-plots = "llme_tools.plots:app"
 [dependency-groups]
 dev = [
     "mypy>=1.11",
+    "pytest>=8.0",
     "ruff>=0.6",
 ]
 

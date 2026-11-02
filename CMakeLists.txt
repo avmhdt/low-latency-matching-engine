@@ -48,6 +48,13 @@ target_include_directories(llme_testing PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/
 target_link_libraries(llme_testing PUBLIC llme_headers PRIVATE llme_core llme_reference)
 llme_target_defaults(llme_testing)
 
+find_package(ZLIB REQUIRED)
+add_library(llme_replay STATIC
+  src/workload/replay.cpp src/workload/itch_decoder.cpp src/workload/lobster_adapter.cpp)
+target_include_directories(llme_replay PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/workload")
+target_link_libraries(llme_replay PUBLIC llme_headers llme_io PRIVATE llme_core ZLIB::ZLIB)
+llme_target_defaults(llme_replay)
+
 if(LLME_BUILD_TOOLS OR LLME_BUILD_TESTS)
   add_library(llme_workload STATIC src/workload/generator.cpp src/workload/profile.cpp)
   target_include_directories(llme_workload PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/workload")
