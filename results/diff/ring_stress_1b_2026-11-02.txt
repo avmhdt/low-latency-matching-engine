@@ -1,0 +1,16 @@
+Running main() from /home/ze/build/low-latency-matching-engine/release/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RingStress.*
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from RingStress
+[ RUN      ] RingStress.OrderedNoLoss
+[       OK ] RingStress.OrderedNoLoss (4884 ms)
+[ RUN      ] RingStress.OrderedNoLossThroughPopBatch
+[       OK ] RingStress.OrderedNoLossThroughPopBatch (425 ms)
+[ RUN      ] RingStress.OrderedNoLossOnATinyRing
+[       OK ] RingStress.OrderedNoLossOnATinyRing (4244 ms)
+[----------] 3 tests from RingStress (9554 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (9555 ms total)
+[  PASSED  ] 3 tests.

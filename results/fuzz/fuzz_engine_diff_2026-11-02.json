@@ -1,0 +1,15 @@
+{
+  "target": "fuzz_engine_diff",
+  "seconds": 14400,
+  "jobs": 1,
+  "execs": 25733768,
+  "execs_per_sec": 1786,
+  "corpus_size": 888,
+  "coverage": { "cov": 620, "features": 3684 },
+  "crashes": 0,
+  "leaks": 0,
+  "timeouts": 0,
+  "ooms": 0,
+  "exit_status": 0,
+  "git_sha": "ec3220f2545bb9b236e289a1921a8f36bab1ce28"
+}

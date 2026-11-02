@@ -1,0 +1,15 @@
+{
+  "target": "fuzz_mlog_reader",
+  "seconds": 14400,
+  "jobs": 1,
+  "execs": 5007557084,
+  "execs_per_sec": 347722,
+  "corpus_size": 37,
+  "coverage": { "cov": 53, "features": 78 },
+  "crashes": 0,
+  "leaks": 0,
+  "timeouts": 0,
+  "ooms": 0,
+  "exit_status": 0,
+  "git_sha": "ec3220f2545bb9b236e289a1921a8f36bab1ce28"
+}

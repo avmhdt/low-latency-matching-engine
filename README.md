@@ -14,12 +14,12 @@
 
 ## Requirements
 
-- [ ] Price–time priority with limit, market, IOC, FOK, cancel and modify (priority lost on price change or size increase).
-- [ ] Hot path built on price-level arrays or intrusive lists, an order-ID hash map and preallocated pools, with zero heap allocation.
-- [ ] A single-threaded matching core fed by lock-free SPSC ring buffers, with deterministic replay from an input log.
-- [ ] A simple, obviously correct reference implementation for differential testing.
+- [x] Price–time priority with limit, market, IOC, FOK, cancel and modify (priority lost on price change or size increase). FR-02 to FR-10, AC-W-02.
+- [x] Hot path built on price-level arrays or intrusive lists, an order-ID hash map and preallocated pools, with zero heap allocation. FR-11, FR-12, AC-W-06.
+- [x] A single-threaded matching core fed by lock-free SPSC ring buffers, with deterministic replay from an input log. FR-13 to FR-15, AC-W-09.
+- [x] A simple, obviously correct reference implementation for differential testing. FR-16.
 - [ ] Benchmarks with Google Benchmark and HDR histograms; profiling with perf or VTune.
-- [ ] A clean build: CMake, CI, ASan, UBSan, TSan and clang-tidy.
+- [x] A clean build: CMake, CI, ASan, UBSan, TSan and clang-tidy. FR-33, AC-W-03, AC-W-07.
 
 ## Data
 
@@ -35,9 +35,9 @@ Raw and licensed data live in `data/`, which is git-ignored. Only download scrip
 
 ### Works (correct and reproducible)
 
-- [ ] Differential testing: 100M+ random operations produce fills identical to the reference engine.
-- [ ] All sanitizers are clean, and hours of fuzzing find nothing.
-- [ ] Deterministic output: the same input log always gives the same output hash.
+- [x] Differential testing: 100M+ random operations produce fills identical to the reference engine. AC-W-01 for D2, `results/diff/campaign_2026-11-02.json`.
+- [ ] All sanitizers are clean, and hours of fuzzing find nothing. Sanitizers: AC-W-03 met. Fuzzing: AC-W-04 met for two of four targets, the other two come with M5.
+- [ ] Deterministic output: the same input log always gives the same output hash. AC-W-05 met for D2 and the reference, `results/determinism.csv`; D1, D3 and an ITCH log come with M5 and M6.
 
 ### Impresses hirers
 
