@@ -1,0 +1,3330 @@
+{
+ "logs": 133,
+ "messages": 104298927,
+ "mismatches": 0,
+ "itch_routes": {
+  "agree": 50,
+  "differ": 0,
+  "missing": 0
+ },
+ "itch": [
+  {
+   "symbol": "QQQ",
+   "msgs": 3466348,
+   "mapped": {
+    "cancel": 1678640,
+    "ioc": 53825,
+    "modify": 2247,
+    "new": 1731636
+   },
+   "dropped": {
+    "price": 2,
+    "qty": 0,
+    "unknown_id": 2951
+   },
+   "skipped": {
+    "cross": 27,
+    "halt": 1,
+    "hidden": 3844,
+    "session": 161197
+   },
+   "max_live_orders": 7591,
+   "price_levels": 1777271,
+   "crossed_add": 738,
+   "exec_contra_match_rate": 0.9362935438922434,
+   "exec_unfilled": 77,
+   "rejects": 0,
+   "cancel_rejects": 1139,
+   "modify_rejects": 4,
+   "output_hash": "0x8855571753679408",
+   "fills": 112244,
+   "mismatches": 0,
+   "elapsed_s": 0.394579611,
+   "order_messages": 3287776,
+   "rank": 1,
+   "dropped_fraction": 0.0008511801080390546
+  },
+  {
+   "symbol": "SPY",
+   "msgs": 3199765,
+   "mapped": {
+    "cancel": 1474286,
+    "ioc": 135084,
+    "modify": 4286,
+    "new": 1586109
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 307
+   },
+   "skipped": {
+    "cross": 48,
+    "halt": 1,
+    "hidden": 9041,
+    "session": 107673
+   },
+   "max_live_orders": 2786,
+   "price_levels": 2955701,
+   "crossed_add": 1791,
+   "exec_contra_match_rate": 0.9114921086138995,
+   "exec_unfilled": 291,
+   "rejects": 0,
+   "cancel_rejects": 2642,
+   "modify_rejects": 10,
+   "output_hash": "0xed4d5dad3cfc44d3",
+   "fills": 286082,
+   "mismatches": 0,
+   "elapsed_s": 0.333899069,
+   "order_messages": 2948283,
+   "rank": 2,
+   "dropped_fraction": 9.593534145481727e-05
+  },
+  {
+   "symbol": "IWM",
+   "msgs": 2011997,
+   "mapped": {
+    "cancel": 979464,
+    "ioc": 26494,
+    "modify": 3233,
+    "new": 1002806
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 139
+   },
+   "skipped": {
+    "cross": 18,
+    "halt": 1,
+    "hidden": 1334,
+    "session": 66290
+   },
+   "max_live_orders": 488,
+   "price_levels": 19392,
+   "crossed_add": 358,
+   "exec_contra_match_rate": 0.9463274703706499,
+   "exec_unfilled": 41,
+   "rejects": 0,
+   "cancel_rejects": 538,
+   "modify_rejects": 7,
+   "output_hash": "0xa50f251e470b12d5",
+   "fills": 54612,
+   "mismatches": 0,
+   "elapsed_s": 0.195024095,
+   "order_messages": 1901870,
+   "rank": 3,
+   "dropped_fraction": 6.908081759881041e-05
+  },
+  {
+   "symbol": "AMD",
+   "msgs": 1932436,
+   "mapped": {
+    "cancel": 861260,
+    "ioc": 98705,
+    "modify": 20296,
+    "new": 952175
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 7312
+   },
+   "skipped": {
+    "cross": 13,
+    "halt": 1,
+    "hidden": 16236,
+    "session": 36992
+   },
+   "max_live_orders": 13955,
+   "price_levels": 330001,
+   "crossed_add": 877,
+   "exec_contra_match_rate": 0.8675649663137632,
+   "exec_unfilled": 224,
+   "rejects": 0,
+   "cancel_rejects": 1300,
+   "modify_rejects": 30,
+   "output_hash": "0x2fd92c2b753ae8c2",
+   "fills": 218494,
+   "mismatches": 0,
+   "elapsed_s": 0.371083836,
+   "order_messages": 1825845,
+   "rank": 4,
+   "dropped_fraction": 0.0037700754066634394
+  },
+  {
+   "symbol": "GOOG",
+   "msgs": 1653283,
+   "mapped": {
+    "cancel": 816111,
+    "ioc": 7747,
+    "modify": 46,
+    "new": 829379
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 37339
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 2686,
+    "session": 42493
+   },
+   "max_live_orders": 7673,
+   "price_levels": 1266101,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9985800955208468,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x6486fe726b9a5e69",
+   "fills": 15510,
+   "mismatches": 0,
+   "elapsed_s": 0.22198708,
+   "order_messages": 1629390,
+   "rank": 5,
+   "dropped_fraction": 0.02208653259774651
+  },
+  {
+   "symbol": "AAPL",
+   "msgs": 1694134,
+   "mapped": {
+    "cancel": 747600,
+    "ioc": 85573,
+    "modify": 5871,
+    "new": 855090
+   },
+   "dropped": {
+    "price": 8,
+    "qty": 0,
+    "unknown_id": 7899
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 11703,
+    "session": 70072
+   },
+   "max_live_orders": 42103,
+   "price_levels": 1100111,
+   "crossed_add": 69,
+   "exec_contra_match_rate": 0.9693594942329941,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 93,
+   "modify_rejects": 0,
+   "output_hash": "0xee577f08773da2b9",
+   "fills": 175272,
+   "mismatches": 0,
+   "elapsed_s": 0.492872688,
+   "order_messages": 1586525,
+   "rank": 6,
+   "dropped_fraction": 0.004645599019060058
+  },
+  {
+   "symbol": "GOOGL",
+   "msgs": 1631037,
+   "mapped": {
+    "cancel": 802691,
+    "ioc": 9508,
+    "modify": 162,
+    "new": 818676
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 26415
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 5433,
+    "session": 64627
+   },
+   "max_live_orders": 8710,
+   "price_levels": 1210001,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9967395877156079,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 1,
+   "modify_rejects": 0,
+   "output_hash": "0x30510c65e63db3d4",
+   "fills": 19062,
+   "mismatches": 0,
+   "elapsed_s": 0.24418659,
+   "order_messages": 1570134,
+   "rank": 7,
+   "dropped_fraction": 0.015937706830902596
+  },
+  {
+   "symbol": "MSFT",
+   "msgs": 1666424,
+   "mapped": {
+    "cancel": 762868,
+    "ioc": 63205,
+    "modify": 4943,
+    "new": 835408
+   },
+   "dropped": {
+    "price": 3,
+    "qty": 0,
+    "unknown_id": 8323
+   },
+   "skipped": {
+    "cross": 12,
+    "halt": 1,
+    "hidden": 10559,
+    "session": 73071
+   },
+   "max_live_orders": 21949,
+   "price_levels": 1164461,
+   "crossed_add": 444,
+   "exec_contra_match_rate": 0.9354323233921367,
+   "exec_unfilled": 82,
+   "rejects": 0,
+   "cancel_rejects": 664,
+   "modify_rejects": 3,
+   "output_hash": "0x008d7f09ea1c6b53",
+   "fills": 132036,
+   "mismatches": 0,
+   "elapsed_s": 0.301669345,
+   "order_messages": 1569454,
+   "rank": 8,
+   "dropped_fraction": 0.004971488281833109
+  },
+  {
+   "symbol": "SMH",
+   "msgs": 1566974,
+   "mapped": {
+    "cancel": 766496,
+    "ioc": 16228,
+    "modify": 3872,
+    "new": 780378
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2052
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 523,
+    "session": 362
+   },
+   "max_live_orders": 384,
+   "price_levels": 4803,
+   "crossed_add": 77,
+   "exec_contra_match_rate": 0.9834237121025389,
+   "exec_unfilled": 10,
+   "rejects": 0,
+   "cancel_rejects": 102,
+   "modify_rejects": 0,
+   "output_hash": "0xe8b3259e10fe8109",
+   "fills": 32696,
+   "mismatches": 0,
+   "elapsed_s": 0.144228198,
+   "order_messages": 1480770,
+   "rank": 9,
+   "dropped_fraction": 0.001307817716213753
+  },
+  {
+   "symbol": "AABA",
+   "msgs": 1446132,
+   "mapped": {
+    "cancel": 695462,
+    "ioc": 20118,
+    "modify": 20392,
+    "new": 710160
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1467
+   },
+   "skipped": {
+    "cross": 15,
+    "halt": 1,
+    "hidden": 2007,
+    "session": 6695
+   },
+   "max_live_orders": 889,
+   "price_levels": 22001,
+   "crossed_add": 53,
+   "exec_contra_match_rate": 0.981807336713391,
+   "exec_unfilled": 4,
+   "rejects": 0,
+   "cancel_rejects": 74,
+   "modify_rejects": 0,
+   "output_hash": "0x1b9de0d1a29cdcaa",
+   "fills": 40712,
+   "mismatches": 0,
+   "elapsed_s": 0.153786924,
+   "order_messages": 1410020,
+   "rank": 10,
+   "dropped_fraction": 0.0010134021921816747
+  },
+  {
+   "symbol": "NVDA",
+   "msgs": 1376114,
+   "mapped": {
+    "cancel": 620919,
+    "ioc": 60845,
+    "modify": 7220,
+    "new": 687130
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 11986
+   },
+   "skipped": {
+    "cross": 15,
+    "halt": 1,
+    "hidden": 15250,
+    "session": 22417
+   },
+   "max_live_orders": 18036,
+   "price_levels": 1441111,
+   "crossed_add": 34,
+   "exec_contra_match_rate": 0.9858164187690032,
+   "exec_unfilled": 8,
+   "rejects": 0,
+   "cancel_rejects": 35,
+   "modify_rejects": 1,
+   "output_hash": "0xa447dad9631c74da",
+   "fills": 123056,
+   "mismatches": 0,
+   "elapsed_s": 0.222226546,
+   "order_messages": 1287841,
+   "rank": 11,
+   "dropped_fraction": 0.008635538768432557
+  },
+  {
+   "symbol": "EWZ",
+   "msgs": 1325404,
+   "mapped": {
+    "cancel": 643852,
+    "ioc": 14753,
+    "modify": 12253,
+    "new": 654546
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 5341
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 2324,
+    "session": 56566
+   },
+   "max_live_orders": 560,
+   "price_levels": 6138,
+   "crossed_add": 200,
+   "exec_contra_match_rate": 0.9292347319189317,
+   "exec_unfilled": 15,
+   "rejects": 0,
+   "cancel_rejects": 350,
+   "modify_rejects": 1,
+   "output_hash": "0x3c611ef3887a8c63",
+   "fills": 31180,
+   "mismatches": 0,
+   "elapsed_s": 0.135663483,
+   "order_messages": 1252345,
+   "rank": 12,
+   "dropped_fraction": 0.004013541287023434
+  },
+  {
+   "symbol": "DIA",
+   "msgs": 1317627,
+   "mapped": {
+    "cancel": 644795,
+    "ioc": 14086,
+    "modify": 3115,
+    "new": 655631
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 936
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 1393,
+    "session": 40366
+   },
+   "max_live_orders": 654,
+   "price_levels": 24615,
+   "crossed_add": 33,
+   "exec_contra_match_rate": 0.991125940650291,
+   "exec_unfilled": 6,
+   "rejects": 0,
+   "cancel_rejects": 49,
+   "modify_rejects": 0,
+   "output_hash": "0x09fdb8f5cebe1b8f",
+   "fills": 28282,
+   "mismatches": 0,
+   "elapsed_s": 0.128116137,
+   "order_messages": 1213937,
+   "rank": 13,
+   "dropped_fraction": 0.0007098636925198114
+  },
+  {
+   "symbol": "MU",
+   "msgs": 1230615,
+   "mapped": {
+    "cancel": 575744,
+    "ioc": 34016,
+    "modify": 5893,
+    "new": 614962
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1558
+   },
+   "skipped": {
+    "cross": 14,
+    "halt": 1,
+    "hidden": 3931,
+    "session": 13258
+   },
+   "max_live_orders": 10731,
+   "price_levels": 220001,
+   "crossed_add": 263,
+   "exec_contra_match_rate": 0.946054797742239,
+   "exec_unfilled": 34,
+   "rejects": 0,
+   "cancel_rejects": 371,
+   "modify_rejects": 1,
+   "output_hash": "0x63eb7d0ea2d54b76",
+   "fills": 70088,
+   "mismatches": 0,
+   "elapsed_s": 0.174780032,
+   "order_messages": 1163058,
+   "rank": 14,
+   "dropped_fraction": 0.0012644328353242605
+  },
+  {
+   "symbol": "FB",
+   "msgs": 1252005,
+   "mapped": {
+    "cancel": 563093,
+    "ioc": 55687,
+    "modify": 7422,
+    "new": 625803
+   },
+   "dropped": {
+    "price": 4,
+    "qty": 0,
+    "unknown_id": 7504
+   },
+   "skipped": {
+    "cross": 13,
+    "halt": 1,
+    "hidden": 21060,
+    "session": 116732
+   },
+   "max_live_orders": 20112,
+   "price_levels": 110001,
+   "crossed_add": 57,
+   "exec_contra_match_rate": 0.9868191858063821,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 80,
+   "modify_rejects": 0,
+   "output_hash": "0x2daa6e05c3d8a169",
+   "fills": 112396,
+   "mismatches": 0,
+   "elapsed_s": 0.238590011,
+   "order_messages": 1159794,
+   "rank": 15,
+   "dropped_fraction": 0.005961034145737281
+  },
+  {
+   "symbol": "INTC",
+   "msgs": 1208820,
+   "mapped": {
+    "cancel": 569991,
+    "ioc": 28097,
+    "modify": 6229,
+    "new": 604503
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3964
+   },
+   "skipped": {
+    "cross": 7,
+    "halt": 1,
+    "hidden": 2670,
+    "session": 13094
+   },
+   "max_live_orders": 11668,
+   "price_levels": 56046,
+   "crossed_add": 197,
+   "exec_contra_match_rate": 0.933231305833363,
+   "exec_unfilled": 58,
+   "rejects": 0,
+   "cancel_rejects": 299,
+   "modify_rejects": 1,
+   "output_hash": "0x8a882907c34a6b77",
+   "fills": 58482,
+   "mismatches": 0,
+   "elapsed_s": 0.183396067,
+   "order_messages": 1149640,
+   "rank": 16,
+   "dropped_fraction": 0.00326851277721342
+  },
+  {
+   "symbol": "XLK",
+   "msgs": 1175059,
+   "mapped": {
+    "cancel": 568602,
+    "ioc": 17685,
+    "modify": 5976,
+    "new": 582796
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 6326
+   },
+   "skipped": {
+    "cross": 11,
+    "halt": 1,
+    "hidden": 618,
+    "session": 1882
+   },
+   "max_live_orders": 459,
+   "price_levels": 3212,
+   "crossed_add": 147,
+   "exec_contra_match_rate": 0.9527283008199039,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 205,
+   "modify_rejects": 2,
+   "output_hash": "0x420c6c32780243f4",
+   "fills": 36328,
+   "mismatches": 0,
+   "elapsed_s": 0.11115013,
+   "order_messages": 1123428,
+   "rank": 17,
+   "dropped_fraction": 0.005354731945978661
+  },
+  {
+   "symbol": "VXXB",
+   "msgs": 1135697,
+   "mapped": {
+    "cancel": 510895,
+    "ioc": 21005,
+    "modify": 76342,
+    "new": 527455
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 8653
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 947,
+    "session": 35641
+   },
+   "max_live_orders": 354,
+   "price_levels": 5822,
+   "crossed_add": 274,
+   "exec_contra_match_rate": 0.924732206617472,
+   "exec_unfilled": 28,
+   "rejects": 0,
+   "cancel_rejects": 417,
+   "modify_rejects": 7,
+   "output_hash": "0x5a42df510a51b49f",
+   "fills": 44072,
+   "mismatches": 0,
+   "elapsed_s": 0.100122004,
+   "order_messages": 1101507,
+   "rank": 18,
+   "dropped_fraction": 0.007561497793507231
+  },
+  {
+   "symbol": "XLI",
+   "msgs": 1143407,
+   "mapped": {
+    "cancel": 550443,
+    "ioc": 19363,
+    "modify": 7330,
+    "new": 566271
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 6379
+   },
+   "skipped": {
+    "cross": 27,
+    "halt": 1,
+    "hidden": 1513,
+    "session": 3328
+   },
+   "max_live_orders": 531,
+   "price_levels": 4563,
+   "crossed_add": 278,
+   "exec_contra_match_rate": 0.9221711511645923,
+   "exec_unfilled": 44,
+   "rejects": 0,
+   "cancel_rejects": 522,
+   "modify_rejects": 6,
+   "output_hash": "0xd7140f60aceb393c",
+   "fills": 40506,
+   "mismatches": 0,
+   "elapsed_s": 0.110139667,
+   "order_messages": 1097987,
+   "rank": 19,
+   "dropped_fraction": 0.005547988930113951
+  },
+  {
+   "symbol": "UVXY",
+   "msgs": 1158655,
+   "mapped": {
+    "cancel": 558826,
+    "ioc": 11259,
+    "modify": 21048,
+    "new": 567522
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 26351
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 469,
+    "session": 36246
+   },
+   "max_live_orders": 405,
+   "price_levels": 549972,
+   "crossed_add": 41,
+   "exec_contra_match_rate": 0.9859667821298517,
+   "exec_unfilled": 13,
+   "rejects": 0,
+   "cancel_rejects": 63,
+   "modify_rejects": 5,
+   "output_hash": "0xecbe933de830185f",
+   "fills": 22654,
+   "mismatches": 0,
+   "elapsed_s": 0.114867006,
+   "order_messages": 1094860,
+   "rank": 20,
+   "dropped_fraction": 0.022237018209190502
+  },
+  {
+   "symbol": "TQQQ",
+   "msgs": 1146526,
+   "mapped": {
+    "cancel": 545733,
+    "ioc": 26156,
+    "modify": 3551,
+    "new": 571086
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 8734
+   },
+   "skipped": {
+    "cross": 8,
+    "halt": 1,
+    "hidden": 825,
+    "session": 60533
+   },
+   "max_live_orders": 4811,
+   "price_levels": 22000000,
+   "crossed_add": 92,
+   "exec_contra_match_rate": 0.9829484630677474,
+   "exec_unfilled": 12,
+   "rejects": 0,
+   "cancel_rejects": 140,
+   "modify_rejects": 1,
+   "output_hash": "0x6ff4a263ab4f22fa",
+   "fills": 52866,
+   "mismatches": 0,
+   "elapsed_s": 0.129290764,
+   "order_messages": 1093688,
+   "rank": 21,
+   "dropped_fraction": 0.007561061959159013
+  },
+  {
+   "symbol": "TVIX",
+   "msgs": 1099289,
+   "mapped": {
+    "cancel": 525106,
+    "ioc": 22605,
+    "modify": 8655,
+    "new": 542923
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 15956
+   },
+   "skipped": {
+    "cross": 6,
+    "halt": 1,
+    "hidden": 1337,
+    "session": 51438
+   },
+   "max_live_orders": 3653,
+   "price_levels": 11000001,
+   "crossed_add": 46,
+   "exec_contra_match_rate": 0.9793850917938509,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 62,
+   "modify_rejects": 1,
+   "output_hash": "0x2af20ae2dd950eb9",
+   "fills": 45642,
+   "mismatches": 0,
+   "elapsed_s": 0.125935373,
+   "order_messages": 1013672,
+   "rank": 22,
+   "dropped_fraction": 0.014307170173369977
+  },
+  {
+   "symbol": "AMAT",
+   "msgs": 1004763,
+   "mapped": {
+    "cancel": 480042,
+    "ioc": 21564,
+    "modify": 1535,
+    "new": 501622
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 14634
+   },
+   "skipped": {
+    "cross": 19,
+    "halt": 1,
+    "hidden": 1897,
+    "session": 9129
+   },
+   "max_live_orders": 3712,
+   "price_levels": 1096811,
+   "crossed_add": 154,
+   "exec_contra_match_rate": 0.9449081803005008,
+   "exec_unfilled": 28,
+   "rejects": 0,
+   "cancel_rejects": 216,
+   "modify_rejects": 0,
+   "output_hash": "0x122da3049bdbf1df",
+   "fills": 44552,
+   "mismatches": 0,
+   "elapsed_s": 0.112678595,
+   "order_messages": 968288,
+   "rank": 23,
+   "dropped_fraction": 0.014355545484242154
+  },
+  {
+   "symbol": "XLV",
+   "msgs": 988560,
+   "mapped": {
+    "cancel": 477851,
+    "ioc": 16374,
+    "modify": 2645,
+    "new": 491690
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3037
+   },
+   "skipped": {
+    "cross": 36,
+    "halt": 1,
+    "hidden": 1694,
+    "session": 666
+   },
+   "max_live_orders": 583,
+   "price_levels": 5652,
+   "crossed_add": 337,
+   "exec_contra_match_rate": 0.9171247099059484,
+   "exec_unfilled": 19,
+   "rejects": 0,
+   "cancel_rejects": 557,
+   "modify_rejects": 2,
+   "output_hash": "0x7fc8b2e7c9d3b5f4",
+   "fills": 34606,
+   "mismatches": 0,
+   "elapsed_s": 0.095136343,
+   "order_messages": 951474,
+   "rank": 24,
+   "dropped_fraction": 0.003062736172053768
+  },
+  {
+   "symbol": "JPM",
+   "msgs": 923536,
+   "mapped": {
+    "cancel": 441872,
+    "ioc": 20868,
+    "modify": 2245,
+    "new": 458551
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2387
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 1184,
+    "session": 3136
+   },
+   "max_live_orders": 510,
+   "price_levels": 27494,
+   "crossed_add": 142,
+   "exec_contra_match_rate": 0.9651619704811194,
+   "exec_unfilled": 12,
+   "rejects": 0,
+   "cancel_rejects": 196,
+   "modify_rejects": 0,
+   "output_hash": "0xbecd9d60e7dbf476",
+   "fills": 42510,
+   "mismatches": 0,
+   "elapsed_s": 0.092434639,
+   "order_messages": 875375,
+   "rank": 25,
+   "dropped_fraction": 0.0025779681463793426
+  },
+  {
+   "symbol": "AMZN",
+   "msgs": 946075,
+   "mapped": {
+    "cancel": 428146,
+    "ioc": 29271,
+    "modify": 178,
+    "new": 488480
+   },
+   "dropped": {
+    "price": 4,
+    "qty": 0,
+    "unknown_id": 15617
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 18673,
+    "session": 53730
+   },
+   "max_live_orders": 38862,
+   "price_levels": 18164741,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9797752041269516,
+   "exec_unfilled": 10,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0xe71aa05a1c352937",
+   "fills": 59572,
+   "mismatches": 0,
+   "elapsed_s": 0.214637927,
+   "order_messages": 866079,
+   "rank": 26,
+   "dropped_fraction": 0.016243178717598908
+  },
+  {
+   "symbol": "XLY",
+   "msgs": 891792,
+   "mapped": {
+    "cancel": 430329,
+    "ioc": 15693,
+    "modify": 1520,
+    "new": 444250
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 7123
+   },
+   "skipped": {
+    "cross": 22,
+    "halt": 1,
+    "hidden": 520,
+    "session": 1082
+   },
+   "max_live_orders": 351,
+   "price_levels": 5644,
+   "crossed_add": 104,
+   "exec_contra_match_rate": 0.9694768368062193,
+   "exec_unfilled": 13,
+   "rejects": 0,
+   "cancel_rejects": 183,
+   "modify_rejects": 0,
+   "output_hash": "0xb0a069dc89f39333",
+   "fills": 32008,
+   "mismatches": 0,
+   "elapsed_s": 0.081999518,
+   "order_messages": 858007,
+   "rank": 27,
+   "dropped_fraction": 0.007923997263367503
+  },
+  {
+   "symbol": "TSLA",
+   "msgs": 853864,
+   "mapped": {
+    "cancel": 391140,
+    "ioc": 30423,
+    "modify": 1625,
+    "new": 430676
+   },
+   "dropped": {
+    "price": 6,
+    "qty": 0,
+    "unknown_id": 24334
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 17980,
+    "session": 63501
+   },
+   "max_live_orders": 17799,
+   "price_levels": 11000001,
+   "crossed_add": 6,
+   "exec_contra_match_rate": 0.9849456003681425,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 7,
+   "modify_rejects": 0,
+   "output_hash": "0xd610293f2eaf25dd",
+   "fills": 61616,
+   "mismatches": 0,
+   "elapsed_s": 0.138627732,
+   "order_messages": 850309,
+   "rank": 28,
+   "dropped_fraction": 0.027715656043470538
+  },
+  {
+   "symbol": "EEM",
+   "msgs": 871114,
+   "mapped": {
+    "cancel": 412117,
+    "ioc": 12796,
+    "modify": 25393,
+    "new": 420808
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 936
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 2652,
+    "session": 11258
+   },
+   "max_live_orders": 547,
+   "price_levels": 10962,
+   "crossed_add": 74,
+   "exec_contra_match_rate": 0.9069240387621131,
+   "exec_unfilled": 17,
+   "rejects": 0,
+   "cancel_rejects": 178,
+   "modify_rejects": 6,
+   "output_hash": "0x921d20a8e35d4876",
+   "fills": 26966,
+   "mismatches": 0,
+   "elapsed_s": 0.088834751,
+   "order_messages": 836938,
+   "rank": 29,
+   "dropped_fraction": 0.001073332951092254
+  },
+  {
+   "symbol": "XLE",
+   "msgs": 877798,
+   "mapped": {
+    "cancel": 418621,
+    "ioc": 18325,
+    "modify": 6955,
+    "new": 433897
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3650
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 764,
+    "session": 2126
+   },
+   "max_live_orders": 392,
+   "price_levels": 3519,
+   "crossed_add": 101,
+   "exec_contra_match_rate": 0.976643929058663,
+   "exec_unfilled": 14,
+   "rejects": 0,
+   "cancel_rejects": 126,
+   "modify_rejects": 2,
+   "output_hash": "0x1ea88f0a96d19efd",
+   "fills": 37242,
+   "mismatches": 0,
+   "elapsed_s": 0.083223812,
+   "order_messages": 828156,
+   "rank": 30,
+   "dropped_fraction": 0.004140913587642152
+  },
+  {
+   "symbol": "SBUX",
+   "msgs": 855400,
+   "mapped": {
+    "cancel": 400816,
+    "ioc": 22728,
+    "modify": 7027,
+    "new": 424829
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1343
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1462,
+    "session": 5940
+   },
+   "max_live_orders": 4725,
+   "price_levels": 54891,
+   "crossed_add": 201,
+   "exec_contra_match_rate": 0.9336061246040127,
+   "exec_unfilled": 14,
+   "rejects": 0,
+   "cancel_rejects": 338,
+   "modify_rejects": 0,
+   "output_hash": "0x83e3a484fb6aaf82",
+   "fills": 47068,
+   "mismatches": 0,
+   "elapsed_s": 0.103656549,
+   "order_messages": 806015,
+   "rank": 31,
+   "dropped_fraction": 0.0015675646022202691
+  },
+  {
+   "symbol": "CSCO",
+   "msgs": 836723,
+   "mapped": {
+    "cancel": 390352,
+    "ioc": 21887,
+    "modify": 8748,
+    "new": 415736
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 4306
+   },
+   "skipped": {
+    "cross": 31,
+    "halt": 1,
+    "hidden": 2420,
+    "session": 15520
+   },
+   "max_live_orders": 7748,
+   "price_levels": 60171,
+   "crossed_add": 72,
+   "exec_contra_match_rate": 0.9602503769360807,
+   "exec_unfilled": 23,
+   "rejects": 0,
+   "cancel_rejects": 112,
+   "modify_rejects": 0,
+   "output_hash": "0x136ae3cadecf6e16",
+   "fills": 44900,
+   "mismatches": 0,
+   "elapsed_s": 0.116314878,
+   "order_messages": 803497,
+   "rank": 32,
+   "dropped_fraction": 0.005121101506486095
+  },
+  {
+   "symbol": "CMCSA",
+   "msgs": 830780,
+   "mapped": {
+    "cancel": 392080,
+    "ioc": 22729,
+    "modify": 1307,
+    "new": 414664
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 737
+   },
+   "skipped": {
+    "cross": 8,
+    "halt": 1,
+    "hidden": 2147,
+    "session": 4086
+   },
+   "max_live_orders": 3241,
+   "price_levels": 55000,
+   "crossed_add": 181,
+   "exec_contra_match_rate": 0.9373487614941265,
+   "exec_unfilled": 36,
+   "rejects": 0,
+   "cancel_rejects": 289,
+   "modify_rejects": 0,
+   "output_hash": "0x95c02d40cf2b80c1",
+   "fills": 47148,
+   "mismatches": 0,
+   "elapsed_s": 0.089016168,
+   "order_messages": 789057,
+   "rank": 33,
+   "dropped_fraction": 0.0008863318488978578
+  },
+  {
+   "symbol": "XOP",
+   "msgs": 814677,
+   "mapped": {
+    "cancel": 390406,
+    "ioc": 8828,
+    "modify": 18032,
+    "new": 397411
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 7355
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 668,
+    "session": 1488
+   },
+   "max_live_orders": 493,
+   "price_levels": 2163,
+   "crossed_add": 86,
+   "exec_contra_match_rate": 0.9431354780244676,
+   "exec_unfilled": 4,
+   "rejects": 0,
+   "cancel_rejects": 117,
+   "modify_rejects": 1,
+   "output_hash": "0xf9bf879fdee443cd",
+   "fills": 18354,
+   "mismatches": 0,
+   "elapsed_s": 0.078160799,
+   "order_messages": 772062,
+   "rank": 34,
+   "dropped_fraction": 0.008947340249527999
+  },
+  {
+   "symbol": "C",
+   "msgs": 817325,
+   "mapped": {
+    "cancel": 393402,
+    "ioc": 14527,
+    "modify": 3576,
+    "new": 405820
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2601
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 1003,
+    "session": 879
+   },
+   "max_live_orders": 501,
+   "price_levels": 14952,
+   "crossed_add": 216,
+   "exec_contra_match_rate": 0.9365319749432092,
+   "exec_unfilled": 17,
+   "rejects": 0,
+   "cancel_rejects": 317,
+   "modify_rejects": 1,
+   "output_hash": "0xe843f78fa3f26082",
+   "fills": 30088,
+   "mismatches": 0,
+   "elapsed_s": 0.081420553,
+   "order_messages": 767915,
+   "rank": 35,
+   "dropped_fraction": 0.0031722374946031714
+  },
+  {
+   "symbol": "QCOM",
+   "msgs": 798525,
+   "mapped": {
+    "cancel": 369067,
+    "ioc": 28380,
+    "modify": 4517,
+    "new": 396561
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 714
+   },
+   "skipped": {
+    "cross": 13,
+    "halt": 1,
+    "hidden": 3483,
+    "session": 9690
+   },
+   "max_live_orders": 5032,
+   "price_levels": 70401,
+   "crossed_add": 197,
+   "exec_contra_match_rate": 0.9352713178294574,
+   "exec_unfilled": 51,
+   "rejects": 0,
+   "cancel_rejects": 312,
+   "modify_rejects": 2,
+   "output_hash": "0x59671a643b1bc10d",
+   "fills": 58978,
+   "mismatches": 0,
+   "elapsed_s": 0.089749935,
+   "order_messages": 757692,
+   "rank": 36,
+   "dropped_fraction": 0.0008933497989962952
+  },
+  {
+   "symbol": "WFC",
+   "msgs": 795738,
+   "mapped": {
+    "cancel": 382584,
+    "ioc": 14995,
+    "modify": 2483,
+    "new": 395676
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 5162
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 1171,
+    "session": 496
+   },
+   "max_live_orders": 561,
+   "price_levels": 3963,
+   "crossed_add": 179,
+   "exec_contra_match_rate": 0.9354451483827942,
+   "exec_unfilled": 11,
+   "rejects": 0,
+   "cancel_rejects": 247,
+   "modify_rejects": 0,
+   "output_hash": "0xaa9be72bdd34131c",
+   "fills": 31060,
+   "mismatches": 0,
+   "elapsed_s": 0.075826426,
+   "order_messages": 751926,
+   "rank": 37,
+   "dropped_fraction": 0.006445249094768386
+  },
+  {
+   "symbol": "IYR",
+   "msgs": 798457,
+   "mapped": {
+    "cancel": 387057,
+    "ioc": 12420,
+    "modify": 1939,
+    "new": 397041
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 431
+   },
+   "skipped": {
+    "cross": 7,
+    "halt": 1,
+    "hidden": 513,
+    "session": 815
+   },
+   "max_live_orders": 434,
+   "price_levels": 4029,
+   "crossed_add": 226,
+   "exec_contra_match_rate": 0.9296296296296296,
+   "exec_unfilled": 24,
+   "rejects": 0,
+   "cancel_rejects": 344,
+   "modify_rejects": 5,
+   "output_hash": "0x94caad66d8b47ca1",
+   "fills": 25720,
+   "mismatches": 0,
+   "elapsed_s": 0.073929958,
+   "order_messages": 750046,
+   "rank": 38,
+   "dropped_fraction": 0.0005394999048677661
+  },
+  {
+   "symbol": "CRON",
+   "msgs": 754349,
+   "mapped": {
+    "cancel": 324475,
+    "ioc": 24935,
+    "modify": 52215,
+    "new": 352724
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 15280
+   },
+   "skipped": {
+    "cross": 12,
+    "halt": 1,
+    "hidden": 1622,
+    "session": 12654
+   },
+   "max_live_orders": 6826,
+   "price_levels": 22000000,
+   "crossed_add": 126,
+   "exec_contra_match_rate": 0.970403047924604,
+   "exec_unfilled": 16,
+   "rejects": 0,
+   "cancel_rejects": 208,
+   "modify_rejects": 1,
+   "output_hash": "0xd2287322ea751347",
+   "fills": 50678,
+   "mismatches": 0,
+   "elapsed_s": 0.082335481,
+   "order_messages": 740043,
+   "rank": 39,
+   "dropped_fraction": 0.01985499525746138
+  },
+  {
+   "symbol": "BAC",
+   "msgs": 770621,
+   "mapped": {
+    "cancel": 367392,
+    "ioc": 15594,
+    "modify": 7945,
+    "new": 379690
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1406
+   },
+   "skipped": {
+    "cross": 8,
+    "halt": 1,
+    "hidden": 1497,
+    "session": 9850
+   },
+   "max_live_orders": 926,
+   "price_levels": 10992,
+   "crossed_add": 71,
+   "exec_contra_match_rate": 0.9410670770809285,
+   "exec_unfilled": 30,
+   "rejects": 0,
+   "cancel_rejects": 157,
+   "modify_rejects": 1,
+   "output_hash": "0x41b3a183ce25dc31",
+   "fills": 32526,
+   "mismatches": 0,
+   "elapsed_s": 0.083047157,
+   "order_messages": 740012,
+   "rank": 40,
+   "dropped_fraction": 0.0018211798292028646
+  },
+  {
+   "symbol": "NUGT",
+   "msgs": 765208,
+   "mapped": {
+    "cancel": 362094,
+    "ioc": 11509,
+    "modify": 20251,
+    "new": 371354
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 9252
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 375,
+    "session": 2618
+   },
+   "max_live_orders": 580,
+   "price_levels": 10652,
+   "crossed_add": 213,
+   "exec_contra_match_rate": 0.9485619949604657,
+   "exec_unfilled": 16,
+   "rejects": 0,
+   "cancel_rejects": 240,
+   "modify_rejects": 0,
+   "output_hash": "0x0f37b970cf1db818",
+   "fills": 23690,
+   "mismatches": 0,
+   "elapsed_s": 0.071571288,
+   "order_messages": 735842,
+   "rank": 41,
+   "dropped_fraction": 0.011946388451308009
+  },
+  {
+   "symbol": "MS",
+   "msgs": 761241,
+   "mapped": {
+    "cancel": 366434,
+    "ioc": 14690,
+    "modify": 1828,
+    "new": 378289
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 5559
+   },
+   "skipped": {
+    "cross": 12,
+    "halt": 1,
+    "hidden": 938,
+    "session": 12889
+   },
+   "max_live_orders": 606,
+   "price_levels": 6423,
+   "crossed_add": 245,
+   "exec_contra_match_rate": 0.9040163376446563,
+   "exec_unfilled": 19,
+   "rejects": 0,
+   "cancel_rejects": 405,
+   "modify_rejects": 1,
+   "output_hash": "0xa85b693e8e2618ee",
+   "fills": 30982,
+   "mismatches": 0,
+   "elapsed_s": 0.074923466,
+   "order_messages": 730399,
+   "rank": 42,
+   "dropped_fraction": 0.00724960876369327
+  },
+  {
+   "symbol": "XLB",
+   "msgs": 740107,
+   "mapped": {
+    "cancel": 357898,
+    "ioc": 9968,
+    "modify": 5740,
+    "new": 366501
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 941
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 922,
+    "session": 971
+   },
+   "max_live_orders": 434,
+   "price_levels": 2651,
+   "crossed_add": 91,
+   "exec_contra_match_rate": 0.9523475120385233,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 166,
+   "modify_rejects": 1,
+   "output_hash": "0x5a9600c6cb2b02a3",
+   "fills": 20474,
+   "mismatches": 0,
+   "elapsed_s": 0.071712284,
+   "order_messages": 697149,
+   "rank": 43,
+   "dropped_fraction": 0.001269823277304574
+  },
+  {
+   "symbol": "NFLX",
+   "msgs": 736114,
+   "mapped": {
+    "cancel": 341380,
+    "ioc": 21705,
+    "modify": 1585,
+    "new": 371444
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 5667
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 8154,
+    "session": 15975
+   },
+   "max_live_orders": 13792,
+   "price_levels": 3838891,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9911080396222068,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x622aef6a82037fe4",
+   "fills": 43740,
+   "mismatches": 0,
+   "elapsed_s": 0.116047619,
+   "order_messages": 688527,
+   "rank": 44,
+   "dropped_fraction": 0.007639721157592335
+  },
+  {
+   "symbol": "VALE",
+   "msgs": 719449,
+   "mapped": {
+    "cancel": 325814,
+    "ioc": 21011,
+    "modify": 29198,
+    "new": 343426
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 168
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 4206,
+    "session": 46269
+   },
+   "max_live_orders": 674,
+   "price_levels": 3281,
+   "crossed_add": 77,
+   "exec_contra_match_rate": 0.9339393650944743,
+   "exec_unfilled": 96,
+   "rejects": 0,
+   "cancel_rejects": 182,
+   "modify_rejects": 18,
+   "output_hash": "0x80088f7704bea70b",
+   "fills": 43982,
+   "mismatches": 0,
+   "elapsed_s": 0.073068001,
+   "order_messages": 684538,
+   "rank": 45,
+   "dropped_fraction": 0.00023345751976398555
+  },
+  {
+   "symbol": "T",
+   "msgs": 720800,
+   "mapped": {
+    "cancel": 332628,
+    "ioc": 28545,
+    "modify": 3889,
+    "new": 355738
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1968
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 5787,
+    "session": 11060
+   },
+   "max_live_orders": 3158,
+   "price_levels": 18195,
+   "crossed_add": 220,
+   "exec_contra_match_rate": 0.8583289542827115,
+   "exec_unfilled": 113,
+   "rejects": 0,
+   "cancel_rejects": 330,
+   "modify_rejects": 3,
+   "output_hash": "0x428224484fd3e18c",
+   "fills": 62136,
+   "mismatches": 0,
+   "elapsed_s": 0.078262984,
+   "order_messages": 680857,
+   "rank": 46,
+   "dropped_fraction": 0.0027228654284639055
+  },
+  {
+   "symbol": "ORCL",
+   "msgs": 712970,
+   "mapped": {
+    "cancel": 342560,
+    "ioc": 14027,
+    "modify": 2073,
+    "new": 354310
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1150
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 658,
+    "session": 590
+   },
+   "max_live_orders": 593,
+   "price_levels": 7693,
+   "crossed_add": 169,
+   "exec_contra_match_rate": 0.9347686604405789,
+   "exec_unfilled": 23,
+   "rejects": 0,
+   "cancel_rejects": 278,
+   "modify_rejects": 2,
+   "output_hash": "0xf01ea5eac6cd00ab",
+   "fills": 28932,
+   "mismatches": 0,
+   "elapsed_s": 0.06634227,
+   "order_messages": 676413,
+   "rank": 47,
+   "dropped_fraction": 0.001610373606676749
+  },
+  {
+   "symbol": "TLT",
+   "msgs": 716131,
+   "mapped": {
+    "cancel": 344819,
+    "ioc": 12958,
+    "modify": 1314,
+    "new": 357040
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 7174
+   },
+   "skipped": {
+    "cross": 6,
+    "halt": 1,
+    "hidden": 685,
+    "session": 12571
+   },
+   "max_live_orders": 1428,
+   "price_levels": 19790,
+   "crossed_add": 329,
+   "exec_contra_match_rate": 0.913952770489273,
+   "exec_unfilled": 29,
+   "rejects": 0,
+   "cancel_rejects": 550,
+   "modify_rejects": 2,
+   "output_hash": "0x09f089801ac4e04a",
+   "fills": 27666,
+   "mismatches": 0,
+   "elapsed_s": 0.071059604,
+   "order_messages": 674775,
+   "rank": 48,
+   "dropped_fraction": 0.009918360857452941
+  },
+  {
+   "symbol": "DHI",
+   "msgs": 697492,
+   "mapped": {
+    "cancel": 335711,
+    "ioc": 13304,
+    "modify": 1461,
+    "new": 347016
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2943
+   },
+   "skipped": {
+    "cross": 12,
+    "halt": 1,
+    "hidden": 684,
+    "session": 286
+   },
+   "max_live_orders": 348,
+   "price_levels": 4144,
+   "crossed_add": 147,
+   "exec_contra_match_rate": 0.9364101022248947,
+   "exec_unfilled": 16,
+   "rejects": 0,
+   "cancel_rejects": 218,
+   "modify_rejects": 0,
+   "output_hash": "0x443436db95ebcc3d",
+   "fills": 27320,
+   "mismatches": 0,
+   "elapsed_s": 0.066079357,
+   "order_messages": 662805,
+   "rank": 49,
+   "dropped_fraction": 0.004201674673595694
+  },
+  {
+   "symbol": "ADI",
+   "msgs": 686091,
+   "mapped": {
+    "cancel": 331508,
+    "ioc": 10476,
+    "modify": 3823,
+    "new": 340284
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2626
+   },
+   "skipped": {
+    "cross": 33,
+    "halt": 1,
+    "hidden": 1011,
+    "session": 1693
+   },
+   "max_live_orders": 789,
+   "price_levels": 20896,
+   "crossed_add": 24,
+   "exec_contra_match_rate": 0.9876861397479955,
+   "exec_unfilled": 2,
+   "rejects": 0,
+   "cancel_rejects": 33,
+   "modify_rejects": 0,
+   "output_hash": "0x2168a329b6b751b8",
+   "fills": 21076,
+   "mismatches": 0,
+   "elapsed_s": 0.074761003,
+   "order_messages": 657741,
+   "rank": 50,
+   "dropped_fraction": 0.003812886860640873
+  },
+  {
+   "symbol": "TXN",
+   "msgs": 696562,
+   "mapped": {
+    "cancel": 330107,
+    "ioc": 18315,
+    "modify": 1033,
+    "new": 347107
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3860
+   },
+   "skipped": {
+    "cross": 28,
+    "halt": 1,
+    "hidden": 1833,
+    "session": 3005
+   },
+   "max_live_orders": 2378,
+   "price_levels": 22001,
+   "crossed_add": 41,
+   "exec_contra_match_rate": 0.9841113841113841,
+   "exec_unfilled": 9,
+   "rejects": 0,
+   "cancel_rejects": 44,
+   "modify_rejects": 0,
+   "output_hash": "0x5e390ae9cda13454",
+   "fills": 36908,
+   "mismatches": 0,
+   "elapsed_s": 0.081423577,
+   "order_messages": 644905,
+   "rank": 51,
+   "dropped_fraction": 0.005510963390641642
+  },
+  {
+   "symbol": "AAL",
+   "msgs": 647160,
+   "mapped": {
+    "cancel": 308712,
+    "ioc": 14509,
+    "modify": 542,
+    "new": 323397
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 6916
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 2002,
+    "session": 3128
+   },
+   "max_live_orders": 2671,
+   "price_levels": 10999,
+   "crossed_add": 102,
+   "exec_contra_match_rate": 0.9484457922668689,
+   "exec_unfilled": 9,
+   "rejects": 0,
+   "cancel_rejects": 162,
+   "modify_rejects": 0,
+   "output_hash": "0xf99e599cc0e6213e",
+   "fills": 29830,
+   "mismatches": 0,
+   "elapsed_s": 0.069510273,
+   "order_messages": 631167,
+   "rank": 52,
+   "dropped_fraction": 0.010575207506149887
+  },
+  {
+   "symbol": "JD",
+   "msgs": 634770,
+   "mapped": {
+    "cancel": 297847,
+    "ioc": 16745,
+    "modify": 3648,
+    "new": 316530
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3472
+   },
+   "skipped": {
+    "cross": 76,
+    "halt": 1,
+    "hidden": 2000,
+    "session": 7746
+   },
+   "max_live_orders": 5313,
+   "price_levels": 220001,
+   "crossed_add": 147,
+   "exec_contra_match_rate": 0.9135861451179457,
+   "exec_unfilled": 39,
+   "rejects": 0,
+   "cancel_rejects": 233,
+   "modify_rejects": 2,
+   "output_hash": "0x4a7d017f9e1da865",
+   "fills": 35468,
+   "mismatches": 0,
+   "elapsed_s": 0.076062875,
+   "order_messages": 603269,
+   "rank": 53,
+   "dropped_fraction": 0.005439942842996857
+  },
+  {
+   "symbol": "EBAY",
+   "msgs": 573528,
+   "mapped": {
+    "cancel": 262633,
+    "ioc": 24367,
+    "modify": 1920,
+    "new": 284608
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2698
+   },
+   "skipped": {
+    "cross": 18,
+    "halt": 1,
+    "hidden": 4152,
+    "session": 6724
+   },
+   "max_live_orders": 1795,
+   "price_levels": 22111,
+   "crossed_add": 147,
+   "exec_contra_match_rate": 0.9194812656461608,
+   "exec_unfilled": 43,
+   "rejects": 0,
+   "cancel_rejects": 299,
+   "modify_rejects": 9,
+   "output_hash": "0x33d20e4a5e684d64",
+   "fills": 51184,
+   "mismatches": 0,
+   "elapsed_s": 0.0616713,
+   "order_messages": 536548,
+   "rank": 54,
+   "dropped_fraction": 0.004682190668244751
+  },
+  {
+   "symbol": "ATVI",
+   "msgs": 540598,
+   "mapped": {
+    "cancel": 253501,
+    "ioc": 16305,
+    "modify": 984,
+    "new": 269808
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 5196
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1309,
+    "session": 3964
+   },
+   "max_live_orders": 2950,
+   "price_levels": 43889,
+   "crossed_add": 105,
+   "exec_contra_match_rate": 0.9451088623121742,
+   "exec_unfilled": 17,
+   "rejects": 0,
+   "cancel_rejects": 188,
+   "modify_rejects": 0,
+   "output_hash": "0x65917fd3473a3ac1",
+   "fills": 33620,
+   "mismatches": 0,
+   "elapsed_s": 0.059085878,
+   "order_messages": 523986,
+   "rank": 55,
+   "dropped_fraction": 0.009521890086937403
+  },
+  {
+   "symbol": "PYPL",
+   "msgs": 480038,
+   "mapped": {
+    "cancel": 219846,
+    "ioc": 19543,
+    "modify": 1793,
+    "new": 238856
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 11927
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 3231,
+    "session": 17395
+   },
+   "max_live_orders": 4120,
+   "price_levels": 49501,
+   "crossed_add": 51,
+   "exec_contra_match_rate": 0.976666837230722,
+   "exec_unfilled": 15,
+   "rejects": 0,
+   "cancel_rejects": 59,
+   "modify_rejects": 0,
+   "output_hash": "0xec5806cabf7f9ec3",
+   "fills": 39532,
+   "mismatches": 0,
+   "elapsed_s": 0.05494955,
+   "order_messages": 466759,
+   "rank": 56,
+   "dropped_fraction": 0.02424359456465399
+  },
+  {
+   "symbol": "KHC",
+   "msgs": 460521,
+   "mapped": {
+    "cancel": 217087,
+    "ioc": 11079,
+    "modify": 1868,
+    "new": 230487
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2908
+   },
+   "skipped": {
+    "cross": 13,
+    "halt": 1,
+    "hidden": 1228,
+    "session": 5023
+   },
+   "max_live_orders": 4360,
+   "price_levels": 22001,
+   "crossed_add": 119,
+   "exec_contra_match_rate": 0.9322140987453741,
+   "exec_unfilled": 17,
+   "rejects": 0,
+   "cancel_rejects": 190,
+   "modify_rejects": 0,
+   "output_hash": "0x01bb515443647ea4",
+   "fills": 23060,
+   "mismatches": 0,
+   "elapsed_s": 0.058956383,
+   "order_messages": 443117,
+   "rank": 57,
+   "dropped_fraction": 0.006274963370872345
+  },
+  {
+   "symbol": "ADBE",
+   "msgs": 443847,
+   "mapped": {
+    "cancel": 210030,
+    "ioc": 10775,
+    "modify": 1645,
+    "new": 221397
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 15107
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 2471,
+    "session": 4701
+   },
+   "max_live_orders": 3697,
+   "price_levels": 55001,
+   "crossed_add": 1,
+   "exec_contra_match_rate": 0.9993503480278422,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x01668212fbdc0be4",
+   "fills": 21560,
+   "mismatches": 0,
+   "elapsed_s": 0.058713011,
+   "order_messages": 442165,
+   "rank": 58,
+   "dropped_fraction": 0.03291615281705792
+  },
+  {
+   "symbol": "PEP",
+   "msgs": 432902,
+   "mapped": {
+    "cancel": 201770,
+    "ioc": 14105,
+    "modify": 1676,
+    "new": 215351
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 4187
+   },
+   "skipped": {
+    "cross": 6,
+    "halt": 1,
+    "hidden": 1172,
+    "session": 3620
+   },
+   "max_live_orders": 3065,
+   "price_levels": 55001,
+   "crossed_add": 38,
+   "exec_contra_match_rate": 0.9807869549805034,
+   "exec_unfilled": 6,
+   "rejects": 0,
+   "cancel_rejects": 54,
+   "modify_rejects": 0,
+   "output_hash": "0x898a4084ed3898cf",
+   "fills": 28466,
+   "mismatches": 0,
+   "elapsed_s": 0.050148596,
+   "order_messages": 415443,
+   "rank": 59,
+   "dropped_fraction": 0.009581550710380013
+  },
+  {
+   "symbol": "MDLZ",
+   "msgs": 399619,
+   "mapped": {
+    "cancel": 187185,
+    "ioc": 12457,
+    "modify": 1286,
+    "new": 198691
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 2395
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1076,
+    "session": 2448
+   },
+   "max_live_orders": 1506,
+   "price_levels": 14202,
+   "crossed_add": 119,
+   "exec_contra_match_rate": 0.9134623103475957,
+   "exec_unfilled": 20,
+   "rejects": 0,
+   "cancel_rejects": 207,
+   "modify_rejects": 1,
+   "output_hash": "0x8ad0478fbb9905f0",
+   "fills": 26194,
+   "mismatches": 0,
+   "elapsed_s": 0.040105422,
+   "order_messages": 381538,
+   "rank": 60,
+   "dropped_fraction": 0.005957503967523519
+  },
+  {
+   "symbol": "NXPI",
+   "msgs": 372245,
+   "mapped": {
+    "cancel": 173271,
+    "ioc": 12918,
+    "modify": 1820,
+    "new": 184236
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 11288
+   },
+   "skipped": {
+    "cross": 52,
+    "halt": 1,
+    "hidden": 2046,
+    "session": 1640
+   },
+   "max_live_orders": 1252,
+   "price_levels": 21995,
+   "crossed_add": 41,
+   "exec_contra_match_rate": 0.9809568044588945,
+   "exec_unfilled": 2,
+   "rejects": 0,
+   "cancel_rejects": 66,
+   "modify_rejects": 0,
+   "output_hash": "0x236c13bd1803bd83",
+   "fills": 26060,
+   "mismatches": 0,
+   "elapsed_s": 0.041067145,
+   "order_messages": 370720,
+   "rank": 61,
+   "dropped_fraction": 0.02943162648324916
+  },
+  {
+   "symbol": "FISV",
+   "msgs": 389125,
+   "mapped": {
+    "cancel": 177207,
+    "ioc": 18027,
+    "modify": 2183,
+    "new": 191708
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 3665
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 1789,
+    "session": 1005
+   },
+   "max_live_orders": 594,
+   "price_levels": 31668,
+   "crossed_add": 35,
+   "exec_contra_match_rate": 0.9815277084373439,
+   "exec_unfilled": 21,
+   "rejects": 0,
+   "cancel_rejects": 53,
+   "modify_rejects": 0,
+   "output_hash": "0x6dd20e5d014f5424",
+   "fills": 36310,
+   "mismatches": 0,
+   "elapsed_s": 0.040384111,
+   "order_messages": 366953,
+   "rank": 62,
+   "dropped_fraction": 0.009330685608085745
+  },
+  {
+   "symbol": "CTSH",
+   "msgs": 360243,
+   "mapped": {
+    "cancel": 170215,
+    "ioc": 10197,
+    "modify": 677,
+    "new": 179154
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 543
+   },
+   "skipped": {
+    "cross": 34,
+    "halt": 1,
+    "hidden": 955,
+    "session": 1735
+   },
+   "max_live_orders": 922,
+   "price_levels": 16494,
+   "crossed_add": 39,
+   "exec_contra_match_rate": 0.971756398940865,
+   "exec_unfilled": 5,
+   "rejects": 0,
+   "cancel_rejects": 57,
+   "modify_rejects": 1,
+   "output_hash": "0xb88c226e11488877",
+   "fills": 20650,
+   "mismatches": 0,
+   "elapsed_s": 0.037636608,
+   "order_messages": 342136,
+   "rank": 63,
+   "dropped_fraction": 0.001505047313365818
+  },
+  {
+   "symbol": "EA",
+   "msgs": 350259,
+   "mapped": {
+    "cancel": 163968,
+    "ioc": 11484,
+    "modify": 74,
+    "new": 174733
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1661
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 1190,
+    "session": 2015
+   },
+   "max_live_orders": 1453,
+   "price_levels": 88000,
+   "crossed_add": 16,
+   "exec_contra_match_rate": 0.9865900383141762,
+   "exec_unfilled": 2,
+   "rejects": 0,
+   "cancel_rejects": 17,
+   "modify_rejects": 0,
+   "output_hash": "0xd4f8f515c9ed7f85",
+   "fills": 23104,
+   "mismatches": 0,
+   "elapsed_s": 0.040370544,
+   "order_messages": 333921,
+   "rank": 64,
+   "dropped_fraction": 0.004719822686974313
+  },
+  {
+   "symbol": "CSX",
+   "msgs": 350472,
+   "mapped": {
+    "cancel": 163211,
+    "ioc": 12706,
+    "modify": 184,
+    "new": 174371
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 591
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 2420,
+    "session": 1767
+   },
+   "max_live_orders": 1125,
+   "price_levels": 19799,
+   "crossed_add": 90,
+   "exec_contra_match_rate": 0.9445931056193924,
+   "exec_unfilled": 27,
+   "rejects": 0,
+   "cancel_rejects": 157,
+   "modify_rejects": 0,
+   "output_hash": "0x0460dceac7efeff8",
+   "fills": 26094,
+   "mismatches": 0,
+   "elapsed_s": 0.037510441,
+   "order_messages": 333765,
+   "rank": 65,
+   "dropped_fraction": 0.0016834585245383308
+  },
+  {
+   "symbol": "LRCX",
+   "msgs": 337977,
+   "mapped": {
+    "cancel": 155667,
+    "ioc": 13530,
+    "modify": 741,
+    "new": 168039
+   },
+   "dropped": {
+    "price": 2,
+    "qty": 0,
+    "unknown_id": 14686
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 3355,
+    "session": 3281
+   },
+   "max_live_orders": 2498,
+   "price_levels": 110001,
+   "crossed_add": 6,
+   "exec_contra_match_rate": 0.9955654101995566,
+   "exec_unfilled": 2,
+   "rejects": 0,
+   "cancel_rejects": 6,
+   "modify_rejects": 0,
+   "output_hash": "0x3cfddd483d9f93bc",
+   "fills": 27100,
+   "mismatches": 0,
+   "elapsed_s": 0.042448037,
+   "order_messages": 330851,
+   "rank": 66,
+   "dropped_fraction": 0.041648590021691974
+  },
+  {
+   "symbol": "MAR",
+   "msgs": 310469,
+   "mapped": {
+    "cancel": 147742,
+    "ioc": 6864,
+    "modify": 1988,
+    "new": 153875
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 15045
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1171,
+    "session": 1358
+   },
+   "max_live_orders": 916,
+   "price_levels": 1233091,
+   "crossed_add": 3,
+   "exec_contra_match_rate": 0.9944638694638694,
+   "exec_unfilled": 2,
+   "rejects": 0,
+   "cancel_rejects": 3,
+   "modify_rejects": 0,
+   "output_hash": "0xcd788bec67944390",
+   "fills": 13760,
+   "mismatches": 0,
+   "elapsed_s": 0.035853692,
+   "order_messages": 320113,
+   "rank": 67,
+   "dropped_fraction": 0.046219210233661226
+  },
+  {
+   "symbol": "GILD",
+   "msgs": 315734,
+   "mapped": {
+    "cancel": 145763,
+    "ioc": 10768,
+    "modify": 194,
+    "new": 159009
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 4733
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1457,
+    "session": 5653
+   },
+   "max_live_orders": 4647,
+   "price_levels": 110001,
+   "crossed_add": 50,
+   "exec_contra_match_rate": 0.9684249628528975,
+   "exec_unfilled": 6,
+   "rejects": 0,
+   "cancel_rejects": 88,
+   "modify_rejects": 0,
+   "output_hash": "0xc96676858dcd97de",
+   "fills": 21934,
+   "mismatches": 0,
+   "elapsed_s": 0.037843039,
+   "order_messages": 299793,
+   "rank": 68,
+   "dropped_fraction": 0.014769071386445407
+  },
+  {
+   "symbol": "AMGN",
+   "msgs": 298449,
+   "mapped": {
+    "cancel": 130280,
+    "ioc": 19507,
+    "modify": 147,
+    "new": 148515
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 10738
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 4492,
+    "session": 3805
+   },
+   "max_live_orders": 3126,
+   "price_levels": 2225191,
+   "crossed_add": 5,
+   "exec_contra_match_rate": 0.9870302968165274,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 7,
+   "modify_rejects": 0,
+   "output_hash": "0xeceee05d94c56faa",
+   "fills": 39464,
+   "mismatches": 0,
+   "elapsed_s": 0.040282807,
+   "order_messages": 283847,
+   "rank": 69,
+   "dropped_fraction": 0.03472979135604019
+  },
+  {
+   "symbol": "ADP",
+   "msgs": 290953,
+   "mapped": {
+    "cancel": 133655,
+    "ioc": 11928,
+    "modify": 1717,
+    "new": 143653
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 6348
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 2459,
+    "session": 1540
+   },
+   "max_live_orders": 801,
+   "price_levels": 25937,
+   "crossed_add": 8,
+   "exec_contra_match_rate": 0.9912810194500336,
+   "exec_unfilled": 3,
+   "rejects": 0,
+   "cancel_rejects": 11,
+   "modify_rejects": 0,
+   "output_hash": "0xa7bc588fd49eedd8",
+   "fills": 23952,
+   "mismatches": 0,
+   "elapsed_s": 0.035069501,
+   "order_messages": 279179,
+   "rank": 70,
+   "dropped_fraction": 0.02135209770569221
+  },
+  {
+   "symbol": "AVGO",
+   "msgs": 273949,
+   "mapped": {
+    "cancel": 124766,
+    "ioc": 12044,
+    "modify": 52,
+    "new": 137087
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 17878
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 3410,
+    "session": 4103
+   },
+   "max_live_orders": 3238,
+   "price_levels": 299641,
+   "crossed_add": 1,
+   "exec_contra_match_rate": 0.9825639322484224,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x595a9320c4a6f4be",
+   "fills": 24470,
+   "mismatches": 0,
+   "elapsed_s": 0.034339107,
+   "order_messages": 277019,
+   "rank": 71,
+   "dropped_fraction": 0.06126232322574676
+  },
+  {
+   "symbol": "ROST",
+   "msgs": 244284,
+   "mapped": {
+    "cancel": 115644,
+    "ioc": 5782,
+    "modify": 2035,
+    "new": 120823
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 13464
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 673,
+    "session": 1273
+   },
+   "max_live_orders": 695,
+   "price_levels": 65886,
+   "crossed_add": 5,
+   "exec_contra_match_rate": 0.9937737806987201,
+   "exec_unfilled": 1,
+   "rejects": 0,
+   "cancel_rejects": 11,
+   "modify_rejects": 0,
+   "output_hash": "0xc18ad78a9be46062",
+   "fills": 11590,
+   "mismatches": 0,
+   "elapsed_s": 0.025876953,
+   "order_messages": 241699,
+   "rank": 72,
+   "dropped_fraction": 0.05223706876484008
+  },
+  {
+   "symbol": "COST",
+   "msgs": 248064,
+   "mapped": {
+    "cancel": 116624,
+    "ioc": 5920,
+    "modify": 176,
+    "new": 125344
+   },
+   "dropped": {
+    "price": 1,
+    "qty": 0,
+    "unknown_id": 2283
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 1562,
+    "session": 5052
+   },
+   "max_live_orders": 4395,
+   "price_levels": 2325951,
+   "crossed_add": 1,
+   "exec_contra_match_rate": 0.9954391891891892,
+   "exec_unfilled": 1,
+   "rejects": 0,
+   "cancel_rejects": 1,
+   "modify_rejects": 0,
+   "output_hash": "0x42afd27de72f9070",
+   "fills": 11876,
+   "mismatches": 0,
+   "elapsed_s": 0.032208933,
+   "order_messages": 227418,
+   "rank": 73,
+   "dropped_fraction": 0.00912330036589068
+  },
+  {
+   "symbol": "VRTX",
+   "msgs": 197296,
+   "mapped": {
+    "cancel": 92188,
+    "ioc": 6215,
+    "modify": 815,
+    "new": 98078
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 11964
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1512,
+    "session": 1528
+   },
+   "max_live_orders": 1056,
+   "price_levels": 38390,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.996781979082864,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x1de4e11dd178f109",
+   "fills": 12444,
+   "mismatches": 0,
+   "elapsed_s": 0.023120529,
+   "order_messages": 200286,
+   "rank": 74,
+   "dropped_fraction": 0.05717289496320367
+  },
+  {
+   "symbol": "BIDU",
+   "msgs": 193080,
+   "mapped": {
+    "cancel": 87903,
+    "ioc": 7866,
+    "modify": 64,
+    "new": 97247
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 8884
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 1975,
+    "session": 4644
+   },
+   "max_live_orders": 3552,
+   "price_levels": 93171,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9927536231884058,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 1,
+   "modify_rejects": 0,
+   "output_hash": "0xde4bcd78e6737b66",
+   "fills": 15806,
+   "mismatches": 0,
+   "elapsed_s": 0.026376411,
+   "order_messages": 184044,
+   "rank": 75,
+   "dropped_fraction": 0.04398803747202472
+  },
+  {
+   "symbol": "CHTR",
+   "msgs": 149930,
+   "mapped": {
+    "cancel": 69041,
+    "ioc": 6397,
+    "modify": 52,
+    "new": 74440
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 7208
+   },
+   "skipped": {
+    "cross": 5,
+    "halt": 1,
+    "hidden": 1912,
+    "session": 965
+   },
+   "max_live_orders": 430,
+   "price_levels": 316913,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9992183836173206,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x886cfdb958f8006a",
+   "fills": 12800,
+   "mismatches": 0,
+   "elapsed_s": 0.016440567,
+   "order_messages": 143182,
+   "rank": 76,
+   "dropped_fraction": 0.04587050872481513
+  },
+  {
+   "symbol": "INTU",
+   "msgs": 143637,
+   "mapped": {
+    "cancel": 66866,
+    "ioc": 5065,
+    "modify": 176,
+    "new": 71530
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 7470
+   },
+   "skipped": {
+    "cross": 3,
+    "halt": 1,
+    "hidden": 1984,
+    "session": 1459
+   },
+   "max_live_orders": 840,
+   "price_levels": 45651,
+   "crossed_add": 1,
+   "exec_contra_match_rate": 0.9968410661401776,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x1c86c2a37656827e",
+   "fills": 10148,
+   "mismatches": 0,
+   "elapsed_s": 0.019301992,
+   "order_messages": 139997,
+   "rank": 77,
+   "dropped_fraction": 0.0494351684567889
+  },
+  {
+   "symbol": "ILMN",
+   "msgs": 125987,
+   "mapped": {
+    "cancel": 52635,
+    "ioc": 10643,
+    "modify": 124,
+    "new": 62585
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 11547
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 3421,
+    "session": 2396
+   },
+   "max_live_orders": 1464,
+   "price_levels": 660001,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.9920135300197312,
+   "exec_unfilled": 5,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x4a1cbba281a9b7a6",
+   "fills": 21426,
+   "mismatches": 0,
+   "elapsed_s": 0.014736141,
+   "order_messages": 125145,
+   "rank": 78,
+   "dropped_fraction": 0.08395742143760815
+  },
+  {
+   "symbol": "BIIB",
+   "msgs": 115737,
+   "mapped": {
+    "cancel": 51077,
+    "ioc": 6785,
+    "modify": 64,
+    "new": 57811
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 16139
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 3459,
+    "session": 2489
+   },
+   "max_live_orders": 1456,
+   "price_levels": 66551,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 1.0,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0xefae1d7ef8e6bc99",
+   "fills": 13570,
+   "mismatches": 0,
+   "elapsed_s": 0.012932377,
+   "order_messages": 124732,
+   "rank": 79,
+   "dropped_fraction": 0.12238011465315903
+  },
+  {
+   "symbol": "ISRG",
+   "msgs": 88612,
+   "mapped": {
+    "cancel": 39350,
+    "ioc": 4369,
+    "modify": 29,
+    "new": 44864
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 12316
+   },
+   "skipped": {
+    "cross": 2,
+    "halt": 1,
+    "hidden": 1789,
+    "session": 2828
+   },
+   "max_live_orders": 2266,
+   "price_levels": 220000,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 0.997940032043946,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0x6a064d1416396309",
+   "fills": 8750,
+   "mismatches": 0,
+   "elapsed_s": 0.01317916,
+   "order_messages": 92465,
+   "rank": 80,
+   "dropped_fraction": 0.1220275840202917
+  },
+  {
+   "symbol": "BKNG",
+   "msgs": 69934,
+   "mapped": {
+    "cancel": 31949,
+    "ioc": 2605,
+    "modify": 8,
+    "new": 35372
+   },
+   "dropped": {
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 10605
+   },
+   "skipped": {
+    "cross": 4,
+    "halt": 1,
+    "hidden": 1042,
+    "session": 1769
+   },
+   "max_live_orders": 1454,
+   "price_levels": 1992587,
+   "crossed_add": 0,
+   "exec_contra_match_rate": 1.0,
+   "exec_unfilled": 0,
+   "rejects": 0,
+   "cancel_rejects": 0,
+   "modify_rejects": 0,
+   "output_hash": "0xa4c6fabd15d67f4c",
+   "fills": 5210,
+   "mismatches": 0,
+   "elapsed_s": 0.010466304,
+   "order_messages": 78180,
+   "rank": 81,
+   "dropped_fraction": 0.131675337414172
+  }
+ ],
+ "book_l3": [
+  {
+   "symbol": "AAL",
+   "msgs": 647160,
+   "mismatches": 0,
+   "output_hash": "0xf99e599cc0e6213e"
+  },
+  {
+   "symbol": "AAPL",
+   "msgs": 1694134,
+   "mismatches": 0,
+   "output_hash": "0xee577f08773da2b9"
+  },
+  {
+   "symbol": "ADBE",
+   "msgs": 443847,
+   "mismatches": 0,
+   "output_hash": "0x01668212fbdc0be4"
+  },
+  {
+   "symbol": "ADI",
+   "msgs": 686091,
+   "mismatches": 0,
+   "output_hash": "0x2168a329b6b751b8"
+  },
+  {
+   "symbol": "ADP",
+   "msgs": 290953,
+   "mismatches": 0,
+   "output_hash": "0xa7bc588fd49eedd8"
+  },
+  {
+   "symbol": "AMAT",
+   "msgs": 1004763,
+   "mismatches": 0,
+   "output_hash": "0x122da3049bdbf1df"
+  },
+  {
+   "symbol": "AMD",
+   "msgs": 1932436,
+   "mismatches": 0,
+   "output_hash": "0x2fd92c2b753ae8c2"
+  },
+  {
+   "symbol": "AMGN",
+   "msgs": 298449,
+   "mismatches": 0,
+   "output_hash": "0xeceee05d94c56faa"
+  },
+  {
+   "symbol": "AMZN",
+   "msgs": 946075,
+   "mismatches": 0,
+   "output_hash": "0xe71aa05a1c352937"
+  },
+  {
+   "symbol": "ATVI",
+   "msgs": 540598,
+   "mismatches": 0,
+   "output_hash": "0x65917fd3473a3ac1"
+  },
+  {
+   "symbol": "AVGO",
+   "msgs": 273949,
+   "mismatches": 0,
+   "output_hash": "0x595a9320c4a6f4be"
+  },
+  {
+   "symbol": "BIDU",
+   "msgs": 193080,
+   "mismatches": 0,
+   "output_hash": "0xde4bcd78e6737b66"
+  },
+  {
+   "symbol": "BIIB",
+   "msgs": 115737,
+   "mismatches": 0,
+   "output_hash": "0xefae1d7ef8e6bc99"
+  },
+  {
+   "symbol": "BKNG",
+   "msgs": 69934,
+   "mismatches": 0,
+   "output_hash": "0xa4c6fabd15d67f4c"
+  },
+  {
+   "symbol": "CHTR",
+   "msgs": 149930,
+   "mismatches": 0,
+   "output_hash": "0x886cfdb958f8006a"
+  },
+  {
+   "symbol": "CMCSA",
+   "msgs": 830780,
+   "mismatches": 0,
+   "output_hash": "0x95c02d40cf2b80c1"
+  },
+  {
+   "symbol": "COST",
+   "msgs": 248064,
+   "mismatches": 0,
+   "output_hash": "0x42afd27de72f9070"
+  },
+  {
+   "symbol": "CSCO",
+   "msgs": 836723,
+   "mismatches": 0,
+   "output_hash": "0x136ae3cadecf6e16"
+  },
+  {
+   "symbol": "CSX",
+   "msgs": 350472,
+   "mismatches": 0,
+   "output_hash": "0x0460dceac7efeff8"
+  },
+  {
+   "symbol": "CTSH",
+   "msgs": 360243,
+   "mismatches": 0,
+   "output_hash": "0xb88c226e11488877"
+  },
+  {
+   "symbol": "EA",
+   "msgs": 350259,
+   "mismatches": 0,
+   "output_hash": "0xd4f8f515c9ed7f85"
+  },
+  {
+   "symbol": "EBAY",
+   "msgs": 573528,
+   "mismatches": 0,
+   "output_hash": "0x33d20e4a5e684d64"
+  },
+  {
+   "symbol": "FB",
+   "msgs": 1252005,
+   "mismatches": 0,
+   "output_hash": "0x2daa6e05c3d8a169"
+  },
+  {
+   "symbol": "FISV",
+   "msgs": 389125,
+   "mismatches": 0,
+   "output_hash": "0x6dd20e5d014f5424"
+  },
+  {
+   "symbol": "GILD",
+   "msgs": 315734,
+   "mismatches": 0,
+   "output_hash": "0xc96676858dcd97de"
+  },
+  {
+   "symbol": "GOOGL",
+   "msgs": 1631037,
+   "mismatches": 0,
+   "output_hash": "0x30510c65e63db3d4"
+  },
+  {
+   "symbol": "GOOG",
+   "msgs": 1653283,
+   "mismatches": 0,
+   "output_hash": "0x6486fe726b9a5e69"
+  },
+  {
+   "symbol": "ILMN",
+   "msgs": 125987,
+   "mismatches": 0,
+   "output_hash": "0x4a1cbba281a9b7a6"
+  },
+  {
+   "symbol": "INTC",
+   "msgs": 1208820,
+   "mismatches": 0,
+   "output_hash": "0x8a882907c34a6b77"
+  },
+  {
+   "symbol": "INTU",
+   "msgs": 143637,
+   "mismatches": 0,
+   "output_hash": "0x1c86c2a37656827e"
+  },
+  {
+   "symbol": "ISRG",
+   "msgs": 88612,
+   "mismatches": 0,
+   "output_hash": "0x6a064d1416396309"
+  },
+  {
+   "symbol": "JD",
+   "msgs": 634770,
+   "mismatches": 0,
+   "output_hash": "0x4a7d017f9e1da865"
+  },
+  {
+   "symbol": "KHC",
+   "msgs": 460521,
+   "mismatches": 0,
+   "output_hash": "0x01bb515443647ea4"
+  },
+  {
+   "symbol": "LRCX",
+   "msgs": 337977,
+   "mismatches": 0,
+   "output_hash": "0x3cfddd483d9f93bc"
+  },
+  {
+   "symbol": "MAR",
+   "msgs": 310469,
+   "mismatches": 0,
+   "output_hash": "0xcd788bec67944390"
+  },
+  {
+   "symbol": "MDLZ",
+   "msgs": 399619,
+   "mismatches": 0,
+   "output_hash": "0x8ad0478fbb9905f0"
+  },
+  {
+   "symbol": "MSFT",
+   "msgs": 1666424,
+   "mismatches": 0,
+   "output_hash": "0x008d7f09ea1c6b53"
+  },
+  {
+   "symbol": "MU",
+   "msgs": 1230615,
+   "mismatches": 0,
+   "output_hash": "0x63eb7d0ea2d54b76"
+  },
+  {
+   "symbol": "NFLX",
+   "msgs": 736114,
+   "mismatches": 0,
+   "output_hash": "0x622aef6a82037fe4"
+  },
+  {
+   "symbol": "NVDA",
+   "msgs": 1376114,
+   "mismatches": 0,
+   "output_hash": "0xa447dad9631c74da"
+  },
+  {
+   "symbol": "NXPI",
+   "msgs": 372245,
+   "mismatches": 0,
+   "output_hash": "0x236c13bd1803bd83"
+  },
+  {
+   "symbol": "PEP",
+   "msgs": 432902,
+   "mismatches": 0,
+   "output_hash": "0x898a4084ed3898cf"
+  },
+  {
+   "symbol": "PYPL",
+   "msgs": 480038,
+   "mismatches": 0,
+   "output_hash": "0xec5806cabf7f9ec3"
+  },
+  {
+   "symbol": "QCOM",
+   "msgs": 798525,
+   "mismatches": 0,
+   "output_hash": "0x59671a643b1bc10d"
+  },
+  {
+   "symbol": "QQQ",
+   "msgs": 3466348,
+   "mismatches": 0,
+   "output_hash": "0x8855571753679408"
+  },
+  {
+   "symbol": "ROST",
+   "msgs": 244284,
+   "mismatches": 0,
+   "output_hash": "0xc18ad78a9be46062"
+  },
+  {
+   "symbol": "SBUX",
+   "msgs": 855400,
+   "mismatches": 0,
+   "output_hash": "0x83e3a484fb6aaf82"
+  },
+  {
+   "symbol": "TSLA",
+   "msgs": 853864,
+   "mismatches": 0,
+   "output_hash": "0xd610293f2eaf25dd"
+  },
+  {
+   "symbol": "TXN",
+   "msgs": 696562,
+   "mismatches": 0,
+   "output_hash": "0x5e390ae9cda13454"
+  },
+  {
+   "symbol": "VRTX",
+   "msgs": 197296,
+   "mismatches": 0,
+   "output_hash": "0x1de4e11dd178f109"
+  }
+ ],
+ "lobster": [
+  {
+   "symbol": "AAPL",
+   "msgs": 380678,
+   "mapped": {
+    "cancel": 164962,
+    "ioc": 21464,
+    "modify": 3237,
+    "new": 191015
+   },
+   "dropped": {
+    "malformed": 0,
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 8381
+   },
+   "skipped": {
+    "cross": 0,
+    "halt": 0,
+    "hidden": 11332,
+    "session": 0
+   },
+   "max_live_orders": 10104,
+   "price_levels": 1315,
+   "crossed_add": 6024,
+   "exec_contra_match_rate": 0.586284010436079,
+   "exec_unfilled": 1529,
+   "rejects": 0,
+   "cancel_rejects": 4264,
+   "modify_rejects": 10,
+   "output_hash": "0xb6e886e05fc623e9",
+   "fills": 75518,
+   "mismatches": 0,
+   "elapsed_s": 0.048022086,
+   "top_of_book": {
+    "compared": 392010,
+    "full_agree": 139374,
+    "full_agreement_rate": 0.3555368485497819,
+    "price_agree": 162035,
+    "price_agreement_rate": 0.413344047345731,
+    "skipped_dropped": 8381
+   },
+   "one_step_top_of_book": {
+    "agree": 400390,
+    "agreement_rate": 1.0,
+    "compared": 400390,
+    "events_outside_window": 0
+   },
+   "dropped_fraction": 0.02154171989338378
+  },
+  {
+   "symbol": "MSFT",
+   "msgs": 663288,
+   "mapped": {
+    "cancel": 298821,
+    "ioc": 29393,
+    "modify": 5508,
+    "new": 329566
+   },
+   "dropped": {
+    "malformed": 0,
+    "price": 0,
+    "qty": 0,
+    "unknown_id": 1861
+   },
+   "skipped": {
+    "cross": 0,
+    "halt": 0,
+    "hidden": 3616,
+    "session": 0
+   },
+   "max_live_orders": 7365,
+   "price_levels": 151,
+   "crossed_add": 1932,
+   "exec_contra_match_rate": 0.7392916680842377,
+   "exec_unfilled": 724,
+   "rejects": 0,
+   "cancel_rejects": 1549,
+   "modify_rejects": 52,
+   "output_hash": "0x0be2f1a767bc9ec5",
+   "fills": 77300,
+   "mismatches": 0,
+   "elapsed_s": 0.093800423,
+   "top_of_book": {
+    "compared": 666904,
+    "full_agree": 351183,
+    "full_agreement_rate": 0.5265870350155345,
+    "price_agree": 631981,
+    "price_agreement_rate": 0.9476341422453607,
+    "skipped_dropped": 1861
+   },
+   "one_step_top_of_book": {
+    "agree": 668764,
+    "agreement_rate": 1.0,
+    "compared": 668764,
+    "events_outside_window": 0
+   },
+   "dropped_fraction": 0.002797869349574306
+  }
+ ]
+}
