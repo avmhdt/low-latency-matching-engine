@@ -83,6 +83,7 @@ std::vector<Ranked> rank_symbols(const std::string& path) {
     }
   });
   std::vector<Ranked> ranked;
+  ranked.reserve(names.size());
   for (const auto& [locate, name] : names) {
     ranked.push_back({name, locate, counts[locate]});
   }
