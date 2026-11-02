@@ -1,0 +1,161 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 28, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "$env{HOME}/build/low-latency-matching-engine/${presetName}",
+      "cacheVariables": { "CMAKE_EXPORT_COMPILE_COMMANDS": "ON" }
+    },
+    {
+      "name": "use-gcc",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_C_COMPILER": "gcc-13", "CMAKE_CXX_COMPILER": "g++-13" }
+    },
+    {
+      "name": "use-clang",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_C_COMPILER": "clang-18", "CMAKE_CXX_COMPILER": "clang++-18" }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug (GCC)",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "release",
+      "displayName": "Release (GCC)",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "gcc-debug",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "gcc-release",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "clang-debug",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "clang-release",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "bench",
+      "displayName": "Benchmarks (-march=native, frame pointers)",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "-march=native -fno-omit-frame-pointer",
+        "LLME_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "bench-lto",
+      "displayName": "Benchmarks with LTO",
+      "inherits": ["base", "use-gcc"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "-march=native -fno-omit-frame-pointer -flto",
+        "LLME_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "asan-ubsan",
+      "displayName": "ASan + UBSan (Clang)",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LLME_SANITIZE": "address,undefined",
+        "LLME_BUILD_BENCH": "OFF"
+      }
+    },
+    {
+      "name": "tsan",
+      "displayName": "TSan (Clang)",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LLME_SANITIZE": "thread",
+        "LLME_BUILD_BENCH": "OFF"
+      }
+    },
+    {
+      "name": "fuzz",
+      "displayName": "libFuzzer targets (Clang, ASan + UBSan)",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LLME_SANITIZE": "address,undefined",
+        "LLME_BUILD_FUZZ": "ON",
+        "LLME_BUILD_TESTS": "OFF",
+        "LLME_BUILD_BENCH": "OFF",
+        "LLME_BUILD_TOOLS": "OFF"
+      }
+    },
+    {
+      "name": "coverage",
+      "displayName": "Source-based coverage (Clang)",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LLME_COVERAGE": "ON",
+        "LLME_BUILD_BENCH": "OFF"
+      }
+    },
+    {
+      "name": "clang-tidy",
+      "displayName": "Build with clang-tidy as errors",
+      "inherits": ["base", "use-clang"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LLME_CLANG_TIDY": "clang-tidy-18",
+        "LLME_BUILD_TESTS": "OFF",
+        "LLME_BUILD_BENCH": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" },
+    { "name": "gcc-debug", "configurePreset": "gcc-debug" },
+    { "name": "gcc-release", "configurePreset": "gcc-release" },
+    { "name": "clang-debug", "configurePreset": "clang-debug" },
+    { "name": "clang-release", "configurePreset": "clang-release" },
+    { "name": "bench", "configurePreset": "bench" },
+    { "name": "bench-lto", "configurePreset": "bench-lto" },
+    { "name": "asan-ubsan", "configurePreset": "asan-ubsan" },
+    { "name": "tsan", "configurePreset": "tsan" },
+    { "name": "fuzz", "configurePreset": "fuzz" },
+    { "name": "coverage", "configurePreset": "coverage" },
+    { "name": "clang-tidy", "configurePreset": "clang-tidy" }
+  ],
+  "testPresets": [
+    {
+      "name": "test-base",
+      "hidden": true,
+      "output": { "outputOnFailure": true },
+      "filter": { "exclude": { "label": "local-data" } }
+    },
+    { "name": "debug", "inherits": "test-base", "configurePreset": "debug" },
+    { "name": "release", "inherits": "test-base", "configurePreset": "release" },
+    { "name": "gcc-debug", "inherits": "test-base", "configurePreset": "gcc-debug" },
+    { "name": "gcc-release", "inherits": "test-base", "configurePreset": "gcc-release" },
+    { "name": "clang-debug", "inherits": "test-base", "configurePreset": "clang-debug" },
+    { "name": "clang-release", "inherits": "test-base", "configurePreset": "clang-release" },
+    { "name": "asan-ubsan", "inherits": "test-base", "configurePreset": "asan-ubsan" },
+    { "name": "tsan", "inherits": "test-base", "configurePreset": "tsan" },
+    { "name": "coverage", "inherits": "test-base", "configurePreset": "coverage" }
+  ]
+}

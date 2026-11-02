@@ -1,4 +1,6 @@
 # Data: never commit raw or licensed data
+# data is a symlink to $DATA_ROOT, which "data/" alone would not match
+/data
 data/
 *.parquet
 *.feather
@@ -7,6 +9,11 @@ data/
 *.pcap
 *.gz
 *.zst
+*.mlog
+*.olog
+# Small synthetic fixtures and shrunk reproducers are the only logs in git (DQ-10)
+!tests/fixtures/**/*.mlog
+!tests/fixtures/*.mlog
 
 # Python
 __pycache__/

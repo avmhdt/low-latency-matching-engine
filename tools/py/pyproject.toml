@@ -1,0 +1,38 @@
+[project]
+name = "llme-tools"
+version = "0.1.0"
+description = "Offline tooling for the low-latency matching engine: book_l3 conversion, plots, report tables"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    "matplotlib>=3.8",
+    "polars>=1.0",
+    "pyarrow>=16",
+    "typer>=0.12",
+]
+
+[project.scripts]
+llme-convert-book-l3 = "llme_tools.book_l3_to_mlog:app"
+llme-plots = "llme_tools.plots:app"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["llme_tools"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+strict = true

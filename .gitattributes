@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.png binary
+*.mlog binary
+*.olog binary
+*.bin binary
+fuzz/corpus/** binary
+tests/fixtures/** -text
