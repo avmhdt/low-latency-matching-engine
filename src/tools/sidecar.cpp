@@ -48,12 +48,9 @@ json outcome_json(const workload::ReplayOutcome& outcome) {
 json sidecar_json(const std::string& source_file, const std::string& source_sha256,
                   const std::string& symbol, const workload::ConversionStats& stats,
                   const EngineConfig& config, const workload::ReplayOutcome& outcome) {
-  const json events = {{"events", stats.events},
-                       {"adds", stats.adds},
-                       {"execs", stats.execs},
-                       {"partial_cancels", stats.partial_cancels},
-                       {"deletes", stats.deletes},
-                       {"replaces", stats.replaces}};
+  const json events = {{"events", stats.events},   {"adds", stats.adds},
+                       {"execs", stats.execs},     {"partial_cancels", stats.partial_cancels},
+                       {"deletes", stats.deletes}, {"replaces", stats.replaces}};
   const json mapped = {{"new", stats.out_new},
                        {"ioc", stats.out_ioc},
                        {"modify", stats.out_modify},

@@ -22,7 +22,7 @@
 namespace llme::workload {
 
 inline constexpr OrderId kSyntheticIdBit = OrderId{1} << 63U;
-inline constexpr std::int64_t kRawPerTick = 100;        // source prices are USD x 10^4, tick $0.01
+inline constexpr std::int64_t kRawPerTick = 100;       // source prices are USD x 10^4, tick $0.01
 inline constexpr std::int64_t kTickSizeE9 = 10000000;  // $0.01 x 10^9
 inline constexpr std::int64_t kSessionStartNs = 34200000000000;  // 09:30 ET
 inline constexpr std::int64_t kSessionEndNs = 57600000000000;    // 16:00 ET
@@ -114,9 +114,9 @@ struct ReplayOutcome {
   std::uint64_t output_hash = 0;
 
   [[nodiscard]] double exec_contra_match_rate() const noexcept {
-    return exec_total == 0 ? 0.0
-                           : static_cast<double>(exec_contra_match) /
-                                 static_cast<double>(exec_total);
+    return exec_total == 0
+               ? 0.0
+               : static_cast<double>(exec_contra_match) / static_cast<double>(exec_total);
   }
 };
 

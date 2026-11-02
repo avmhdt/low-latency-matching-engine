@@ -1,6 +1,7 @@
 // llme-itch-decode: fallback ITCH 5.0 decoder to one .mlog per symbol, plus sidecars (FR-21).
 //
-//   llme-itch-decode --in "$LLME_ITCH_FILE" --symbols AAPL,MSFT --top 50 --out-dir data/processed/mlog/
+//   llme-itch-decode --in "$LLME_ITCH_FILE" --symbols AAPL,MSFT --top 50 --out-dir
+//   data/processed/mlog/
 //
 // The first pass ranks symbols by order messages in the session (D-05) and the second converts.
 #include <algorithm>
@@ -24,8 +25,8 @@
 
 namespace {
 
-using nlohmann::json;
 using llme::workload::ItchEvent;
+using nlohmann::json;
 
 struct Options {
   std::string in;
@@ -153,8 +154,8 @@ int execute(const Options& options) {
   for (std::uint32_t i = 0; i < chosen.size(); ++i) {
     const auto path = std::filesystem::path(options.out_dir) /
                       ("itch_" + chosen[i].symbol + "_" + date + ".mlog");
-    auto writer = llme::MlogWriter::create(
-        path, {.symbol_id = i, .source = llme::LogSource::ItchFallback});
+    auto writer =
+        llme::MlogWriter::create(path, {.symbol_id = i, .source = llme::LogSource::ItchFallback});
     if (!writer) {
       throw std::runtime_error(std::string(llme::to_string(writer.error())) + ": " + path.string());
     }

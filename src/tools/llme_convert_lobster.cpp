@@ -44,8 +44,8 @@ struct Comparison {
 
 // Replays the log and compares the first level with the orderbook file, line by line.
 Comparison compare_top_of_book(const std::vector<llme::InMsg>& msgs,
-                               const std::vector<LineMark>& marks,
-                               const llme::EngineConfig& config, const std::string& orderbook) {
+                               const std::vector<LineMark>& marks, const llme::EngineConfig& config,
+                               const std::string& orderbook) {
   std::ifstream book(orderbook);
   if (!book) {
     throw std::runtime_error("cannot open " + orderbook);
@@ -80,8 +80,8 @@ Comparison compare_top_of_book(const std::vector<llme::InMsg>& msgs,
     };
     bool ask_price = false;
     bool bid_price = false;
-    const bool ask = side_agrees(engine.best_ask(), llme::Side::Sell, row.ask_price, row.ask_size,
-                                 ask_price);
+    const bool ask =
+        side_agrees(engine.best_ask(), llme::Side::Sell, row.ask_price, row.ask_size, ask_price);
     const bool bid =
         side_agrees(engine.best_bid(), llme::Side::Buy, row.bid_price, row.bid_size, bid_price);
     ++result.compared;
@@ -121,8 +121,7 @@ int execute(const Options& options) {
                          llme::workload::apply_lobster_event(event, builder);
     malformed += applied ? 0U : 1U;
     const std::uint64_t dropped_after = builder.stats().dropped_unknown_id +
-                                        builder.stats().dropped_price +
-                                        builder.stats().dropped_qty;
+                                        builder.stats().dropped_price + builder.stats().dropped_qty;
     marks.push_back({msgs.size(), !applied || dropped_after != dropped_before});
   }
   if (auto closed = writer->close(); !closed) {
@@ -131,17 +130,15 @@ int execute(const Options& options) {
 
   const llme::EngineConfig config = llme::workload::replay_config(builder.stats());
   const auto outcome = llme::workload::replay_log(msgs, config);
-  json sidecar =
-      llme::tools::sidecar_json(std::filesystem::path(options.messages).filename().string(),
-                                llme::tools::sha256_of(options.messages), options.symbol,
-                                builder.stats(), config, outcome);
+  json sidecar = llme::tools::sidecar_json(
+      std::filesystem::path(options.messages).filename().string(),
+      llme::tools::sha256_of(options.messages), options.symbol, builder.stats(), config, outcome);
   sidecar["dropped"]["malformed"] = malformed;
 
   if (!options.orderbook.empty()) {
     const Comparison top = compare_top_of_book(msgs, marks, config, options.orderbook);
     const auto rate = [&](std::uint64_t n) {
-      return top.compared == 0 ? 0.0
-                               : static_cast<double>(n) / static_cast<double>(top.compared);
+      return top.compared == 0 ? 0.0 : static_cast<double>(n) / static_cast<double>(top.compared);
     };
     sidecar["top_of_book"] = {{"compared", top.compared},
                               {"skipped_dropped", top.skipped_dropped},
