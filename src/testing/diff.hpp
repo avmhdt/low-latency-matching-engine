@@ -23,6 +23,8 @@ struct DiffStats {
   std::uint64_t fills = 0;
   std::uint64_t rejects = 0;
   std::uint64_t mismatches = 0;
+  std::uint64_t invariant_failures = 0;
+  std::uint64_t full_checks = 0;
   std::optional<std::uint64_t> first_mismatch_index;  // message index, or messages for final book
   std::string first_mismatch;                         // human-readable description
 };
@@ -31,6 +33,14 @@ struct DiffStats {
 class DiffRunner {
  public:
   DiffRunner(std::unique_ptr<EngineAdapter> a, std::unique_ptr<EngineAdapter> b);
+
+  // After every message, checks engine a's counts and every level the message touched, and runs
+  // the complete check every full_check_every messages. Zero turns all of this off. Output
+  // comparison already covers each message, so the touched levels catch a corrupted level on
+  // the message that breaks it; the sweep catches what a level update would not name.
+  void enable_invariants(std::uint64_t full_check_every) noexcept {
+    full_check_every_ = full_check_every;
+  }
 
   // Returns false once a mismatch has been seen; the caller may stop there.
   bool step(const InMsg& m);
@@ -42,17 +52,22 @@ class DiffRunner {
   [[nodiscard]] EngineAdapter& engine_a() noexcept { return *a_; }
 
  private:
+  bool check_invariants(std::uint64_t index);
+  void record_invariant_failure(std::uint64_t index, const std::string& what);
+
   std::unique_ptr<EngineAdapter> a_;
   std::unique_ptr<EngineAdapter> b_;
   std::vector<OutMsg> out_a_;
   std::vector<OutMsg> out_b_;
   DiffStats stats_;
+  std::uint64_t full_check_every_ = 0;
 };
 
 // Index of the first divergence over msgs, or nullopt if the engines agree, final book included.
 [[nodiscard]] std::optional<std::uint64_t> first_mismatch(const std::vector<InMsg>& msgs,
                                                           const EngineFactory& a,
-                                                          const EngineFactory& b);
+                                                          const EngineFactory& b,
+                                                          std::uint64_t full_check_every = 0);
 
 // Delta debugging: drop chunks, halving their size, while still_fails holds. Stops early at the
 // deadline and returns the smallest failing sequence found so far.

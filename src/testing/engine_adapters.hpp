@@ -25,6 +25,12 @@ class EngineAdapter {
   virtual void on_message(const InMsg& m, std::vector<OutMsg>& out) = 0;
   [[nodiscard]] virtual BookSnapshot snapshot() const = 0;
   [[nodiscard]] virtual std::uint32_t live_orders() const = 0;
+
+  // Invariant checks throw std::logic_error; engines without a checker do nothing.
+  // Cheap checks plus a walk of every level named by this message's LEVEL_UPDATE records.
+  virtual void check_touched(const std::vector<OutMsg>& /*out*/) const {}
+  // The complete check of FR-19, O(book + band).
+  virtual void check_full() const {}
 };
 
 [[nodiscard]] std::unique_ptr<EngineAdapter> make_adapter(std::string_view name,

@@ -69,6 +69,21 @@ struct EngineConfig {
   StpMode stp = StpMode::Off;
 };
 
+// Plain integers updated on the core and read at end of run (NFR-11).
+struct EngineCounters {
+  std::uint64_t msgs = 0;
+  std::uint64_t acks = 0;
+  std::uint64_t rejects = 0;
+  std::uint64_t fills = 0;
+  std::uint64_t trades = 0;
+  std::uint64_t canceled = 0;
+  std::uint64_t modified = 0;
+  std::uint64_t cancel_rejects = 0;
+  std::uint64_t modify_rejects = 0;
+  std::uint64_t level_updates = 0;
+  std::uint64_t out_records = 0;
+};
+
 struct SnapshotOrder {
   OrderId id = 0;
   Qty leaves = 0;

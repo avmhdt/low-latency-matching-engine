@@ -24,8 +24,8 @@ cmp "$log" "$log.again"
 "$run" --in "$log" --out "$log.olog" >/dev/null
 [ "$(($(wc -c <"$log.olog") % 48))" -eq $((64 % 48)) ]
 
-"$diff" --in "$log" --engines ref,ref | grep -q '"mismatches":0'
-"$diff" --profile configs/workloads/adversarial.toml --ops 2000 --seed 1 --engines ref,ref |
+"$diff" --in "$log" --engines d2,ref | grep -q '"mismatches":0'
+"$diff" --profile configs/workloads/adversarial.toml --ops 2000 --seed 1 --engines d2,ref |
   grep -q '"mismatches":0'
 "$diff" --campaign tests/fixtures/mini_campaign.toml --out "$dir/mini_campaign.json" \
   --regression-dir "$dir" 2>/dev/null

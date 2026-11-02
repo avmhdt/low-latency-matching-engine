@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <stdexcept>
 #include <utility>
 
 namespace llme {
@@ -33,7 +34,7 @@ bool DiffRunner::step(const InMsg& m) {
     stats_.rejects += r.type == to_wire(OutType::Reject) ? 1U : 0U;
   }
   if (std::equal(out_a_.begin(), out_a_.end(), out_b_.begin(), out_b_.end())) {
-    return true;
+    return full_check_every_ == 0 || check_invariants(index);
   }
 
   ++stats_.mismatches;
@@ -50,7 +51,37 @@ bool DiffRunner::step(const InMsg& m) {
   return false;
 }
 
+bool DiffRunner::check_invariants(std::uint64_t index) {
+  try {
+    a_->check_touched(out_a_);
+    if (index % full_check_every_ == 0) {
+      a_->check_full();
+      ++stats_.full_checks;
+    }
+    return true;
+  } catch (const std::logic_error& e) {
+    record_invariant_failure(index, e.what());
+    return false;
+  }
+}
+
+void DiffRunner::record_invariant_failure(std::uint64_t index, const std::string& what) {
+  ++stats_.invariant_failures;
+  if (!stats_.first_mismatch_index) {
+    stats_.first_mismatch_index = index;
+    stats_.first_mismatch = "invariant at message " + std::to_string(index) + ": " + what;
+  }
+}
+
 void DiffRunner::finish() {
+  if (full_check_every_ != 0) {
+    try {
+      a_->check_full();
+      ++stats_.full_checks;
+    } catch (const std::logic_error& e) {
+      record_invariant_failure(stats_.messages, e.what());
+    }
+  }
   if (a_->snapshot() == b_->snapshot()) {
     return;
   }
@@ -62,8 +93,10 @@ void DiffRunner::finish() {
 }
 
 std::optional<std::uint64_t> first_mismatch(const std::vector<InMsg>& msgs, const EngineFactory& a,
-                                            const EngineFactory& b) {
+                                            const EngineFactory& b,
+                                            std::uint64_t full_check_every) {
   DiffRunner runner(a(), b());
+  runner.enable_invariants(full_check_every);
   for (const InMsg& m : msgs) {
     if (!runner.step(m)) {
       return runner.stats().first_mismatch_index;

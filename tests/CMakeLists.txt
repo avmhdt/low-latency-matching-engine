@@ -3,8 +3,8 @@ include(GoogleTest)
 # Adds a gtest binary whose cases all carry one ctest label.
 function(llme_add_test name label)
   add_executable(${name} ${ARGN})
-  target_link_libraries(${name} PRIVATE llme_io llme_reference llme_testing llme_workload
-                                        GTest::gtest_main)
+  target_link_libraries(${name} PRIVATE llme_io llme_core llme_reference llme_testing
+                                        llme_workload GTest::gtest_main)
   llme_target_defaults(${name})
   gtest_discover_tests(${name} DISCOVERY_MODE PRE_TEST PROPERTIES LABELS ${label}
                        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}" TEST_LIST ${name}_cases)
@@ -16,7 +16,11 @@ llme_add_test(llme_unit_tests unit
   unit/output_hash_test.cpp
   unit/reference_engine_test.cpp
   unit/generator_test.cpp
-  unit/diff_test.cpp)
+  unit/diff_test.cpp
+  unit/order_pool_test.cpp
+  unit/id_map_test.cpp
+  unit/price_ladder_test.cpp
+  unit/engine_test.cpp)
 
 llme_add_test(llme_golden_tests golden
   golden/golden_test.cpp
@@ -25,7 +29,15 @@ target_compile_definitions(llme_golden_tests PRIVATE
   LLME_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/golden")
 
 llme_add_test(llme_property_tests property
-  property/reference_property_test.cpp)
+  property/reference_property_test.cpp
+  property/engine_property_test.cpp)
+
+# The hook replaces malloc for the whole binary, which sanitizer runtimes also claim.
+if(NOT LLME_SANITIZE)
+  llme_add_test(llme_alloc_tests alloc
+    integration/alloc_test.cpp
+    "${PROJECT_SOURCE_DIR}/src/testing/alloc_hook.cpp")
+endif()
 
 if(LLME_BUILD_TOOLS)
   add_test(NAME Cli.GenRunRoundTrip

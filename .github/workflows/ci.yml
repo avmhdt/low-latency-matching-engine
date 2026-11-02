@@ -121,6 +121,7 @@ jobs:
       - run: cmake --preset fuzz
       - run: cmake --build --preset fuzz
       - run: scripts/fuzz.sh fuzz_mlog_reader --seconds 60
+      - run: scripts/fuzz.sh fuzz_engine_diff --seconds 60
 
   diff-smoke:
     runs-on: ubuntu-24.04
@@ -133,8 +134,8 @@ jobs:
       - name: 1M balanced + 1M adversarial
         run: |
           diff=~/build/low-latency-matching-engine/gcc-release/src/tools/llme-diff
-          $diff --profile configs/workloads/balanced.toml --ops 1000000 --seed 1 --engines ref,ref
-          $diff --profile configs/workloads/adversarial.toml --ops 1000000 --seed 2 --engines ref,ref
+          $diff --profile configs/workloads/balanced.toml --ops 1000000 --seed 1 --engines d2,ref
+          $diff --profile configs/workloads/adversarial.toml --ops 1000000 --seed 2 --engines d2,ref
 
   bench-smoke:
     runs-on: ubuntu-24.04
