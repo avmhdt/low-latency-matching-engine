@@ -132,10 +132,9 @@ json one_step_check(const std::string& messages, const std::string& orderbook) {
   return {{"compared", result.compared},
           {"agree", result.agree},
           {"events_outside_window", result.events_outside_window},
-          {"agreement_rate", result.compared == 0
-                                 ? 0.0
-                                 : static_cast<double>(result.agree) /
-                                       static_cast<double>(result.compared)}};
+          {"agreement_rate", result.compared == 0 ? 0.0
+                                                  : static_cast<double>(result.agree) /
+                                                        static_cast<double>(result.compared)}};
 }
 
 int execute(const Options& options) {

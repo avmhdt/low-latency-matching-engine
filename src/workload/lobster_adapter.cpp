@@ -1,7 +1,6 @@
 #include "lobster_adapter.hpp"
 
 #include <algorithm>
-#include <array>
 #include <charconv>
 #include <optional>
 

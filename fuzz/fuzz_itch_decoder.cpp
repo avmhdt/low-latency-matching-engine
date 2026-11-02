@@ -10,12 +10,13 @@ extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size
   std::uint64_t messages = 0;
   llme::workload::ReplayBuilder first([&](const llme::InMsg&) { ++messages; });
   llme::workload::ReplayBuilder second([&](const llme::InMsg&) { ++messages; });
-  llme::workload::ItchConverter converter;
+  // Shared between runs: rebuilding the locate table per input would dominate the run time.
+  static llme::workload::ItchConverter converter;
   converter.select(0, &first);
   converter.select(1, &second);
 
   llme::workload::MemorySource source({data, size});
-  llme::workload::ItchFrameReader reader(source);
+  llme::workload::ItchFrameReader reader(source, 0);
   std::span<const std::uint8_t> message;
   llme::workload::ItchEvent event;
   while (reader.next(message)) {

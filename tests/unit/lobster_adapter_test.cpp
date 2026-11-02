@@ -142,18 +142,14 @@ TEST_F(OneStepTest, DeleteOfTheWholeLevelUncoversTheNext) {
   expect({3, 9, 7, 10000, 1}, {10200, 5, 9900, 3, 10300, 2, 0, 0}, true);
 }
 
-TEST_F(OneStepTest, HiddenExecutionChangesNothing) {
-  expect({5, 9, 1, 10100, -1}, before_, true);
-}
+TEST_F(OneStepTest, HiddenExecutionChangesNothing) { expect({5, 9, 1, 10100, -1}, before_, true); }
 
 TEST_F(OneStepTest, EventOutsideTheVisibleLevelsIsCounted) {
   expect({3, 9, 1, 9000, 1}, before_, true);
   EXPECT_EQ(checker_.result().events_outside_window, 1U);
 }
 
-TEST_F(OneStepTest, AWrongOutcomeIsNoticed) {
-  expect({1, 9, 4, 10100, 1}, before_, false);
-}
+TEST_F(OneStepTest, AWrongOutcomeIsNoticed) { expect({1, 9, 4, 10100, 1}, before_, false); }
 
 TEST_F(OneStepTest, ReusesTheBookFromLineToLine) {
   checker_.check(before_, nullptr, before_);

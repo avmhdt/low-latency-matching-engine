@@ -14,6 +14,7 @@ dependencies = [
 [project.scripts]
 llme-convert-book-l3 = "llme_tools.book_l3_to_mlog:app"
 llme-plots = "llme_tools.plots:app"
+llme-replay-report = "llme_tools.replay_report:app"
 
 [dependency-groups]
 dev = [

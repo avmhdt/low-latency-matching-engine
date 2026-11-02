@@ -79,7 +79,8 @@ class FileSource final : public ByteSource {
 // Splits the stream into frames. Each returned span is valid until the next call.
 class ItchFrameReader {
  public:
-  explicit ItchFrameReader(ByteSource& source);
+  // The buffer holds at least one maximum-size frame, whatever is asked for.
+  explicit ItchFrameReader(ByteSource& source, std::size_t buffer_bytes = std::size_t{1} << 20U);
 
   [[nodiscard]] bool next(std::span<const std::uint8_t>& message);
   [[nodiscard]] bool truncated() const noexcept { return truncated_; }

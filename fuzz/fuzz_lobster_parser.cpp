@@ -10,6 +10,7 @@
 
 extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size) {
   std::vector<llme::InMsg> msgs;
+  std::vector<std::int64_t> row;
   llme::workload::ReplayBuilder builder([&](const llme::InMsg& m) { msgs.push_back(m); });
 
   // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast): fuzz input read as text
@@ -21,6 +22,7 @@ extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size
 
     llme::workload::TopOfBook top;
     (void)llme::workload::parse_lobster_top(line, top);
+    (void)llme::workload::parse_lobster_row(line, row);
     llme::workload::LobsterEvent event;
     if (llme::workload::parse_lobster_message(line, event)) {
       llme::workload::apply_lobster_event(event, builder);

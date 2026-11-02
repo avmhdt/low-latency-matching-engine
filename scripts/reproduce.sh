@@ -42,6 +42,21 @@ for preset in gcc-release gcc-debug clang-release clang-debug; do
       echo "$fixture,$seed,$ops,$compiler,$build,d2,pipeline,$run,$hash" >>"$csv"
     done
   done
+
+  # One real log (AC-W-05), when this machine has it. Row-level data stays out of git; only the
+  # hash below reaches results/.
+  log="${LLME_DATA_DIR:-data}/processed/mlog/itch_AAPL_2019-01-30.mlog"
+  if [ -f "$log" ]; then
+    ops=$(($(wc -c <"$log") / 32))
+    for run in 1 2 3 4 5; do
+      for engine in d2 ref; do
+        hash=$("$tools/llme-run" --in "$log" --engine "$engine")
+        echo "itch_AAPL,0,$ops,$compiler,$build,$engine,inproc,$run,$hash" >>"$csv"
+      done
+      hash=$("$tools/llme-run" --in "$log" --engine d2 --pipeline)
+      echo "itch_AAPL,0,$ops,$compiler,$build,d2,pipeline,$run,$hash" >>"$csv"
+    done
+  fi
 done
 
 # Every row of a fixture must carry the same hash.

@@ -10,7 +10,6 @@ namespace llme::workload {
 
 namespace {
 
-constexpr std::size_t kBufferBytes = std::size_t{1} << 20U;
 constexpr std::size_t kLengthBytes = 2;
 constexpr std::size_t kMaxFrame = 2 + 65535;
 
@@ -158,7 +157,8 @@ std::size_t FileSource::read(std::uint8_t* out, std::size_t size) {
   return static_cast<std::size_t>(count);
 }
 
-ItchFrameReader::ItchFrameReader(ByteSource& source) : source_(&source), buffer_(kBufferBytes) {}
+ItchFrameReader::ItchFrameReader(ByteSource& source, std::size_t buffer_bytes)
+    : source_(&source), buffer_(std::max(buffer_bytes, kMaxFrame)) {}
 
 bool ItchFrameReader::ensure(std::size_t bytes) {
   if (end_ - start_ >= bytes) {
@@ -178,12 +178,11 @@ bool ItchFrameReader::ensure(std::size_t bytes) {
 }
 
 bool ItchFrameReader::next(std::span<const std::uint8_t>& message) {
-  static_assert(kBufferBytes >= kMaxFrame);
   if (!ensure(kLengthBytes)) {
     truncated_ = end_ != start_;
     return false;
   }
-  const std::size_t length = big_endian<std::size_t>(buffer_.data() + start_, kLengthBytes);
+  const auto length = big_endian<std::size_t>(buffer_.data() + start_, kLengthBytes);
   if (!ensure(kLengthBytes + length)) {
     truncated_ = true;
     return false;

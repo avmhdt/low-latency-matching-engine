@@ -283,6 +283,20 @@ int run_file(const Options& options) {
       summarize(stats, std::filesystem::path(options.in).stem().string(), 0,
                 reader->header().record_count, name_a + "," + name_b, elapsed.count());
   std::cout << summary.dump() << '\n';
+  if (!options.out.empty()) {
+    write_report(summary, options.out);
+    llme::tools::append_experiment_row(
+        {.tool = "llme-diff",
+         .args = "--in " + std::filesystem::path(options.in).filename().string(),
+         .design = name_a,
+         .workload = std::filesystem::path(options.in).stem().string(),
+         .input_hash = {},
+         .output_hash = {},
+         .n_msgs = stats.messages,
+         .headline_metric = "mismatches",
+         .headline_value = std::to_string(stats.mismatches),
+         .result_path = options.out});
+  }
   return stats.first_mismatch_index ? 1 : 0;
 }
 
