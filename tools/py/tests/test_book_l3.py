@@ -24,7 +24,7 @@ OPEN_NS = session_bounds(DATE)[0]
 
 
 def frame(rows: list[dict[str, object]]) -> pl.DataFrame:
-    defaults = {"side": 0, "price_ticks": 0, "qty": 0, "new_order_id": None, "printable": None}
+    defaults = {"side": 1, "price_ticks": 0, "qty": 0, "new_order_id": None, "printable": None}
     filled = []
     for seq, row in enumerate(rows):
         filled.append({"seq": seq, "ts_exchange": OPEN_NS + seq, **defaults, **row})
@@ -50,7 +50,7 @@ def test_add_cancel_delete_map_to_new_modify_cancel() -> None:
     builder = convert_events(
         frame(
             [
-                {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1234500, "qty": 100},
+                {"event": "add", "order_id": 1, "side": -1, "price_ticks": 1234500, "qty": 100},
                 {"event": "cancel", "order_id": 1, "qty": 30},
                 {"event": "delete", "order_id": 1},
             ]
@@ -68,7 +68,7 @@ def test_exec_becomes_ioc_on_the_opposite_side_with_the_contra_in_the_id() -> No
     builder = convert_events(
         frame(
             [
-                {"event": "add", "order_id": 7, "side": 0, "price_ticks": 1000000, "qty": 10},
+                {"event": "add", "order_id": 7, "side": 1, "price_ticks": 1000000, "qty": 10},
                 {"event": "exec", "order_id": 7, "qty": 4, "printable": True},
             ]
         ),
@@ -82,7 +82,7 @@ def test_replace_is_cancel_then_new_on_the_same_side() -> None:
     builder = convert_events(
         frame(
             [
-                {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1000000, "qty": 10},
+                {"event": "add", "order_id": 1, "side": -1, "price_ticks": 1000000, "qty": 10},
                 {
                     "event": "replace",
                     "order_id": 1,
@@ -106,7 +106,7 @@ def test_non_printable_exec_reduces_without_matching() -> None:
     builder = convert_events(
         frame(
             [
-                {"event": "add", "order_id": 1, "side": 0, "price_ticks": 1000000, "qty": 10},
+                {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1000000, "qty": 10},
                 {"event": "exec", "order_id": 1, "qty": 4, "printable": False},
             ]
         ),
@@ -120,9 +120,9 @@ def test_inexact_prices_unknown_ids_and_bad_quantities_are_dropped() -> None:
     builder = convert_events(
         frame(
             [
-                {"event": "add", "order_id": 1, "side": 0, "price_ticks": 1000050, "qty": 10},
+                {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1000050, "qty": 10},
                 {"event": "delete", "order_id": 1},
-                {"event": "add", "order_id": 2, "side": 0, "price_ticks": 1000000, "qty": 0},
+                {"event": "add", "order_id": 2, "side": 1, "price_ticks": 1000000, "qty": 0},
             ]
         ),
         DATE,
@@ -143,13 +143,32 @@ def test_events_outside_the_session_are_skipped() -> None:
 def test_seq_sets_the_order_even_when_rows_are_shuffled() -> None:
     events = frame(
         [
-            {"event": "add", "order_id": 1, "side": 0, "price_ticks": 1000000, "qty": 10},
+            {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1000000, "qty": 10},
             {"event": "delete", "order_id": 1},
         ]
     )
     builder = convert_events(events.reverse(), DATE)
     assert builder.stats.dropped_unknown_id == 0
     assert len(builder.records) == 2
+
+
+def test_sides_use_the_book_l3_encoding() -> None:
+    builder = convert_events(
+        frame(
+            [
+                {"event": "add", "order_id": 1, "side": 1, "price_ticks": 1000000, "qty": 10},
+                {"event": "add", "order_id": 2, "side": -1, "price_ticks": 1010000, "qty": 10},
+            ]
+        ),
+        DATE,
+    )
+    assert [r[1] for r in records(builder)] == [0, 1]
+
+
+def test_unknown_side_is_an_error() -> None:
+    bad = {"event": "add", "order_id": 1, "side": 0, "price_ticks": 1000000, "qty": 10}
+    with pytest.raises(ValueError, match="unknown book_l3 side"):
+        convert_events(frame([bad]), DATE)
 
 
 def test_unknown_event_is_an_error() -> None:

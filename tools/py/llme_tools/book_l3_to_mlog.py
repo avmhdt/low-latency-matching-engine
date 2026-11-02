@@ -198,6 +198,15 @@ def session_bounds(date: str) -> tuple[int, int]:
     return epoch_ns + SESSION_START_NS, epoch_ns + SESSION_END_NS
 
 
+def wire_side(book_l3_side: int) -> int:
+    """book_l3 has 1 for buy and -1 for sell; the wire format has 0 and 1."""
+    if book_l3_side == 1:
+        return 0
+    if book_l3_side == -1:
+        return 1
+    raise ValueError(f"unknown book_l3 side: {book_l3_side}")
+
+
 def convert_events(events: pl.DataFrame, date: str) -> ReplayBuilder:
     """Applies the book_l3 to .mlog mapping of spec section 7(b), in `seq` order (DQ-03)."""
     builder = ReplayBuilder()
@@ -210,7 +219,7 @@ def convert_events(events: pl.DataFrame, date: str) -> ReplayBuilder:
         if ts < start_ns or ts >= end_ns:
             builder.stats.skipped_session += 1
         elif event == "add":
-            builder.add(order_id, side, price, qty)
+            builder.add(order_id, wire_side(side), price, qty)
         elif event == "exec":
             if printable is False:
                 builder.cross_exec(order_id, qty)
