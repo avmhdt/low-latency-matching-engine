@@ -104,6 +104,34 @@ All of it comes from one commit, `ec3220f`, with binaries frozen before the runs
 - **The two fuzz rows read `git_dirty=true`.** The clean clone's only uncommitted files were the reports those runs wrote. `fuzz.sh` now ignores `results/`, and the rows stay as written, per rule 5 of §16.
 - **Review.** A second reader, working from the spec, compared the semantics with the reference and golden scenarios and found no contradiction. The closest calls are already recorded above: `POOL_FULL` scope, IOC with no fill, and the no-op modify.
 
+## Real-flow choices (M5)
+
+- **D-04 resolves to (a), `book_l3`, under its default,** and the fallback decoder exists too, because AC-W-04 needs `fuzz_itch_decoder`. The two routes share one mapping, and `scripts/replay_evidence.sh` compares their records byte for byte.
+- **D-05 is served by the decoder.** The `book_l3` output holds itch-feed-handler's 50-symbol watchlist, and only 19 of those are in the true top 50 on 2019-01-30. `llme-itch-decode --top 50` ranks symbols from the raw file by order messages (A, F, E, C, X, D, U) inside the session. The most active is QQQ.
+- **The ITCH file is reused** from `~/data/itch-feed-handler/raw/itch/`, with no new download.
+- **DQ-05 is applied literally.** Events outside 09:30 to 16:00 ET are skipped, so orders resting before the open are unknown to the converter and their later events are dropped under DQ-04. This costs 0.6% of events on the top 50 (346,393 unknown-ID drops against 57.5M messages).
+- **Non-printable executions reduce their order by `MODIFY` and are counted as skipped.** DQ-05 says crosses are not modelled, but leaving those shares on the book would make it wrong for the rest of the day.
+- **The expected contra travels in the log.** A synthetic IOC's `order_id` is the resting order's ID with the top bit set, so `exec_contra_match_rate` needs no per-execution data in the sidecar. The spec has the sidecar record it; a sidecar of that size would be row-level data for no benefit.
+- **`book_l3.side` is 1 buy, -1 sell,** unlike the wire format's 0 and 1, and `book_l3_to_mlog.py` maps between them.
+- **Sizing.** Stub quotes up to $199,999.99 make the DQ-07 band wide: up to 22M levels for one symbol and 102M across the top 50, about 5 GB in total. That is above NFR-12's default engine, which is sized for 2^20 levels, and is what DQ-07 asks for.
+- **Extra files outside §6:** `scripts/replay_evidence.sh`, `tools/py/llme_tools/replay_report.py`, `src/workload/replay.{hpp,cpp}`, `src/tools/sidecar.{hpp,cpp}`, `tests/fixtures/make_itch_synthetic.py`.
+- **LOBSTER columns against the sample's ReadMe.** They match the spec, except that the ReadMe lists no type 6 and the samples contain none. The adapter still skips type 6, as the spec says.
+
+## LOBSTER top-of-book agreement (needs an owner ruling)
+
+§11 sets a target of at least 99% agreement between the engine's top of book and LOBSTER's orderbook file after each message, and R-04 treats less as a warning sign. **Continuous replay does not reach it, and no correct engine can on these samples.** The threshold is unchanged; this records what was measured.
+
+| Sample | Messages compared | Continuous replay, price and size | Continuous replay, price only | One-step check |
+|---|---|---|---|---|
+| AAPL 2012-06-21, 10 levels | 392,010 | 35.6% | 41.3% | 100% of 400,390 |
+| MSFT 2012-06-21, 10 levels | 666,904 | 52.7% | 94.8% | 100% of 668,764 |
+
+- **Cause.** The sample's ReadMe says the message file covers events "in the requested price range". An order that drifts out of the top 10 levels gets no further events, so its cancel never appears, and orders resting before 09:30 or arriving from outside the window are never seen. Applying each event directly to the named order, with no matching at all, drifts the same way: live orders grow to about 10,000 and the known-order book shows a better bid than the real one on 96% of AAPL messages. The contra match rates of 59% and 74% have the same cause.
+- **One-step check.** To keep the check that R-04 wants, `llme-convert-lobster` also rebuilds the visible book from each orderbook row, applies the next event through D2, and compares the top of book with the row after it. This tests add, cancel, delete and execution semantics on every message, with no inherited error, and needs no order IDs. Every event fell inside the visible levels, which supports the cause above. `OneStepTest.AWrongOutcomeIsNoticed` shows the check can fail.
+- **Decision for the owner:** accept the one-step figure as the §11 validation, or supply a sample that would allow continuous replay. Nothing downstream waits on this: AC-W-10 does not depend on it.
+
+ITCH replay does not have this limitation, because the file is complete. Its contra match rate on the top 50 is 85.8% to 99.9%. The misses come mainly from orders that rested before the open, which are not in the replayed book.
+
 ## Build choices
 
 - **`tl::expected`, not `std::expected`.** The code base compiles as C++20 and libstdc++ gates `std::expected` on C++23. The spec names this fallback.

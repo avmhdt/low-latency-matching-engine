@@ -107,3 +107,20 @@ In production this property is what makes a matching engine recoverable. A stand
 4. **Invariants.** `check_invariants` in `engine.hpp`, with tests that corrupt the book in each way it must catch.
 5. **Fuzzing.** `fuzz_engine_diff` explores order sequences by coverage, on a book small enough to hit empty sides, ID reuse and a full pool all the time.
 6. **Sanitizers and the allocation hook.** ASan, UBSan and TSan run the whole suite. The hook proves that the hot path never allocates.
+
+## Real flow
+
+Real order flow reaches the engine as an ordinary `.mlog`. `ReplayBuilder` in `src/workload/replay.cpp` turns source events into requests, and `tools/py/llme_tools/book_l3_to_mlog.py` mirrors it line for line.
+
+| Source event | Engine message |
+|---|---|
+| Add | NEW GTC limit |
+| Partial cancel | MODIFY to the new leaves, which keeps priority |
+| Delete | CANCEL |
+| Replace | CANCEL, then NEW with the new ID on the same side, which loses priority as ITCH U does |
+| Execution | NEW IOC limit on the opposite side at the resting price, with the resting ID in the low 63 bits of its own ID |
+| Non-printable execution | MODIFY down: the shares leave the book, but nothing trades |
+
+An execution is emulated, so it hits whatever is at the head of that price in the engine. When the real order was not at the head, because earlier orders are missing from the replay, it hits a different one. `exec_contra_match_rate` measures how often that happens. ITCH replay is a realistic workload, not a venue simulation.
+
+A replay sizes its engine from the sidecar next to the log (DQ-07), and `llme-run` and `llme-diff` read that sidecar automatically.
