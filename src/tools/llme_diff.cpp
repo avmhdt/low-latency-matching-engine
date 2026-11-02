@@ -296,7 +296,7 @@ int run_profile(const Options& options) {
 int run(int argc, char** argv) {
   CLI::App app{"Compare engines record by record", "llme-diff"};
   Options options;
-  std::string engines = "ref,ref";
+  std::string engines = "d2,ref";
   app.add_option("--campaign", options.campaign, "Campaign TOML");
   app.add_option("--in", options.in, "Input .mlog");
   app.add_option("--profile", options.profile, "Workload profile for a single generated run");

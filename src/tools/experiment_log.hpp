@@ -28,4 +28,10 @@ void append_experiment_row(const ExperimentRow& row);
 // "<sha>" of HEAD in the working directory, or "unknown" outside a repository.
 [[nodiscard]] std::string git_sha();
 
+// Standard output of a shell command with trailing whitespace removed, or empty on failure.
+[[nodiscard]] std::string capture_command(const std::string& command);
+
+// This machine's name; results/manifests/<host>.json is its manifest.
+[[nodiscard]] std::string hostname();
+
 }  // namespace llme::tools

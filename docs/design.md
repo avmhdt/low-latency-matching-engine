@@ -66,3 +66,44 @@ Every field not listed is zero. `seq` starts at 1 and increments by one per reco
 - MODIFY: `MODIFIED`, the `LEVEL_UPDATE` of the old level, then any matches as above, then the `LEVEL_UPDATE` of the new level if a remainder rests.
 
 There is one `LEVEL_UPDATE` per match, even when several matches land on one level.
+
+## Structures
+
+The hot path is `MatchingEngine<LevelStore, Sink>` in `include/llme/engine.hpp`. Both parameters are templates, so there is no virtual call or type erasure between the matching loop and its book or output.
+
+| Structure | File | Cost | Notes |
+|---|---|---|---|
+| Order pool | `order_pool.hpp` | O(1) allocate and release | Fixed array of 48-byte orders with an index free list. The list is LIFO, so a released slot, still in cache, is reused first. |
+| Level FIFO | `order_pool.hpp` | O(1) push and unlink | Intrusive doubly linked list of pool indices, with cached `qty` and `count`. |
+| ID map | `id_map.hpp` | O(1) expected | Linear probing with Fibonacci hashing and capacity of at least 2 × `max_orders`. Backward-shift deletion leaves no tombstones, so probe lengths do not degrade over a long run. |
+| Price ladder (D2) | `price_ladder.hpp` | O(1) level access; next level by bitmap scan | One `Level` per price per side, plus a bitmap and a summary bitmap. The best price is cached, and the bitmap is searched only when the best level empties. |
+
+All of it is sized and touched in the constructor. At the default config, 2²⁰ levels per side and 2²⁰ orders, the book takes under 256 MiB (NFR-12, checked by a test). When capacity runs out the engine rejects with `POOL_FULL` and never grows.
+
+The output goes to a `Sink` called once per record. The pipeline's sink pushes into the out-ring. A bench sink can discard, so that matching can be timed alone.
+
+## Rings
+
+`SpscRing<T, N>` in `include/llme/spsc_ring.hpp` is a bounded lock-free queue with one producer and one consumer.
+
+- **Indices.** `head` and `tail` are free-running counters, masked on use, so full and empty are distinguishable without giving up a slot.
+- **Memory orders.** The producer writes the slot, then stores `tail` with release. The consumer loads `tail` with acquire, so it cannot see the index before the slot's contents. Returning slots is the same pairing on `head`. Each index has a single writer, so sequential consistency would add cost and no guarantee.
+- **False sharing.** `head`, `tail` and each side's cached copy of the other's index sit on separate 64-byte lines, and the slots start on their own line. The cached copy means a side touches the shared line only when its cached view says full or empty, so under load most operations stay in the local cache.
+- **Proof.** `RingStress.*` moves numbered 32-byte records between two threads: 10M under TSan in CI and 1B in Release, with any loss, duplicate, reorder or torn copy failing the check.
+
+## Replay
+
+The core is single-threaded and sees one totally ordered stream of `InMsg`, so its output is a pure function of the input bytes. Ring timing can change when a record is produced, but never what it contains or where it sits in the stream. Nothing in the output depends on time, addresses, thread scheduling or a hash map's iteration order: pool indices stay inside the engine, and `seq` counts output records.
+
+`OutputHasher` reduces a run to one XXH3-64 digest. AC-W-05 holds that digest fixed across repeated runs, pipeline against in-process, Debug against Release, GCC against Clang, and every engine design.
+
+In production this property is what makes a matching engine recoverable. A standby replaying the same sequenced input reaches the same state, and comparing digests shows that it did. A bug report is a log file that reproduces exactly, which is how `tests/fixtures/regressions/` works here.
+
+## Correctness layers
+
+1. **Golden scenarios.** Hand-written from this document, before either engine ran them.
+2. **Reference engine.** Standard containers and no performance work, so it can be checked by reading it.
+3. **Differential testing.** `llme-diff` compares every record and the final book against the reference. The generator's shadow book is a reference too, so a defect in a fast engine cannot change its own input.
+4. **Invariants.** `check_invariants` in `engine.hpp`, with tests that corrupt the book in each way it must catch.
+5. **Fuzzing.** `fuzz_engine_diff` explores order sequences by coverage, on a book small enough to hit empty sides, ID reuse and a full pool all the time.
+6. **Sanitizers and the allocation hook.** ASan, UBSan and TSan run the whole suite. The hook proves that the hot path never allocates.

@@ -83,7 +83,7 @@ if [ -f "$csv" ]; then
   printf '%s,%s,%s,%s,fuzz.sh,%s,,%s,,,%s,clang-18,,%s,,,,,,%s,crashes,%s,%s\n' \
     "fuzz_${target}_$(date -u +%Y%m%dT%H%M%SZ)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     "$(git rev-parse HEAD 2>/dev/null || echo unknown)" \
-    "$([ -n "$(git status --porcelain 2>/dev/null | head -1)" ] && echo true || echo false)" \
+    "$([ -n "$(git status --porcelain -- . ':!results' 2>/dev/null | head -1)" ] && echo true || echo false)" \
     "seconds=$seconds jobs=$jobs" "$target" "${execs:-0}" "$(hostname)" \
     "$(grep -qi microsoft /proc/version 2>/dev/null && echo true || echo false)" \
     "$((crashes + leaks + timeouts + ooms))" "$out" >>"$csv"

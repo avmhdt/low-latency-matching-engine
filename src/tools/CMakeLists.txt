@@ -1,7 +1,7 @@
 add_library(llme_tool_support STATIC experiment_log.cpp)
 target_include_directories(llme_tool_support PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries(llme_tool_support
-  PUBLIC llme_io llme_workload llme_testing CLI11::CLI11 nlohmann_json::nlohmann_json
+  PUBLIC llme_io llme_pipeline llme_workload llme_testing CLI11::CLI11 nlohmann_json::nlohmann_json
          tomlplusplus::tomlplusplus)
 llme_target_defaults(llme_tool_support)
 

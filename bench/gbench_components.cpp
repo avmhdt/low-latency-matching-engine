@@ -2,13 +2,18 @@
 // bench preset on native Linux; CI just compiles and runs it briefly.
 #include <benchmark/benchmark.h>
 
+#include <atomic>
 #include <cstdint>
+#include <memory>
+#include <thread>
 #include <vector>
 
 #include "llme/engine.hpp"
 #include "llme/id_map.hpp"
 #include "llme/output_hash.hpp"
+#include "llme/pipeline.hpp"
 #include "llme/price_ladder.hpp"
+#include "llme/spsc_ring.hpp"
 
 namespace {
 
@@ -31,6 +36,37 @@ llme::InMsg limit(llme::OrderId id, Side side, llme::Qty qty, llme::Price price,
 llme::EngineConfig bench_config() {
   return {.price_min = 0, .price_max = (1 << 20) - 1, .max_orders = 1U << 20U};
 }
+
+void bm_ring_push_pop_same_core(benchmark::State& state) {
+  const auto ring = std::make_unique<llme::InRing>();
+  llme::InMsg m;
+  for (auto _ : state) {
+    (void)ring->try_push(m);
+    (void)ring->try_pop(m);
+    benchmark::ClobberMemory();
+  }
+}
+BENCHMARK(bm_ring_push_pop_same_core);
+
+// One producer thread and this consumer. Pinning is left to the caller on benchmark hosts.
+void bm_ring_cross_core(benchmark::State& state) {
+  const auto ring = std::make_unique<llme::InRing>();
+  std::atomic<bool> stop{false};
+  std::thread producer([&] {
+    const llme::InMsg m;
+    while (!stop.load(std::memory_order_relaxed)) {
+      (void)ring->try_push(m);
+    }
+  });
+  llme::InMsg m;
+  for (auto _ : state) {
+    while (!ring->try_pop(m)) {
+    }
+  }
+  stop.store(true);
+  producer.join();
+}
+BENCHMARK(bm_ring_cross_core);
 
 void bm_output_hash_update(benchmark::State& state) {
   llme::OutputHasher hasher;

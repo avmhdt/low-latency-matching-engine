@@ -13,6 +13,7 @@
 #include "generator.hpp"
 #include "llme/engine.hpp"
 #include "llme/output_hash.hpp"
+#include "llme/pipeline.hpp"
 
 namespace llme {
 namespace {
@@ -59,17 +60,31 @@ TEST(AllocTest, NothingCountedWhileDisarmed) {
   EXPECT_EQ(testing::allocations_while_armed(), 0U);
 }
 
-TEST(AllocTest, HotPathIsAllocationFree) {
-  const auto profile = workload::load_profile("configs/workloads/balanced.toml");
-  workload::Generator generator(profile, 7);
+struct Flow {
+  EngineConfig config;
   std::vector<InMsg> msgs;
-  msgs.reserve(kWarmupMessages + kArmedMessages);
-  for (std::uint64_t i = 0; i < kWarmupMessages + kArmedMessages; ++i) {
-    msgs.push_back(generator.next());
-  }
+};
+
+// One generated stream shared by both tests, built before anything is armed.
+const Flow& flow() {
+  static const Flow generated = [] {
+    const auto profile = workload::load_profile("configs/workloads/balanced.toml");
+    workload::Generator generator(profile, 7);
+    Flow out{.config = profile.engine, .msgs = {}};
+    out.msgs.reserve(kWarmupMessages + kArmedMessages);
+    for (std::uint64_t i = 0; i < kWarmupMessages + kArmedMessages; ++i) {
+      out.msgs.push_back(generator.next());
+    }
+    return out;
+  }();
+  return generated;
+}
+
+TEST(AllocTest, HotPathIsAllocationFree) {
+  const auto& [config, msgs] = flow();
 
   OutputHasher hasher;
-  MatchingEngine<LadderLevelStore, HashSink> engine(profile.engine, HashSink{&hasher});
+  MatchingEngine<LadderLevelStore, HashSink> engine(config, HashSink{&hasher});
   for (std::uint64_t i = 0; i < kWarmupMessages; ++i) {
     engine.on_message(msgs[i]);
   }
@@ -83,6 +98,18 @@ TEST(AllocTest, HotPathIsAllocationFree) {
   EXPECT_EQ(testing::allocations_while_armed(), 0U);
   EXPECT_EQ(engine.counters().msgs, msgs.size());
   EXPECT_GT(engine.counters().fills, 0U);
+}
+
+// All three pipeline threads are spinning at the start line when the hook is armed, and the hook
+// counts on every thread, so this covers the gateway and publisher loops as well as the core.
+TEST(AllocTest, PipelineCoreLoopIsAllocationFree) {
+  const auto& [config, msgs] = flow();
+  PipelineOptions options;
+  options.on_threads_ready = [] { testing::arm_alloc_hook(); };
+  options.on_threads_done = [] { testing::disarm_alloc_hook(); };
+  const auto result = run_pipeline(msgs, config, options);
+  EXPECT_EQ(testing::allocations_while_armed(), 0U);
+  EXPECT_EQ(result.counters.msgs, msgs.size());
 }
 
 }  // namespace

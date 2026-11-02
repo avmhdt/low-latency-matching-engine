@@ -1,0 +1,63 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  LLME_APT: ninja-build g++-13 clang-18 llvm-18 libclang-rt-18-dev
+
+jobs:
+  differential:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq $LLME_APT
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/CPM
+          key: cpm-${{ hashFiles('cmake/Dependencies.cmake') }}
+      - run: cmake --preset gcc-release
+      - run: cmake --build --preset gcc-release --target llme-diff
+      - name: 20M operations per profile
+        run: >
+          ~/build/low-latency-matching-engine/gcc-release/src/tools/llme-diff
+          --campaign configs/diff_nightly.toml --shrink --out nightly-diff.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-diff
+          path: |
+            nightly-diff.json
+            tests/fixtures/regressions/
+          retention-days: 14
+
+  fuzz:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LLME_DATA_DIR: ${{ github.workspace }}/.fuzz-data
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq $LLME_APT
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/CPM
+          key: cpm-${{ hashFiles('cmake/Dependencies.cmake') }}
+      - run: cmake --preset fuzz
+      - run: cmake --build --preset fuzz
+      - run: scripts/fuzz.sh fuzz_mlog_reader --seconds 600
+      - run: scripts/fuzz.sh fuzz_engine_diff --seconds 600
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-fuzz
+          path: |
+            results/fuzz/
+            .fuzz-data/fuzz/artifacts/
+          retention-days: 14

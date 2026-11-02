@@ -21,7 +21,10 @@ second=$("$run" --in "$log")
 "$gen" --profile "$profile" --ops 10000 --seed 42 --out "$log.again" >/dev/null
 cmp "$log" "$log.again"
 
-"$run" --in "$log" --out "$log.olog" >/dev/null
+"$run" --in "$log" --pipeline --run-json "$dir/run.json" --out "$log.olog" | grep -q "^$first$"
+grep -q '"mode": "pipeline"' "$dir/run.json"
+grep -q '"input_sha256": "[0-9a-f]\{64\}"' "$dir/run.json"
+"$run" --in "$log" --engine ref | grep -q "^$first$"
 [ "$(($(wc -c <"$log.olog") % 48))" -eq $((64 % 48)) ]
 
 "$diff" --in "$log" --engines d2,ref | grep -q '"mismatches":0'
@@ -40,6 +43,10 @@ if "$run" --in "$dir/does_not_exist.mlog" 2>/dev/null; then
   echo "llme-run must fail on a missing file" >&2
   exit 1
 fi
+if "$run" --in "$log" --engine ref --pipeline 2>/dev/null; then
+  echo "llme-run must refuse a pipeline on the reference" >&2
+  exit 1
+fi
 if "$gen" --profile does_not_exist.toml --out "$log" 2>/dev/null; then
   echo "llme-gen must fail on a missing profile" >&2
   exit 1
@@ -48,4 +55,4 @@ if "$diff" --in "$log" --engines nosuch,ref 2>/dev/null; then
   echo "llme-diff must fail on an unknown engine" >&2
   exit 1
 fi
-rm -f "$log" "$log.again" "$log.olog" "$dir/mini_campaign.json"
+rm -f "$log" "$log.again" "$log.olog" "$dir/mini_campaign.json" "$dir/run.json"

@@ -17,25 +17,6 @@ namespace llme::tools {
 
 namespace {
 
-std::string capture(const char* command) {
-  struct Closer {
-    void operator()(std::FILE* f) const noexcept { pclose(f); }
-  };
-  const std::unique_ptr<std::FILE, Closer> pipe(popen(command, "r"));
-  if (!pipe) {
-    return {};
-  }
-  std::string out;
-  std::array<char, 256> buffer{};
-  while (std::fgets(buffer.data(), static_cast<int>(buffer.size()), pipe.get()) != nullptr) {
-    out += buffer.data();
-  }
-  while (!out.empty() && (out.back() == '\n' || out.back() == ' ')) {
-    out.pop_back();
-  }
-  return out;
-}
-
 std::string utc_now(const char* format) {
   const std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
   std::tm tm{};
@@ -69,12 +50,31 @@ bool is_wsl() {
   return text.find("microsoft") != text.npos || text.find("Microsoft") != text.npos;
 }
 
+}  // namespace
+
+std::string capture_command(const std::string& command) {
+  struct Closer {
+    void operator()(std::FILE* f) const noexcept { pclose(f); }
+  };
+  const std::unique_ptr<std::FILE, Closer> pipe(popen(command.c_str(), "r"));
+  if (!pipe) {
+    return {};
+  }
+  std::string out;
+  std::array<char, 256> buffer{};
+  while (std::fgets(buffer.data(), static_cast<int>(buffer.size()), pipe.get()) != nullptr) {
+    out += buffer.data();
+  }
+  while (!out.empty() && (out.back() == '\n' || out.back() == ' ')) {
+    out.pop_back();
+  }
+  return out;
+}
+
 std::string hostname() {
   std::array<char, 256> name{};
   return gethostname(name.data(), name.size()) == 0 ? std::string(name.data()) : "unknown";
 }
-
-}  // namespace
 
 std::filesystem::path results_dir() {
   // NOLINTNEXTLINE(concurrency-mt-unsafe): single-threaded tool start-up
@@ -83,7 +83,7 @@ std::filesystem::path results_dir() {
 }
 
 std::string git_sha() {
-  std::string sha = capture("git rev-parse HEAD 2>/dev/null");
+  std::string sha = capture_command("git rev-parse HEAD 2>/dev/null");
   return sha.empty() ? "unknown" : sha;
 }
 
@@ -93,7 +93,9 @@ void append_experiment_row(const ExperimentRow& row) {
   if (!csv) {
     return;
   }
-  const bool dirty = !capture("git status --porcelain 2>/dev/null | head -1").empty();
+  // results/ is excluded: a run's own output must not mark the run as dirty.
+  const bool dirty =
+      !capture_command("git status --porcelain -- . ':!results' 2>/dev/null | head -1").empty();
   csv << row.tool << '_' << utc_now("%Y%m%dT%H%M%SZ") << '_' << getpid() << ','
       << utc_now("%Y-%m-%dT%H:%M:%SZ") << ',' << git_sha() << ',' << (dirty ? "true" : "false")
       << ',' << row.tool << ',' << field(row.args) << ',' << row.design << ',' << row.workload
