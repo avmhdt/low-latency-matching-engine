@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  LLME_APT: ninja-build g++-13 clang-18 clang-tidy-18 clang-format-18 llvm-18 libclang-rt-18-dev
+
+jobs:
+  gcc-release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - &apt
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq $LLME_APT
+      - &cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/CPM
+          key: cpm-${{ hashFiles('cmake/Dependencies.cmake') }}
+      - run: cmake --preset gcc-release
+      - run: cmake --build --preset gcc-release
+      - run: ctest --preset gcc-release
+
+  clang-release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset clang-release
+      - run: cmake --build --preset clang-release
+      - run: ctest --preset clang-release
+
+  asan-ubsan:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset asan-ubsan
+      - run: cmake --build --preset asan-ubsan
+      - run: ctest --preset asan-ubsan
+
+  tsan:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      # ubuntu-24.04 runners ship high-entropy ASLR, which TSan's shadow mapping cannot handle.
+      - run: sudo sysctl -w vm.mmap_rnd_bits=28
+      - run: cmake --preset tsan
+      - run: cmake --build --preset tsan
+      - run: ctest --preset tsan
+
+  clang-tidy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset clang-tidy
+      - run: cmake --build --preset clang-tidy
+
+  format:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq clang-format-18
+      - run: git ls-files '*.cpp' '*.hpp' | xargs clang-format-18 --dry-run --Werror
+
+  python-lint:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: tools/py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy --strict llme_tools
+
+  data-hygiene:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: scripts/check_data_hygiene.sh
+
+  coverage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset coverage
+      - run: cmake --build --preset coverage
+      - run: LLME_COVERAGE_REPORT=coverage-html scripts/coverage.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-html
+          path: coverage-html
+          retention-days: 14
+
+  fuzz-smoke:
+    runs-on: ubuntu-24.04
+    env:
+      LLME_DATA_DIR: ${{ github.workspace }}/.fuzz-data
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset fuzz
+      - run: cmake --build --preset fuzz
+      - run: scripts/fuzz.sh fuzz_mlog_reader --seconds 60
+
+  diff-smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset gcc-release
+      - run: cmake --build --preset gcc-release --target llme-diff
+      - run: ~/build/low-latency-matching-engine/gcc-release/src/tools/llme-diff --help
+
+  bench-smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - *apt
+      - *cache
+      - run: cmake --preset bench
+      - run: cmake --build --preset bench
+      - run: ~/build/low-latency-matching-engine/bench/bench/llme-gbench --benchmark_min_time=0.01s

@@ -1,0 +1,17 @@
+[engine]
+design        = "d2"          # d1 | d2 | d3 | ref
+price_min     = 0             # ticks, inclusive
+price_max     = 1048575       # ticks, inclusive (2^20 levels)
+max_orders    = 1048576       # pool capacity (power of two)
+id_map_load   = 0.5           # capacity = next_pow2(max_orders / load)
+stp           = "off"         # off | cancel_newest  (FR-31, Could)
+
+[ring]
+in_capacity   = 65536         # InMsg slots, power of two
+out_capacity  = 262144        # OutMsg slots, power of two
+
+[pipeline]
+gateway_core  = "env:LLME_PRODUCER_CORE"
+core_core     = "env:LLME_BENCH_CORE"
+publisher_core = "env:LLME_CONSUMER_CORE"
+write_olog    = false

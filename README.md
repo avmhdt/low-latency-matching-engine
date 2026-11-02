@@ -2,7 +2,7 @@
 
 > A price–time priority order book in C++ or Rust, tested against a reference and measured in nanoseconds.
 
-**Status:** planning
+**Status:** in build, see the milestones in `docs/decisions.md`
 
 | | |
 |---|---|

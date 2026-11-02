@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v18.1.8
+    hooks:
+      - id: clang-format
+        types_or: [c++, c]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      - id: ruff
+        files: ^tools/py/
+      - id: ruff-format
+        files: ^tools/py/
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(tests/fixtures/|fuzz/corpus/)
+      - id: end-of-file-fixer
+        exclude: ^(tests/fixtures/|fuzz/corpus/)
+      - id: check-added-large-files
+        args: [--maxkb=500]
+  - repo: local
+    hooks:
+      - id: data-hygiene
+        name: reject data files (NFR-10)
+        entry: scripts/check_data_hygiene.sh
+        language: script
+        pass_filenames: true
