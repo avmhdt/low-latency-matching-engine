@@ -14,7 +14,8 @@ Project 9, `low-latency-matching-engine`. `D:\trading-strategy-brainstorm\DECISI
 - **D-05 ITCH day:** `01302019.NASDAQ_ITCH50.gz`, the primary day of itch-feed-handler. Changed from "most recent full-day sample".
 - **D-02 and D-03 native Linux:** rented cloud bare metal, up to USD 50, for M6 only. Changed from "dual boot or spare box; no cloud spend". Nothing paid is created before M6, and the provider is chosen with the owner first.
 - **Accepted defaults:** D-04, D-06 to D-09 stand as written in the spec.
-- **Still open:** bare-metal provider, researched first, needed by M6.
+- **D-02 and D-03 provider (owner decision, 2026-11-03):** Cherry Servers, hourly Ryzen bare metal, chosen over AWS metal. Target a Ryzen 9 7950X (Zen 4, $0.399/h) if one is in stock, otherwise a 9950X (Zen 5, $0.70/h), each with an IP-KVM console and Ubuntu 24.04 or 22.04. On 2026-11-03 stock was scarce: no 7950X anywhere and one 9950X in Lithuania. The cap stays USD 50 in total. The owner creates the account, pays and rents; agents never handle credentials or payment. `docs/benchmarking.md` has the session plan, the cost estimate and the rule to stop at 80% of the cap.
+- **Zen 5 labelling:** the spec's reference examples are Raptor Lake and Zen 4. Every manifest carries a `uarch` field, and results from a 9950X are labelled Zen 5 wherever they appear.
 
 ## Environment (P-01, P-02, recorded 2026-11-02)
 
@@ -149,6 +150,13 @@ Commit `a66ea44`, binaries frozen before the runs started, `nice` 15, and no mor
 - **Ruling applied.** The README memo (M7) cites the one-step figure for this check and reports the continuous figures next to it, with this cause.
 
 ITCH replay does not have this limitation, because the file is complete. Its contra match rate on the top 50 is 85.8% to 99.9%. The misses come mainly from orders that rested before the open, which are not in the replayed book.
+
+## Bare-metal preparation (M6, 2026-11-03)
+
+- **Extra files outside §6:** `scripts/bare_metal_setup.sh` (toolchain set-up, which previews unless given `--apply`), `scripts/bare_metal_run.sh` (the run list with the budget guard) and `scripts/pmu_check.sh` (the counter gate). `scripts/bench_env.sh` is the spec's own file.
+- **`bench_env.sh` changes nothing.** It checks the host, and `--plan` prints the D-08 commands with their undo for the owner to run (P-05, rule 5 of §16). It refuses to plan bench cores that share a physical core, and suggests cores that do not.
+- **The PMU gate comes first.** `bare_metal_run.sh` runs `pmu_check.sh` before anything else and stops if cycles, instructions, cache-misses and branch-misses are not all non-zero. On this WSL2 host it correctly stops.
+- **The budget guard counts from renting.** The cost so far is the hourly rate times the hours since the order completed, so set-up time and idle time count. A step that would take spending past 80% of the cap does not start.
 
 ## Build choices
 
