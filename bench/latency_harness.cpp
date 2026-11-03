@@ -118,19 +118,27 @@ struct NullOut {
 };
 
 // Open-loop pipeline: the gateway releases message i at start + i / rate, whether or not the core
-// has caught up.
+// has caught up. The core thread takes --core and the calling thread, the gateway, moves to
+// LLME_PRODUCER_CORE, since two spinning threads on one CPU would measure only each other.
 template <class Store>
 Histogram run_pipeline(std::span<const InMsg> msgs, const llme::EngineConfig& cfg, double rate,
-                       double ticks_per_ns, std::optional<int> core) {
+                       double ticks_per_ns, std::optional<int> core, json& core_thread_state) {
+  const std::optional<int> gateway = llme::cores_from_env().gateway;
+  if (core && gateway && *core == *gateway) {
+    throw std::runtime_error("the gateway and the core thread would share CPU " +
+                             std::to_string(*core) + ": set LLME_PRODUCER_CORE elsewhere");
+  }
   const auto ring = std::make_unique<StampedRing>();
   std::vector<std::uint64_t> done(msgs.size(), 0);
   std::vector<std::uint64_t> intended(msgs.size(), 0);
   llme::MatchingEngine<Store, NullOut> engine(cfg, NullOut{});
+  std::atomic<bool> ready{false};
   std::atomic<bool> go{false};
   const double ticks_per_msg = ticks_per_ns * 1e9 / rate;
 
   std::thread core_thread([&] {
-    (void)llme::bench::prepare_thread(core);
+    core_thread_state = llme::bench::prepare_thread(core);
+    ready.store(true, std::memory_order_release);
     while (!go.load(std::memory_order_acquire)) {
     }
     Stamped item;
@@ -146,6 +154,11 @@ Histogram run_pipeline(std::span<const InMsg> msgs, const llme::EngineConfig& cf
     }
   });
 
+  if (gateway) {
+    (void)llme::pin_current_thread(*gateway);
+  }
+  while (!ready.load(std::memory_order_acquire)) {
+  }
   go.store(true, std::memory_order_release);
   const std::uint64_t start =
       llme::bench::tsc_begin() + static_cast<std::uint64_t>(ticks_per_ns * 1e6);
@@ -177,7 +190,8 @@ int execute(const Options& options) {
   if (options.limit != 0 && options.limit < msgs.size()) {
     msgs = msgs.first(options.limit);
   }
-  const auto thread = llme::bench::prepare_thread(options.core);
+  // In pipeline mode --core belongs to the core thread, which pins itself.
+  json thread = options.pipeline ? json::object() : llme::bench::prepare_thread(options.core);
   const double ticks_per_ns = llme::bench::calibrate_ticks_per_ns();
   const double overhead = llme::bench::timer_overhead_p50_ns(ticks_per_ns);
   const std::string run_id = llme::bench::make_run_id(options.engine, log.name);
@@ -190,11 +204,10 @@ int execute(const Options& options) {
                   {"workload", log.name},
                   {"mode", options.pipeline ? "pipeline" : "inproc"},
                   {"msgs", msgs.size()},
-                  {"warmup", options.warmup},
-                  {"runs", options.runs},
+                  {"warmup", options.pipeline ? 0 : options.warmup},
+                  {"runs", options.pipeline ? 1 : options.runs},
                   {"ticks_per_ns", ticks_per_ns},
                   {"timer_overhead_p50_ns", overhead},
-                  {"thread", thread},
                   {"environment", llme::bench::environment_label()},
                   {"manifest_id", llme::tools::hostname()},
                   {"git_sha", llme::tools::git_sha()}};
@@ -212,10 +225,13 @@ int execute(const Options& options) {
 
   if (options.pipeline) {
     const Histogram latency = llme::bench::with_design(options.engine, [&]<class Store>() {
-      return run_pipeline<Store>(msgs, log.config, options.rate, ticks_per_ns, options.core);
+      return run_pipeline<Store>(msgs, log.config, options.rate, ticks_per_ns, options.core,
+                                 thread);
     });
     latency.write_hgrm(out / "pipeline.hgrm");
     summary["rate"] = options.rate;
+    const std::optional<int> gateway = llme::cores_from_env().gateway;
+    summary["gateway_core"] = gateway ? json(*gateway) : json(nullptr);
     summary["pipeline"] = latency.summary();
     llme::bench::append_csv(results / "latency" / "summary.csv", header,
                             csv_row("pipeline", latency.summary()));
@@ -261,6 +277,7 @@ int execute(const Options& options) {
                               csv_row(kClassNames[c], med));
     }
   }
+  summary["thread"] = thread;
   std::ofstream(out / "summary.json") << summary.dump(2) << '\n';
   llme::tools::append_experiment_row(
       {.tool = "llme-bench-latency",
