@@ -20,6 +20,28 @@ elif [ -r /sys/devices/system/cpu/cpufreq/boost ]; then
   if [ "$(cat /sys/devices/system/cpu/cpufreq/boost)" = 1 ]; then turbo=on; else turbo=off; fi
 fi
 
+# Microarchitecture label, so that a Zen 5 result is never mistaken for the spec's Zen 4 or Raptor
+# Lake reference examples.
+family=$(grep -m1 '^cpu family' /proc/cpuinfo 2>/dev/null | cut -d: -f2 | tr -d ' ' || echo 0)
+model=$(grep -m1 '^model[[:space:]]*:' /proc/cpuinfo 2>/dev/null | cut -d: -f2 | tr -d ' ' || echo 0)
+vendor=$(grep -m1 '^vendor_id' /proc/cpuinfo 2>/dev/null | cut -d: -f2 | tr -d ' ' || echo unknown)
+uarch=unknown
+if [ "$vendor" = AuthenticAMD ]; then
+  if [ "$family" = 26 ]; then
+    uarch="Zen 5"
+  elif [ "$family" = 25 ] && [ "$model" -ge 96 ] && [ "$model" -le 127 ]; then
+    uarch="Zen 4"
+  elif [ "$family" = 25 ]; then
+    uarch="Zen 3 or Zen 4 (family 25, model $model)"
+  fi
+elif [ "$vendor" = GenuineIntel ] && [ "$family" = 6 ]; then
+  case "$model" in
+    183 | 191) uarch="Raptor Lake" ;;
+    151 | 154) uarch="Alder Lake" ;;
+    *) uarch="Intel family 6 model $model" ;;
+  esac
+fi
+
 git_sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
 git_dirty=false
 if [ -n "$(git status --porcelain 2>/dev/null | head -1)" ]; then
@@ -30,6 +52,7 @@ echo "{"
 field host "$(hostname)"
 field timestamp_utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 field cpu_model "$(lscpu_field 'Model name')"
+field uarch "$uarch"
 field microcode "$(grep -m1 microcode /proc/cpuinfo 2>/dev/null | cut -d: -f2 | tr -d ' ' || true)"
 field cpus "$(nproc --all)"
 field threads_per_core "$(lscpu_field 'Thread(s) per core')"
