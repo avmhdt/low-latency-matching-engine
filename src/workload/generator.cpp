@@ -136,9 +136,10 @@ InMsg Generator::make_message() {
   if (profile_.burst_enabled && emitted_ != 0 && emitted_ % profile_.burst_every == 0) {
     burst_left_ = profile_.burst_length;
   }
-  if (burst_left_ > 0) {
+  last_was_burst_ = burst_left_ > 0;
+  if (last_was_burst_) {
     --burst_left_;
-    return make_cancel(profile_.cancel_target);
+    return make_cancel(profile_.burst_target.value_or(profile_.cancel_target));
   }
 
   const std::uint64_t draw = rng_.next();

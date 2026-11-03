@@ -158,6 +158,17 @@ ITCH replay does not have this limitation, because the file is complete. Its con
 - **Engine change for stores that erase levels.** D2 keeps an empty level in its array, so the engine could read a level's quantity after `on_level_empty`. A map or vector store erases it at that point. `fill_head` now reads the remaining quantity first and reports an emptied level, so the match loop stops using the reference. D2's output is unchanged: the pinned hashes still match.
 - **`EngineCounters::levels_emptied` and `IdMap::probe_stats()`** were added for the cancel-burst experiment (FR-28). The first is one increment when a level empties. The second walks the table, so it runs only between phases, never per message.
 
+## Benchmark harnesses (M6, 2026-11-03)
+
+`docs/benchmarking.md` describes the method. These are the choices the spec left open.
+
+- **Pipeline latency** runs from intended send time to the core finishing the message. Reaching the publisher would need a per-message marker on the out-ring, and the out-ring push is already inside the window.
+- **Throughput "per core"** counts the matching core only, in both modes. The pipeline's extra threads are listed in the output.
+- **Top-50 replay order** comes from an interleave file the decoder writes. An `.mlog` keeps no cross-symbol order, and `InMsg` has no free field to carry a symbol.
+- **`results/burst/summary.csv` columns** are not fixed by the spec: run_id, design, burst_length, target, op_class, window (baseline, inside or outside), count, p99_ns, p999_ns, max_ns, levels_emptied, probe_mean_max, probe_max, manifest_id.
+- **`[burst] target`** is a new optional profile key, so bursts can aim at different orders from ordinary cancels. Unset, it falls back to `[cancel] target`, which leaves every pinned stream unchanged.
+- **WSL2 guard.** The tools refuse to write into the repository's `results/` under WSL2, so no smoke number can reach a published table by accident.
+
 ## Bare-metal preparation (M6, 2026-11-03)
 
 - **Extra files outside §6:** `scripts/bare_metal_setup.sh` (toolchain set-up, which previews unless given `--apply`), `scripts/bare_metal_run.sh` (the run list with the budget guard) and `scripts/pmu_check.sh` (the counter gate). `scripts/bench_env.sh` is the spec's own file.

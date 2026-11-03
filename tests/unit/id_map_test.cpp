@@ -46,6 +46,25 @@ TEST(IdMapTest, LargestKeyWorks) {
 }
 
 // Full table of colliding entries: every key probes through the wrap at the end of the array.
+TEST(IdMapTest, ProbeStatsMeasureDistanceFromHome) {
+  IdMap map(7, 1.0);
+  EXPECT_EQ(map.probe_stats().entries, 0U);
+  std::vector<OrderId> keys;
+  for (OrderId key = 1; keys.size() < 3; ++key) {
+    if ((key * 0x9E3779B97F4A7C15ULL) >> 61U == 2) {
+      keys.push_back(key);
+    }
+  }
+  for (std::uint32_t i = 0; i < keys.size(); ++i) {
+    map.insert(keys[i], i);
+  }
+  // Three keys with one home slot sit at distances 0, 1 and 2.
+  const auto stats = map.probe_stats();
+  EXPECT_EQ(stats.entries, 3U);
+  EXPECT_EQ(stats.max, 2U);
+  EXPECT_DOUBLE_EQ(stats.mean, 1.0);
+}
+
 TEST(IdMapTest, BackwardShiftAcrossWrapAround) {
   IdMap map(7, 1.0);
   ASSERT_EQ(map.capacity(), 8U);

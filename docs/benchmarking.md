@@ -2,6 +2,35 @@
 
 M6 completes this document with the method, the timer overhead, coordinated omission and the results. This first part is the plan for the rented bare-metal session (D-02, D-03), written so that machine time is spent measuring rather than setting up.
 
+## Method
+
+### Latency (`llme-bench-latency`, FR-23)
+
+- **Timer.** Each message is timed alone. `lfence; rdtsc` comes before `on_message`, and `rdtscp; lfence` after, so that out-of-order execution cannot move work across either read. Ticks become nanoseconds through a frequency calibrated against `steady_clock` over 200 ms at start-up, which assumes an invariant TSC; `hw_manifest.sh` records `constant_tsc` and `nonstop_tsc`.
+- **Timer overhead.** The p50 of a million back-to-back read pairs is measured on every run and reported next to every percentile (`timer_overhead_p50_ns`), because at tens of nanoseconds it is a large share of the number (R-03).
+- **Op classes.** add is a NEW that rests with no fill, match is a NEW with at least one fill, then cancel and modify. Rejects, and IOC or FOK orders that end without a fill, are not in any class.
+- **Runs.** The first `--warmup` messages are not timed. Each of `--runs` runs builds a fresh engine, so no run inherits a warm book. Each percentile is the median across runs, with the spread of p50 reported. A spread over 5% of the median marks the class `unstable` (NFR-09); it is flagged, never dropped. The `.hgrm` files hold all runs merged.
+- **Pipeline mode.** The gateway releases message i at start + i / rate, whatever the core is doing, and latency runs from that intended time to the core finishing the message. A stall therefore counts against every message queued behind it instead of hiding them, which is the coordinated-omission error that closed-loop timing makes (R-06). This measures in-ring wait plus matching, including any spin on a full out-ring.
+
+### Throughput (`llme-bench-throughput`, FR-25)
+
+- **Per core.** Messages over the median wall time of the timed loop, for one engine per symbol in one matching thread. In pipeline mode the gateway and publisher run on their own cores, and the figure is still per matching core.
+- **Top 50 in day order.** `llme-itch-decode` writes `itch_top_<date>.interleave`, the symbol of every message in its original order across symbols, so all 50 books are live together as they were on the day. Logs passed without it run one after another, and the output says `concatenated`.
+
+### Cancel bursts (`llme-bench-burst`, FR-28)
+
+- **Phases.** The same profile and seed run without bursts and then with bursts of each length, aimed at uniform and at near-touch orders. Every message is timed, and the generator marks which ones came from a burst, so tails are reported inside and outside the bursts per op class.
+- **Probe lengths.** ID-map probe lengths are a table walk, so they are sampled at each burst boundary and at the end, never per message.
+
+### What every tool records
+
+- **Thread state.** Pinning, and whether memory was locked. `mlockall` runs only when `RLIMIT_MEMLOCK` is unlimited, because locking future mappings under a finite limit makes every later large allocation fail. The engines prefault their memory anyway, so locking only guards against swapping.
+- **Run record.** `environment`, `native` or `WSL2 smoke`, plus host, git SHA and an experiment-log row.
+
+## WSL2 smoke runs
+
+All three tools refuse to write into the repository's `results/` when they run under WSL2: `LLME_RESULTS_DIR` has to point elsewhere. WSL2 output is a smoke check that the tools work. It is never a published number, and `Bench.Smoke` in the test suite writes only to the build tree.
+
 ## Host
 
 - **Provider:** Cherry Servers, hourly bare metal (owner decision, recorded in `docs/decisions.md`).

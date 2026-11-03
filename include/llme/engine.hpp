@@ -106,6 +106,9 @@ class MatchingEngine {
   // experiment (FR-28) samples it between phases.
   [[nodiscard]] IdMap::ProbeStats id_map_probe_stats() const noexcept { return ids_.probe_stats(); }
 
+  // Levels emptied so far; cheap, for the burst experiment's timed loop.
+  [[nodiscard]] std::uint64_t levels_emptied() const noexcept { return levels_emptied_; }
+
   // Bytes held by the book structures; printed at start-up and checked against NFR-12.
   [[nodiscard]] std::size_t footprint_bytes() const noexcept {
     return levels_.bytes() + pool_.bytes() + ids_.bytes();

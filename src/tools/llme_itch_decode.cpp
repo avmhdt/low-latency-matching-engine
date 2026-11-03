@@ -132,17 +132,40 @@ struct SymbolLog {
   llme::MlogWriter writer;
   llme::workload::ReplayBuilder builder;
 
-  SymbolLog(Ranked ranked, std::filesystem::path out, llme::MlogWriter log)
+  // order collects the symbol index of every message across all logs, in emission order.
+  SymbolLog(Ranked ranked, std::filesystem::path out, llme::MlogWriter log, std::uint16_t index,
+            std::vector<std::uint16_t>* order)
       : symbol(std::move(ranked.symbol)),
         path(std::move(out)),
         order_messages(ranked.order_messages),
         writer(std::move(log)),
-        builder([this](const llme::InMsg& m) {
+        builder([this, index, order](const llme::InMsg& m) {
           if (!writer.write(m)) {
             throw std::runtime_error("write failed: " + path.string());
           }
+          order->push_back(index);
         }) {}
 };
+
+// <dir>/itch_top_<date>.interleave: one little-endian u16 per message, the index of its symbol's
+// log, in the day's order. llme-bench-throughput replays the top 50 in that order (FR-25).
+void write_interleave(const std::filesystem::path& dir, const std::string& date,
+                      const std::vector<std::unique_ptr<SymbolLog>>& logs,
+                      const std::vector<std::uint16_t>& order) {
+  const auto path = dir / ("itch_top_" + date + ".interleave");
+  std::ofstream bytes(path, std::ios::binary);
+  bytes.write(reinterpret_cast<const char*>(order.data()),  // NOLINT: raw u16 file
+              static_cast<std::streamsize>(order.size() * sizeof(std::uint16_t)));
+  json index = {{"count", order.size()}, {"logs", json::array()}, {"symbols", json::array()}};
+  for (const auto& log : logs) {
+    index["logs"].push_back(log->path.filename().string());
+    index["symbols"].push_back(log->symbol);
+  }
+  std::ofstream(path.string() + ".json") << index.dump(2) << '\n';
+  if (!bytes) {
+    throw std::runtime_error("cannot write " + path.string());
+  }
+}
 
 int execute(const Options& options) {
   const std::string date = options.date.empty() ? date_of(options.in) : options.date;
@@ -150,7 +173,11 @@ int execute(const Options& options) {
   const auto chosen = choose(ranked, options);
   std::filesystem::create_directories(options.out_dir);
 
+  if (chosen.size() > std::size_t{1} << 16U) {
+    throw std::runtime_error("at most 65536 symbols per decode");
+  }
   std::vector<std::unique_ptr<SymbolLog>> logs;
+  std::vector<std::uint16_t> order;
   llme::workload::ItchConverter converter;
   for (std::uint32_t i = 0; i < chosen.size(); ++i) {
     const auto path = std::filesystem::path(options.out_dir) /
@@ -160,7 +187,8 @@ int execute(const Options& options) {
     if (!writer) {
       throw std::runtime_error(std::string(llme::to_string(writer.error())) + ": " + path.string());
     }
-    logs.push_back(std::make_unique<SymbolLog>(chosen[i], path, std::move(*writer)));
+    logs.push_back(std::make_unique<SymbolLog>(chosen[i], path, std::move(*writer),
+                                               static_cast<std::uint16_t>(i), &order));
     converter.select(chosen[i].locate, &logs.back()->builder);
   }
 
@@ -197,6 +225,10 @@ int execute(const Options& options) {
                        {"crossed_add", outcome.crossed_add}});
   }
   summary["symbols"] = symbols;
+  if (logs.size() > 1) {
+    write_interleave(options.out_dir, date, logs, order);
+    summary["interleave"] = order.size();
+  }
   if (options.json_output) {
     std::cout << summary.dump() << '\n';
   } else {

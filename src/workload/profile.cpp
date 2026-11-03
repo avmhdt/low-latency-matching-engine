@@ -167,6 +167,19 @@ Profile load_profile(const std::filesystem::path& file) {
   read(burst["enabled"], p.burst_enabled);
   read(burst["length"], p.burst_length);
   read(burst["every"], p.burst_every);
+  if (const auto burst_target = burst["target"].value<std::string>()) {
+    if (*burst_target == "uniform") {
+      p.burst_target = CancelTarget::Uniform;
+    } else if (*burst_target == "near_touch") {
+      p.burst_target = CancelTarget::NearTouch;
+    } else if (*burst_target == "oldest") {
+      p.burst_target = CancelTarget::Oldest;
+    } else if (*burst_target == "newest") {
+      p.burst_target = CancelTarget::Newest;
+    } else {
+      fail(file, "unknown burst target: " + *burst_target);
+    }
+  }
 
   if (p.size_mean < 1.0 || p.size_min == 0 || p.size_min > p.size_max) {
     fail(file, "invalid [size] section");

@@ -173,6 +173,43 @@ TEST(GeneratorTest, AdversarialReachesEveryRejectReason) {
   EXPECT_EQ(cancel_reasons, (std::set<int>{1, 2, 3, 4}));
 }
 
+TEST(GeneratorTest, ReportsWhichMessagesBelongToABurst) {
+  auto profile = load_profile(profile_path("burst"));
+  profile.burst_length = 20;
+  profile.burst_every = 5000;
+  Generator generator(profile, 1);
+  std::uint64_t flagged = 0;
+  for (int i = 0; i < 5100; ++i) {
+    (void)generator.next();
+    if (generator.last_was_burst()) {
+      ++flagged;
+      EXPECT_GE(i, 5000);
+      EXPECT_LT(i, 5020);
+    }
+  }
+  EXPECT_EQ(flagged, 20U);
+}
+
+TEST(GeneratorTest, BurstTargetOverridesTheCancelTarget) {
+  auto profile = load_profile(profile_path("burst"));
+  profile.burst_length = 50;
+  profile.burst_every = 5000;
+  auto oldest = profile;
+  oldest.burst_target = CancelTarget::Oldest;
+  // Same flow up to the burst, different choices inside it.
+  EXPECT_NE(hash_of(generate(profile, 1, 5100)), hash_of(generate(oldest, 1, 5100)));
+  EXPECT_EQ(hash_of(generate(profile, 1, 5000)), hash_of(generate(oldest, 1, 5000)));
+}
+
+TEST(ProfileTest, ReadsBurstTarget) {
+  const auto path = std::filesystem::temp_directory_path() / "llme_burst_target.toml";
+  std::ofstream(path) << "[burst]\nenabled = true\ntarget = \"near_touch\"\n";
+  EXPECT_EQ(load_profile(path).burst_target, CancelTarget::NearTouch);
+  std::ofstream(path) << "[burst]\ntarget = \"sideways\"\n";
+  EXPECT_THROW((void)load_profile(path), std::runtime_error);
+  std::filesystem::remove(path);
+}
+
 TEST(GeneratorTest, BurstEmitsConsecutiveCancels) {
   auto profile = load_profile(profile_path("burst"));
   profile.burst_length = 20;
