@@ -10,7 +10,7 @@ M6 completes this document with the method, the timer overhead, coordinated omis
 - **Timer overhead.** The p50 of a million back-to-back read pairs is measured on every run and reported next to every percentile (`timer_overhead_p50_ns`), because at tens of nanoseconds it is a large share of the number (R-03).
 - **Op classes.** add is a NEW that rests with no fill, match is a NEW with at least one fill, then cancel and modify. Rejects, and IOC or FOK orders that end without a fill, are not in any class.
 - **Runs.** The first `--warmup` messages are not timed. Each of `--runs` runs builds a fresh engine, so no run inherits a warm book. Each percentile is the median across runs, with the spread of p50 reported. A spread over 5% of the median marks the class `unstable` (NFR-09); it is flagged, never dropped. The `.hgrm` files hold all runs merged.
-- **Pipeline mode.** The gateway releases message i at start + i / rate, whatever the core is doing, and latency runs from that intended time to the core finishing the message. A stall therefore counts against every message queued behind it instead of hiding them, which is the coordinated-omission error that closed-loop timing makes (R-06). This measures in-ring wait plus matching, including any spin on a full out-ring.
+- **Pipeline mode.** The gateway releases message i at start + i / rate, whatever the core is doing, and latency runs from that intended time to the core finishing the message. A stall therefore counts against every message queued behind it instead of hiding them, which is the coordinated-omission error that closed-loop timing makes (R-06). This measures in-ring wait plus matching; output goes to a null sink, so there is no out-ring or publisher in this figure. The core thread takes `--core` and the gateway `LLME_PRODUCER_CORE`; the tool refuses to put both on one CPU, where two spinning threads would measure only each other. It is one pass with no warm-up, and its summary says so.
 
 ### Throughput (`llme-bench-throughput`, FR-25)
 
@@ -102,7 +102,16 @@ The cap is USD 50 in total (D-03). Before each step, `bare_metal_run.sh` adds th
 
 ## Before renting
 
-Steps 8 to 14 need M6 tools that do not exist yet: `llme-bench-latency`, `llme-bench-throughput`, `llme-bench-burst`, the D1 and D3 level stores, `perf_stat.sh`, `perf_flamegraph.sh` and `heaptrack.sh`. They are built and tested on this PC first, where WSL2 runs everything except the hardware counters. Only after that is the server rented, so that it never sits idle waiting for code.
+Every step's tool exists and runs: `llme-bench-latency`, `llme-bench-throughput`, `llme-bench-burst`, the D1 and D3 level stores, `perf_stat.sh`, `perf_flamegraph.sh` and `heaptrack.sh`. Before renting, the whole run list is rehearsed on this PC:
+
+```
+LLME_RESULTS_DIR=$HOME/build/low-latency-matching-engine/rehearsal/results LLME_RATE_USD_PER_HOUR=0 \
+  LLME_RENTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ) scripts/bare_metal_run.sh --rehearse
+```
+
+`--rehearse` runs every step for real at small scale: one run instead of five, the first 300,000 messages of each log, 1M-message synthetic logs, and software events (`task-clock`, `context-switches`) in `perf_stat.sh`, since WSL2 has no hardware counters. It writes outside `results/`, goes on past the PMU check, and reuses `LLME_ITCH_FILE` instead of downloading the day again. Its numbers mean nothing; it only proves that every command works, so that rented time goes on measuring.
+
+Two things the rehearsal cannot check. The hardware counter events are known to work only once `pmu_check.sh` passes on the host. And WSL2's `perf` cannot resolve symbols in this build, so its flame graph shows raw addresses; on native Ubuntu, `perf` reads the symbols from the bench binaries, which keep frame pointers.
 
 ## Hardware counters on Zen
 
