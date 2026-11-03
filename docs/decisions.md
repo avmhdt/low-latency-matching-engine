@@ -104,6 +104,22 @@ All of it comes from one commit, `ec3220f`, with binaries frozen before the runs
 - **The two fuzz rows read `git_dirty=true`.** The clean clone's only uncommitted files were the reports those runs wrote. `fuzz.sh` now ignores `results/`, and the rows stay as written, per rule 5 of §16.
 - **Review.** A second reader, working from the spec, compared the semantics with the reference and golden scenarios and found no contradiction. The closest calls are already recorded above: `POOL_FULL` scope, IOC with no fill, and the no-op modify.
 
+## M5 evidence (2026-11-02 and 03)
+
+Commit `a66ea44`, binaries frozen before the runs started, `nice` 15, and no more than 8 threads in total on this WSL2 host.
+
+| Criterion | Result | File |
+|---|---|---|
+| AC-W-10 | 133 logs and 104.3M messages, from ITCH, `book_l3` and LOBSTER: 0 mismatches between D2 and the reference, with sidecars for every log | `results/diff/real_flow_2026-11-02.json` |
+| D-04 | `book_l3` and the decoder give byte-identical records on all 50 shared symbols | same file, `itch_routes` |
+| AC-W-04 | 14,400 s each on `fuzz_lobster_parser` (97.8M execs) and `fuzz_itch_decoder` (668.6M execs): 0 crashes, leaks, timeouts or OOMs. All four targets are now complete | `results/fuzz/` |
+| AC-W-05 | 420 runs, now including the 1.69M-message AAPL ITCH log: one hash per fixture | `results/determinism.csv` |
+
+- **Fuzz segments.** The two new targets ran four 1 h segments on one persistent corpus, so an interruption would have cost at most one segment. Each `results/fuzz/` report is the sum of its segments, and the experiment log has a row for each.
+- **The first real-flow run failed.** It stopped with exit 1 in the Python converter, which assumed the wire encoding for `book_l3.side`. The fix is `a66ea44`, and the evidence above comes from a full rerun of the fixed commit from a clean clone.
+- **`fuzz_itch_decoder` was changed before its long run.** Per-input allocation held it to 797 execs/s, and reusing the buffers raised that to about 65,000.
+- **AC-W-05 still names D1 and D3,** which M6 builds.
+
 ## Real-flow choices (M5)
 
 - **D-04 resolves to (a), `book_l3`, under its default,** and the fallback decoder exists too, because AC-W-04 needs `fuzz_itch_decoder`. The two routes share one mapping, and `scripts/replay_evidence.sh` compares their records byte for byte.

@@ -1,0 +1,19 @@
+{
+  "target": "fuzz_lobster_parser",
+  "seconds": 14400,
+  "jobs": 1,
+  "segments": 4,
+  "execs": 97848921,
+  "execs_per_sec": 6795,
+  "corpus_size": 18941,
+  "coverage": {
+    "cov": 499,
+    "features": 2976
+  },
+  "crashes": 0,
+  "leaks": 0,
+  "timeouts": 0,
+  "ooms": 0,
+  "exit_status": 0,
+  "git_sha": "a66ea44a801deafd4660a15ef8d3dc9d27ebc2b5"
+}
