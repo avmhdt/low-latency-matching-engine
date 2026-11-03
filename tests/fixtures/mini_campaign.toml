@@ -1,5 +1,5 @@
 # Small campaign for the CLI test; same shape as configs/diff_campaign.toml.
-engines = ["d2"]
+engines = ["d2", "d1", "d3"]
 run = [
   { profile = "configs/workloads/balanced.toml",    ops = 1000, seed = 1 },
   { profile = "configs/workloads/adversarial.toml", ops = 1000, seed = 2 },

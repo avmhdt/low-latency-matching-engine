@@ -82,6 +82,7 @@ struct EngineCounters {
   std::uint64_t modify_rejects = 0;
   std::uint64_t level_updates = 0;
   std::uint64_t out_records = 0;
+  std::uint64_t levels_emptied = 0;
 };
 
 struct SnapshotOrder {

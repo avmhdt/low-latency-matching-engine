@@ -1,5 +1,5 @@
 # 10M ops per profile, run with --check-invariants (AC-W-08).
-engines = ["d2"]
+engines = ["d2", "d1", "d3"]
 run = [
   { profile = "configs/workloads/balanced.toml",     ops = 10_000_000, seed = 11 },
   { profile = "configs/workloads/cancel_heavy.toml", ops = 10_000_000, seed = 12 },

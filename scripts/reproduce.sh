@@ -31,7 +31,7 @@ for preset in gcc-release gcc-debug clang-release clang-debug; do
     ops=$(sed -n "/^\[$fixture\]/,/^\[/s/^ops = //p" tests/fixtures/expected_hashes.toml)
     log="$work/$fixture.mlog"
     "$tools/llme-gen" --profile "$profile" --ops "$ops" --seed "$seed" --out "$log" >/dev/null
-    for engine in d2 ref; do
+    for engine in d2 d1 d3 ref; do
       for run in 1 2 3 4 5; do
         hash=$("$tools/llme-run" --in "$log" --engine "$engine" --config "$profile")
         echo "$fixture,$seed,$ops,$compiler,$build,$engine,inproc,$run,$hash" >>"$csv"
@@ -49,7 +49,7 @@ for preset in gcc-release gcc-debug clang-release clang-debug; do
   if [ -f "$log" ]; then
     ops=$(($(wc -c <"$log") / 32))
     for run in 1 2 3 4 5; do
-      for engine in d2 ref; do
+      for engine in d2 d1 d3 ref; do
         hash=$("$tools/llme-run" --in "$log" --engine "$engine")
         echo "itch_AAPL,0,$ops,$compiler,$build,$engine,inproc,$run,$hash" >>"$csv"
       done

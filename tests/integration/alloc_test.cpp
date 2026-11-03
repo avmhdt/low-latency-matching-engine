@@ -12,6 +12,8 @@
 #include "alloc_hook.hpp"
 #include "generator.hpp"
 #include "llme/engine.hpp"
+#include "llme/level_store_map.hpp"
+#include "llme/level_store_sorted_vec.hpp"
 #include "llme/output_hash.hpp"
 #include "llme/pipeline.hpp"
 
@@ -78,6 +80,28 @@ const Flow& flow() {
     return out;
   }();
   return generated;
+}
+
+// D1 and D3 promise the same, through a fixed node pool and reserved vectors.
+template <class Store>
+void expect_no_allocations(const char* name) {
+  const auto& [config, msgs] = flow();
+  OutputHasher hasher;
+  MatchingEngine<Store, HashSink> engine(config, HashSink{&hasher});
+  for (std::uint64_t i = 0; i < kWarmupMessages; ++i) {
+    engine.on_message(msgs[i]);
+  }
+  testing::arm_alloc_hook();
+  for (std::uint64_t i = kWarmupMessages; i < msgs.size(); ++i) {
+    engine.on_message(msgs[i]);
+  }
+  testing::disarm_alloc_hook();
+  EXPECT_EQ(testing::allocations_while_armed(), 0U) << name;
+}
+
+TEST(AllocTest, OtherDesignsAreAllocationFree) {
+  expect_no_allocations<MapLevelStore>("d1");
+  expect_no_allocations<SortedVecLevelStore>("d3");
 }
 
 TEST(AllocTest, HotPathIsAllocationFree) {

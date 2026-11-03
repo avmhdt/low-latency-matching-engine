@@ -151,6 +151,13 @@ Commit `a66ea44`, binaries frozen before the runs started, `nice` 15, and no mor
 
 ITCH replay does not have this limitation, because the file is complete. Its contra match rate on the top 50 is 85.8% to 99.9%. The misses come mainly from orders that rested before the open, which are not in the replayed book.
 
+## Level stores D1 and D3 (M6, 2026-11-03)
+
+- **D1 is a `std::pmr::map` per side on a fixed block pool** (`FixedBlockResource`), not on `unsynchronized_pool_resource`. A standard pool resource refills from its upstream when it runs low, so it can still reach `malloc`. The fixed pool is one buffer of 64-byte blocks sized for the most levels a side can hold, min(band, `max_orders`) + 1, and a request it cannot serve throws, so a sizing mistake shows up instead of hiding in a heap call. `AllocTest.OtherDesignsAreAllocationFree` holds D1 and D3 to the D2 standard.
+- **D3 reserves and touches its capacity in the constructor**, the same min(band, `max_orders`) + 1, so `insert` never reallocates and never faults a page in.
+- **Engine change for stores that erase levels.** D2 keeps an empty level in its array, so the engine could read a level's quantity after `on_level_empty`. A map or vector store erases it at that point. `fill_head` now reads the remaining quantity first and reports an emptied level, so the match loop stops using the reference. D2's output is unchanged: the pinned hashes still match.
+- **`EngineCounters::levels_emptied` and `IdMap::probe_stats()`** were added for the cancel-burst experiment (FR-28). The first is one increment when a level empties. The second walks the table, so it runs only between phases, never per message.
+
 ## Bare-metal preparation (M6, 2026-11-03)
 
 - **Extra files outside §6:** `scripts/bare_metal_setup.sh` (toolchain set-up, which previews unless given `--apply`), `scripts/bare_metal_run.sh` (the run list with the budget guard) and `scripts/pmu_check.sh` (the counter gate). `scripts/bench_env.sh` is the spec's own file.

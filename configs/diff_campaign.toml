@@ -1,5 +1,5 @@
-# Total 180M ops; each engine is compared against "ref". D1 and D3 join in M6 (FR-26).
-engines = ["d2"]
+# Total 180M ops; each engine is compared against "ref".
+engines = ["d2", "d1", "d3"]
 run = [
   { profile = "configs/workloads/balanced.toml",     ops = 100_000_000, seed = 1 },
   { profile = "configs/workloads/cancel_heavy.toml", ops = 20_000_000,  seed = 2 },

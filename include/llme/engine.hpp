@@ -44,6 +44,7 @@ concept LevelStore = requires(L& l, const L& cl, Side sd, Price p) {
   { l.level(sd, p) } noexcept -> std::same_as<Level&>;
   { l.on_level_empty(sd, p) } noexcept;
   { cl.check_consistency() };
+  { cl.bytes() } noexcept -> std::same_as<std::size_t>;
 };
 
 // Discards output; used to measure matching alone.
@@ -97,8 +98,13 @@ class MatchingEngine {
             .cancel_rejects = count(OutType::CancelReject),
             .modify_rejects = count(OutType::ModifyReject),
             .level_updates = count(OutType::LevelUpdate),
-            .out_records = seq_};
+            .out_records = seq_,
+            .levels_emptied = levels_emptied_};
   }
+
+  // Probe lengths of the ID map as it stands; O(capacity), so never on the hot path. The burst
+  // experiment (FR-28) samples it between phases.
+  [[nodiscard]] IdMap::ProbeStats id_map_probe_stats() const noexcept { return ids_.probe_stats(); }
 
   // Bytes held by the book structures; printed at start-up and checked against NFR-12.
   [[nodiscard]] std::size_t footprint_bytes() const noexcept {
@@ -313,7 +319,7 @@ class MatchingEngine {
     level_unlink(pool_, old_level, index);
     const std::uint64_t old_qty = old_level.qty;
     if (old_level.count == 0) {
-      levels_.on_level_empty(side, old_price);
+      empty_level(side, old_price);
     }
     modified(kFlagPriorityLost);
     if (m.price != old_price) {
@@ -349,7 +355,7 @@ class MatchingEngine {
     level_unlink(pool_, level, index);
     const std::uint64_t remaining = level.qty;
     if (level.count == 0) {
-      levels_.on_level_empty(side, price);
+      empty_level(side, price);
     }
     ids_.erase(id);
     pool_.release(index);
@@ -384,14 +390,17 @@ class MatchingEngine {
       }
       const Price price = *best;
       Level& level = levels_.level(contra, price);
-      while (qty > 0 && level.count > 0) {
-        qty = fill_head(level, side, id, price, qty);
+      bool emptied = false;
+      while (qty > 0 && !emptied) {
+        emptied = fill_head(level, side, id, price, qty);
       }
     }
     return qty;
   }
 
-  Qty fill_head(Level& level, Side side, OrderId id, Price price, Qty qty) noexcept {
+  // Fills against the head of the level and reduces qty. Returns true when that empties the level;
+  // the level reference is then dead, because a map or vector store has erased it.
+  bool fill_head(Level& level, Side side, OrderId id, Price price, Qty& qty) noexcept {
     const std::uint32_t index = level.head;
     Order& resting = pool_[index];
     const OrderId resting_id = resting.id;
@@ -424,16 +433,24 @@ class MatchingEngine {
           .price = price,
           .leaves = qty});
 
+    bool emptied = false;
     if (resting.leaves == 0) {
       level_unlink(pool_, level, index);
       ids_.erase(resting_id);
       pool_.release(index);
-      if (level.count == 0) {
-        levels_.on_level_empty(contra, price);
-      }
+      emptied = level.count == 0;
     }
-    emit_level(contra, price, level.qty);
-    return qty;
+    const std::uint64_t remaining = level.qty;
+    if (emptied) {
+      empty_level(contra, price);
+    }
+    emit_level(contra, price, remaining);
+    return emptied;
+  }
+
+  void empty_level(Side side, Price price) noexcept {
+    ++levels_emptied_;
+    levels_.on_level_empty(side, price);
   }
 
   void reject(const InMsg& m, RejectReason reason) noexcept {
@@ -481,6 +498,7 @@ class MatchingEngine {
   std::uint64_t seq_ = 0;
   std::uint64_t arrivals_ = 0;
   std::uint64_t msgs_ = 0;
+  std::uint64_t levels_emptied_ = 0;
   std::array<std::uint64_t, 10> out_counts_{};
 };
 
