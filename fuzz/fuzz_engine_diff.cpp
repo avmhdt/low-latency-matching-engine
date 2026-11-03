@@ -1,4 +1,4 @@
-// Bytes decoded into an operation sequence, run through D2 and the reference; aborts on any
+// Bytes decoded into an operation sequence, run through D1, D2, D3 and the reference; aborts on any
 // output difference, final-book difference or invariant failure (FR-20).
 //
 // The book is deliberately tiny, 32 prices, 32 IDs and a pool of 16, so that a mutated input keeps
@@ -8,6 +8,7 @@
 //   byte 2: price; values at or above 224 land outside the band
 //   byte 3: qty modulo 16; 255 means the largest u32
 //   bytes 4-5: raw type and flag bytes for raw operations
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -59,28 +60,34 @@ llme::InMsg decode(const std::uint8_t* op) {
 
 extern "C" int LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size) {
   const llme::EngineConfig config{.price_min = 0, .price_max = 31, .max_orders = 16};
-  const auto fast = llme::make_adapter("d2", config);
   const auto reference = llme::make_adapter("ref", config);
+  const std::array<std::unique_ptr<llme::EngineAdapter>, 3> fast = {
+      llme::make_adapter("d2", config), llme::make_adapter("d1", config),
+      llme::make_adapter("d3", config)};
 
   std::vector<llme::OutMsg> out_fast;
   std::vector<llme::OutMsg> out_reference;
   for (std::size_t i = 0; i + kOpBytes <= size; i += kOpBytes) {
     const llme::InMsg m = decode(data + i);
-    out_fast.clear();
     out_reference.clear();
-    fast->on_message(m, out_fast);
     reference->on_message(m, out_reference);
-    if (out_fast != out_reference) {
-      die("engines disagree");
-    }
-    try {
-      fast->check_full();
-    } catch (const std::logic_error& e) {
-      die(e.what());
+    for (const auto& engine : fast) {
+      out_fast.clear();
+      engine->on_message(m, out_fast);
+      if (out_fast != out_reference) {
+        die("engines disagree");
+      }
+      try {
+        engine->check_full();
+      } catch (const std::logic_error& e) {
+        die(e.what());
+      }
     }
   }
-  if (fast->snapshot() != reference->snapshot()) {
-    die("final books differ");
+  for (const auto& engine : fast) {
+    if (engine->snapshot() != reference->snapshot()) {
+      die("final books differ");
+    }
   }
   return 0;
 }

@@ -4,6 +4,8 @@
 #include <string>
 
 #include "llme/engine.hpp"
+#include "llme/level_store_map.hpp"
+#include "llme/level_store_sorted_vec.hpp"
 #include "llme/reference_engine.hpp"
 
 namespace llme {
@@ -69,9 +71,15 @@ std::unique_ptr<EngineAdapter> make_adapter(std::string_view name, const EngineC
   if (name == "d2") {
     return std::make_unique<FastAdapter<LadderLevelStore>>(cfg);
   }
+  if (name == "d1") {
+    return std::make_unique<FastAdapter<MapLevelStore>>(cfg);
+  }
+  if (name == "d3") {
+    return std::make_unique<FastAdapter<SortedVecLevelStore>>(cfg);
+  }
   throw std::invalid_argument("unknown engine: " + std::string(name));
 }
 
-std::vector<std::string> adapter_names() { return {"ref", "d2"}; }
+std::vector<std::string> adapter_names() { return {"ref", "d2", "d1", "d3"}; }
 
 }  // namespace llme

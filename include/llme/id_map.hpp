@@ -7,6 +7,7 @@
 // Thread-safety: belongs to the matching thread.
 #pragma once
 
+#include <algorithm>
 #include <bit>
 #include <cstddef>
 #include <cstdint>
@@ -64,6 +65,30 @@ class IdMap {
     }
     slots_[hole] = Slot{};
     --size_;
+  }
+
+  struct ProbeStats {
+    std::uint32_t entries = 0;
+    double mean = 0.0;      // average slots past the home slot
+    std::uint32_t max = 0;  // longest such distance
+  };
+
+  // Distance of every stored entry from its home slot. O(capacity): for reports, not lookups.
+  [[nodiscard]] ProbeStats probe_stats() const noexcept {
+    ProbeStats stats;
+    std::uint64_t total = 0;
+    for (std::size_t i = 0; i < slots_.size(); ++i) {
+      if (slots_[i].value == kNil) {
+        continue;
+      }
+      const auto distance = static_cast<std::uint32_t>((i - home(slots_[i].key)) & mask_);
+      total += distance;
+      stats.max = std::max(stats.max, distance);
+      ++stats.entries;
+    }
+    stats.mean =
+        stats.entries == 0 ? 0.0 : static_cast<double>(total) / static_cast<double>(stats.entries);
+    return stats;
   }
 
   [[nodiscard]] std::uint32_t size() const noexcept { return size_; }

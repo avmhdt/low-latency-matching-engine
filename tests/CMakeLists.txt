@@ -20,6 +20,7 @@ llme_add_test(llme_unit_tests unit
   unit/order_pool_test.cpp
   unit/id_map_test.cpp
   unit/price_ladder_test.cpp
+  unit/level_store_test.cpp
   unit/engine_test.cpp
   unit/spsc_ring_test.cpp
   unit/replay_test.cpp

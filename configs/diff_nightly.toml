@@ -1,5 +1,5 @@
 # Nightly differential: 20M ops per profile, same shape as configs/diff_campaign.toml.
-engines = ["d2"]
+engines = ["d2", "d1", "d3"]
 run = [
   { profile = "configs/workloads/balanced.toml",     ops = 20_000_000, seed = 101 },
   { profile = "configs/workloads/cancel_heavy.toml", ops = 20_000_000, seed = 102 },

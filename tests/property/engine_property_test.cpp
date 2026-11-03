@@ -26,23 +26,25 @@ TEST_P(EnginePropertyTest, FullInvariantsHoldAfterEveryMessage) {
   profile.mix.new_limit = 0.54;
   profile.mix.market = 0.01;
   profile.mix.fok = 0.11;
-  workload::Generator generator(profile, GetParam());
-  const auto fast = make_adapter("d2", profile.engine);
-  const auto reference = make_adapter("ref", profile.engine);
+  for (const char* engine : {"d2", "d1", "d3"}) {
+    workload::Generator generator(profile, GetParam());
+    const auto fast = make_adapter(engine, profile.engine);
+    const auto reference = make_adapter("ref", profile.engine);
 
-  std::vector<OutMsg> out;
-  std::vector<OutMsg> expected;
-  for (std::uint64_t i = 0; i < kOpsPerSeed; ++i) {
-    const InMsg m = generator.next();
-    out.clear();
-    expected.clear();
-    fast->on_message(m, out);
-    reference->on_message(m, expected);
-    ASSERT_EQ(out, expected) << "message " << i;
-    ASSERT_NO_THROW(fast->check_full()) << "message " << i;
+    std::vector<OutMsg> out;
+    std::vector<OutMsg> expected;
+    for (std::uint64_t i = 0; i < kOpsPerSeed; ++i) {
+      const InMsg m = generator.next();
+      out.clear();
+      expected.clear();
+      fast->on_message(m, out);
+      reference->on_message(m, expected);
+      ASSERT_EQ(out, expected) << engine << " message " << i;
+      ASSERT_NO_THROW(fast->check_full()) << engine << " message " << i;
+    }
+    EXPECT_EQ(fast->snapshot(), reference->snapshot()) << engine;
+    EXPECT_EQ(fast->live_orders(), reference->live_orders()) << engine;
   }
-  EXPECT_EQ(fast->snapshot(), reference->snapshot());
-  EXPECT_EQ(fast->live_orders(), reference->live_orders());
 }
 
 TEST_P(EnginePropertyTest, AgreesOnRegularFlow) {
@@ -50,7 +52,8 @@ TEST_P(EnginePropertyTest, AgreesOnRegularFlow) {
                            "configs/workloads/aggressive.toml"}) {
     const auto profile = workload::load_profile(name);
     workload::Generator generator(profile, GetParam());
-    const auto fast = make_adapter("d2", profile.engine);
+    const auto fast = make_adapter(GetParam() % 3 == 0 ? "d1" : (GetParam() % 3 == 1 ? "d2" : "d3"),
+                                   profile.engine);
     const auto reference = make_adapter("ref", profile.engine);
     std::vector<OutMsg> out;
     std::vector<OutMsg> expected;
