@@ -1,0 +1,19 @@
+{
+  "target": "fuzz_itch_decoder",
+  "seconds": 14400,
+  "jobs": 1,
+  "segments": 4,
+  "execs": 668602364,
+  "execs_per_sec": 46430,
+  "corpus_size": 5020,
+  "coverage": {
+    "cov": 222,
+    "features": 1193
+  },
+  "crashes": 0,
+  "leaks": 0,
+  "timeouts": 0,
+  "ooms": 0,
+  "exit_status": 0,
+  "git_sha": "a66ea44a801deafd4660a15ef8d3dc9d27ebc2b5"
+}

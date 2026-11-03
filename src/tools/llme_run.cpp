@@ -16,6 +16,8 @@
 #include "llme/mlog.hpp"
 #include "llme/output_hash.hpp"
 #include "llme/pipeline.hpp"
+#include "replay.hpp"
+#include "sidecar.hpp"
 
 namespace {
 
@@ -29,6 +31,7 @@ struct Options {
   std::string run_json;
   bool pipeline = false;
   bool json_output = false;
+  bool replay_stats = false;
 };
 
 // Reference and other adapter-driven engines, one message at a time.
@@ -98,9 +101,16 @@ int execute(const Options& options) {
   if (options.pipeline && options.engine != "d2") {
     throw std::runtime_error("--pipeline runs the d2 engine only");
   }
-  const llme::EngineConfig config = options.config.empty()
-                                        ? llme::EngineConfig{}
-                                        : llme::workload::load_engine_config(options.config);
+  const llme::EngineConfig config =
+      options.config.empty()
+          ? llme::tools::load_sidecar_config(options.in).value_or(llme::EngineConfig{})
+          : llme::workload::load_engine_config(options.config);
+
+  if (options.replay_stats) {
+    const auto outcome = llme::workload::replay_log(reader->records(), config);
+    std::cout << llme::tools::outcome_json(outcome).dump() << '\n';
+    return 0;
+  }
 
   llme::PipelineResult result;
   if (options.pipeline) {
@@ -146,6 +156,8 @@ int run(int argc, char** argv) {
   app.add_option("--config", options.config, "Engine config TOML");
   app.add_option("--run-json", options.run_json, "Write the run report to this path");
   app.add_flag("--json", options.json_output, "Print a JSON summary");
+  app.add_flag("--replay-stats", options.replay_stats,
+               "Print crossed_add and exec_contra_match_rate as JSON (FR-21)");
   return llme::tools::parse_and_run(app, argc, argv, [&] { return execute(options); });
 }
 

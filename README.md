@@ -36,8 +36,8 @@ Raw and licensed data live in `data/`, which is git-ignored. Only download scrip
 ### Works (correct and reproducible)
 
 - [x] Differential testing: 100M+ random operations produce fills identical to the reference engine. AC-W-01 for D2, `results/diff/campaign_2026-11-02.json`.
-- [ ] All sanitizers are clean, and hours of fuzzing find nothing. Sanitizers: AC-W-03 met. Fuzzing: AC-W-04 met for two of four targets, the other two come with M5.
-- [ ] Deterministic output: the same input log always gives the same output hash. AC-W-05 met for D2 and the reference, `results/determinism.csv`; D1, D3 and an ITCH log come with M5 and M6.
+- [x] All sanitizers are clean, and hours of fuzzing find nothing. AC-W-03, AC-W-04: 4 h on each of four targets, `results/fuzz/`.
+- [ ] Deterministic output: the same input log always gives the same output hash. AC-W-05 met for D2 and the reference, including one ITCH log, `results/determinism.csv`; D1 and D3 come with M6.
 
 ### Impresses hirers
 

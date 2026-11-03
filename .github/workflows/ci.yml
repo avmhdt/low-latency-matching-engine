@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  LLME_APT: ninja-build g++-13 clang-18 clang-tidy-18 clang-format-18 llvm-18 libclang-rt-18-dev
+  LLME_APT: ninja-build g++-13 clang-18 clang-tidy-18 clang-format-18 llvm-18 libclang-rt-18-dev zlib1g-dev
 
 jobs:
   gcc-release:
@@ -87,6 +87,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run mypy --strict llme_tools
+      - run: uv run pytest -q tests
 
   data-hygiene:
     runs-on: ubuntu-24.04
@@ -122,6 +123,8 @@ jobs:
       - run: cmake --build --preset fuzz
       - run: scripts/fuzz.sh fuzz_mlog_reader --seconds 60
       - run: scripts/fuzz.sh fuzz_engine_diff --seconds 60
+      - run: scripts/fuzz.sh fuzz_lobster_parser --seconds 60
+      - run: scripts/fuzz.sh fuzz_itch_decoder --seconds 60
 
   diff-smoke:
     runs-on: ubuntu-24.04

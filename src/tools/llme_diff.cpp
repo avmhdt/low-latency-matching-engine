@@ -22,6 +22,7 @@
 #include "experiment_log.hpp"
 #include "generator.hpp"
 #include "llme/mlog.hpp"
+#include "sidecar.hpp"
 
 namespace {
 
@@ -245,9 +246,10 @@ int run_file(const Options& options) {
   if (!reader) {
     throw std::runtime_error(std::string(llme::to_string(reader.error())) + ": " + options.in);
   }
-  const llme::EngineConfig config = options.config.empty()
-                                        ? llme::EngineConfig{}
-                                        : llme::workload::load_engine_config(options.config);
+  const llme::EngineConfig config =
+      options.config.empty()
+          ? llme::tools::load_sidecar_config(options.in).value_or(llme::EngineConfig{})
+          : llme::workload::load_engine_config(options.config);
   const std::string name_a = options.engines.at(0);
   const std::string name_b = options.engines.at(1);
   llme::DiffRunner runner(llme::make_adapter(name_a, config), llme::make_adapter(name_b, config));
@@ -281,6 +283,20 @@ int run_file(const Options& options) {
       summarize(stats, std::filesystem::path(options.in).stem().string(), 0,
                 reader->header().record_count, name_a + "," + name_b, elapsed.count());
   std::cout << summary.dump() << '\n';
+  if (!options.out.empty()) {
+    write_report(summary, options.out);
+    llme::tools::append_experiment_row(
+        {.tool = "llme-diff",
+         .args = "--in " + std::filesystem::path(options.in).filename().string(),
+         .design = name_a,
+         .workload = std::filesystem::path(options.in).stem().string(),
+         .input_hash = {},
+         .output_hash = {},
+         .n_msgs = stats.messages,
+         .headline_metric = "mismatches",
+         .headline_value = std::to_string(stats.mismatches),
+         .result_path = options.out});
+  }
   return stats.first_mismatch_index ? 1 : 0;
 }
 
