@@ -73,6 +73,16 @@ if(LLME_BUILD_TOOLS)
   set_tests_properties(Cli.Converters PROPERTIES LABELS integration
                        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
 
+  if(LLME_BUILD_BENCH)
+    add_test(NAME Bench.Smoke
+             COMMAND sh "${CMAKE_CURRENT_SOURCE_DIR}/integration/bench_smoke.sh"
+                     $<TARGET_FILE:llme-bench-latency> $<TARGET_FILE:llme-bench-throughput>
+                     $<TARGET_FILE:llme-bench-burst> $<TARGET_FILE:llme-gen>
+                     "${CMAKE_CURRENT_BINARY_DIR}")
+    set_tests_properties(Bench.Smoke PROPERTIES LABELS integration
+                         WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+  endif()
+
   # Real data, so it never runs in CI: AC-W-10 on this machine.
   add_test(NAME LocalData.RealFlow
            COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/integration/local_data.sh"

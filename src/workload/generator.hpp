@@ -92,6 +92,8 @@ struct Profile {
   bool burst_enabled = false;
   std::uint64_t burst_length = 10000;
   std::uint64_t burst_every = 1000000;
+  // Which orders a burst cancels; unset means the profile's cancel target.
+  std::optional<CancelTarget> burst_target;
 
   // A NEW that would take the shadow book past this many live orders becomes a cancel.
   std::uint32_t target_live = 100000;
@@ -114,6 +116,8 @@ class Generator {
   [[nodiscard]] InMsg next();
 
   [[nodiscard]] std::uint64_t emitted() const noexcept { return emitted_; }
+  // True when the message just returned by next() was part of a cancel burst.
+  [[nodiscard]] bool last_was_burst() const noexcept { return last_was_burst_; }
   [[nodiscard]] const ReferenceEngine& shadow() const noexcept { return shadow_; }
 
  private:
@@ -179,6 +183,7 @@ class Generator {
   OrderId last_id_ = 0;
   std::uint64_t emitted_ = 0;
   std::uint64_t burst_left_ = 0;
+  bool last_was_burst_ = false;
 };
 
 }  // namespace llme::workload

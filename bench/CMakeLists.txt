@@ -1,3 +1,17 @@
+add_library(llme_bench_common STATIC bench_common.cpp)
+target_include_directories(llme_bench_common PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_link_libraries(llme_bench_common PUBLIC llme_tool_support hdr_histogram_static)
+llme_target_defaults(llme_bench_common)
+
+foreach(tool latency_harness:llme-bench-latency throughput:llme-bench-throughput burst:llme-bench-burst)
+  string(REPLACE ":" ";" parts "${tool}")
+  list(GET parts 0 source)
+  list(GET parts 1 name)
+  add_executable(${name} ${source}.cpp)
+  target_link_libraries(${name} PRIVATE llme_bench_common)
+  llme_target_defaults(${name})
+endforeach()
+
 add_executable(llme-gbench gbench_components.cpp)
 target_link_libraries(llme-gbench PRIVATE llme_io llme_core llme_pipeline benchmark::benchmark)
 llme_target_defaults(llme-gbench)
