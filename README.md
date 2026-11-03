@@ -35,9 +35,9 @@ Raw and licensed data live in `data/`, which is git-ignored. Only download scrip
 
 ### Works (correct and reproducible)
 
-- [x] Differential testing: 100M+ random operations produce fills identical to the reference engine. AC-W-01 for D2, `results/diff/campaign_2026-11-02.json`.
+- [x] Differential testing: 100M+ random operations produce fills identical to the reference engine. AC-W-01 for D2, `results/diff/campaign_2026-11-02.json`, and for D1, D2 and D3 at 180M operations each with 0 mismatches, `results/diff/campaign_2026-11-03.json`; the invariant campaign adds 12,215 full checks per design with 0 failures, `results/diff/invariants_2026-11-03.json`.
 - [x] All sanitizers are clean, and hours of fuzzing find nothing. AC-W-03, AC-W-04: 4 h on each of four targets, `results/fuzz/`.
-- [ ] Deterministic output: the same input log always gives the same output hash. AC-W-05 met for D2 and the reference, including one ITCH log, `results/determinism.csv`; D1 and D3 come with M6.
+- [x] Deterministic output: the same input log always gives the same output hash. AC-W-05 met for D1, D2, D3 and the reference, in-process and through the pipeline, on GCC and Clang, Debug and Release, including one ITCH log: 700 runs, one hash per fixture, `results/determinism.csv`. The bare-metal host adds one more CPU and kernel in M6.
 
 ### Impresses hirers
 
