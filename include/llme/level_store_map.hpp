@@ -33,31 +33,29 @@ class FixedBlockResource final : public std::pmr::memory_resource {
   static constexpr std::size_t kBlockBytes = 64;
 
   explicit FixedBlockResource(std::size_t blocks) : storage_(blocks * kBlockBytes) {
+    free_.reserve(blocks);
     for (std::size_t i = blocks; i > 0; --i) {
-      push(storage_.data() + (i - 1) * kBlockBytes);
+      free_.push_back(storage_.data() + (i - 1) * kBlockBytes);
     }
   }
 
-  [[nodiscard]] std::size_t bytes() const noexcept { return storage_.size(); }
+  [[nodiscard]] std::size_t bytes() const noexcept {
+    return storage_.size() + free_.capacity() * sizeof(std::byte*);
+  }
 
  private:
-  // A free block holds the address of the next one.
-  void push(std::byte* block) noexcept {
-    std::memcpy(block, static_cast<const void*>(&free_), sizeof free_);
-    free_ = block;
-  }
-
   void* do_allocate(std::size_t bytes, std::size_t alignment) override {
-    if (bytes > kBlockBytes || alignment > alignof(std::max_align_t) || free_ == nullptr) {
+    if (bytes > kBlockBytes || alignment > alignof(std::max_align_t) || free_.empty()) {
       throw std::bad_alloc();
     }
-    std::byte* block = free_;
-    std::memcpy(static_cast<void*>(&free_), block, sizeof free_);
+    std::byte* block = free_.back();
+    free_.pop_back();
     return block;
   }
 
+  // Never past the reserved capacity: only blocks handed out come back.
   void do_deallocate(void* p, std::size_t /*bytes*/, std::size_t /*alignment*/) override {
-    push(static_cast<std::byte*>(p));
+    free_.push_back(static_cast<std::byte*>(p));
   }
 
   [[nodiscard]] bool do_is_equal(const memory_resource& other) const noexcept override {
@@ -65,7 +63,7 @@ class FixedBlockResource final : public std::pmr::memory_resource {
   }
 
   std::vector<std::byte> storage_;  // operator new alignment, enough for a tree node
-  std::byte* free_ = nullptr;
+  std::vector<std::byte*> free_;    // stack of free blocks, capacity reserved up front
 };
 
 class MapLevelStore {
