@@ -133,9 +133,11 @@ Commit `a66ea44`, binaries frozen before the runs started, `nice` 15, and no mor
 - **Extra files outside §6:** `scripts/replay_evidence.sh`, `tools/py/llme_tools/replay_report.py`, `src/workload/replay.{hpp,cpp}`, `src/tools/sidecar.{hpp,cpp}`, `tests/fixtures/make_itch_synthetic.py`.
 - **LOBSTER columns against the sample's ReadMe.** They match the spec, except that the ReadMe lists no type 6 and the samples contain none. The adapter still skips type 6, as the spec says.
 
-## LOBSTER top-of-book agreement (needs an owner ruling)
+## LOBSTER top-of-book agreement (owner ruling, 2026-11-03)
 
-§11 sets a target of at least 99% agreement between the engine's top of book and LOBSTER's orderbook file after each message, and R-04 treats less as a warning sign. **Continuous replay does not reach it, and no correct engine can on these samples.** The threshold is unchanged; this records what was measured.
+§11 sets a target of at least 99% agreement between the engine's top of book and LOBSTER's orderbook file after each message, and R-04 treats less as a warning sign. Continuous replay does not reach it, and no correct engine can on these samples.
+
+**Ruling: the owner accepted the one-step check as the §11 validation on 2026-11-03.** On these samples it agrees on 100% of 1.07M messages, so the target is met. The continuous-replay figures stay in `results/` and in the sidecars, labelled as a limit of 10-level samples.
 
 | Sample | Messages compared | Continuous replay, price and size | Continuous replay, price only | One-step check |
 |---|---|---|---|---|
@@ -144,7 +146,7 @@ Commit `a66ea44`, binaries frozen before the runs started, `nice` 15, and no mor
 
 - **Cause.** The sample's ReadMe says the message file covers events "in the requested price range". An order that drifts out of the top 10 levels gets no further events, so its cancel never appears, and orders resting before 09:30 or arriving from outside the window are never seen. Applying each event directly to the named order, with no matching at all, drifts the same way: live orders grow to about 10,000 and the known-order book shows a better bid than the real one on 96% of AAPL messages. The contra match rates of 59% and 74% have the same cause.
 - **One-step check.** To keep the check that R-04 wants, `llme-convert-lobster` also rebuilds the visible book from each orderbook row, applies the next event through D2, and compares the top of book with the row after it. This tests add, cancel, delete and execution semantics on every message, with no inherited error, and needs no order IDs. Every event fell inside the visible levels, which supports the cause above. `OneStepTest.AWrongOutcomeIsNoticed` shows the check can fail.
-- **Decision for the owner:** accept the one-step figure as the §11 validation, or supply a sample that would allow continuous replay. Nothing downstream waits on this: AC-W-10 does not depend on it.
+- **Ruling applied.** The README memo (M7) cites the one-step figure for this check and reports the continuous figures next to it, with this cause.
 
 ITCH replay does not have this limitation, because the file is complete. Its contra match rate on the top 50 is 85.8% to 99.9%. The misses come mainly from orders that rested before the open, which are not in the replayed book.
 
